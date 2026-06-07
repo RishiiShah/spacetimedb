@@ -55,7 +55,7 @@ const STEER_SPEED_TRIM = 0.15;
 const DRIFT_MAX_SLIP = 0.12;
 const DRIFT_SPEED_THRESHOLD = 38;
 const VEHICLE_OBSTACLE_SPEED_MULTIPLIER = 0.45;
-export const VEHICLE_OBSTACLE_COLLISION_RADIUS = 5.2;
+export const VEHICLE_OBSTACLE_COLLISION_RADIUS = 2.4;
 export const VEHICLE_COLLISION_HALF_WIDTH = 1.55;
 
 export function createInitialVehicleState(): VehicleState {

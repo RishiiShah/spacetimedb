@@ -256,6 +256,11 @@ describe("vehicle movement", () => {
     expect(next.speed).toBe(state.speed);
   });
 
+  it("uses a tight collision radius near half a car width", () => {
+    expect(VEHICLE_OBSTACLE_COLLISION_RADIUS).toBeLessThanOrEqual(2.6);
+    expect(VEHICLE_OBSTACLE_COLLISION_RADIUS).toBeGreaterThan(2);
+  });
+
   it("pushes the car out of overlapping remote car obstacles", () => {
     const state = {
       ...createInitialVehicleState(),
