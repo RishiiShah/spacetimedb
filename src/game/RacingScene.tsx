@@ -27,6 +27,7 @@ import {
   getLiveryById,
   inputFromDrivingActions,
   isLowPolyWheelNodeName,
+  lowPolyWheelSteerYaw,
   visualWheelSteerYaw,
 } from "./driving";
 import { createSnapshot, type CarSnapshot } from "./network";
@@ -56,6 +57,8 @@ export type RacingTelemetry = {
   checkpointIndex: number;
   elapsedMs: number;
   cameraMode?: string;
+  x?: number;
+  z?: number;
 };
 
 type RacingSceneProps = {
@@ -71,14 +74,23 @@ type RacingSceneProps = {
   onTelemetry: (telemetry: RacingTelemetry) => void;
 };
 
+export const RACING_RENDER_SETTINGS = {
+  dpr: [1, 1.35] as [number, number],
+  shadowMapSize: [1024, 1024] as [number, number],
+};
+
 export function RacingScene(props: RacingSceneProps) {
   return (
     <Canvas
       className="racing-canvas"
       shadows
       camera={{ position: [0, 12, 34], fov: 58 }}
-      dpr={[1, 2]}
-      gl={{ antialias: true, powerPreference: "high-performance" }}
+      dpr={RACING_RENDER_SETTINGS.dpr}
+      gl={{
+        antialias: true,
+        powerPreference: "high-performance",
+        stencil: false,
+      }}
     >
       <color attach="background" args={["#8aaec5"]} />
       <fog attach="fog" args={["#8aaec5", 180, 980]} />
@@ -88,7 +100,7 @@ export function RacingScene(props: RacingSceneProps) {
         castShadow
         intensity={2.1}
         position={[80, 120, 48]}
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={RACING_RENDER_SETTINGS.shadowMapSize}
         shadow-camera-near={1}
         shadow-camera-far={260}
         shadow-camera-left={-520}
@@ -236,6 +248,8 @@ function SceneContent({
       checkpointIndex: nextCheckpointRef.current,
       elapsedMs,
       cameraMode,
+      x: vehicle.position.x,
+      z: vehicle.position.z,
     });
 
     if (
@@ -315,7 +329,13 @@ function CarModel({
 }) {
   if (carId === "lowpoly") {
     return (
-      <LowPolyCar body={body} speedRef={speedRef} speed={speed} view={view} />
+      <LowPolyCar
+        body={body}
+        steerRef={steerRef}
+        speedRef={speedRef}
+        speed={speed}
+        view={view}
+      />
     );
   }
   return (
@@ -361,26 +381,32 @@ const LOWPOLY_SCALE = 0.008;
 const LOWPOLY_Y = 0.04;
 const LOWPOLY_UPRIGHT_X = -Math.PI / 2;
 const WHEEL_VISUAL_RADIUS = 0.46;
-const LOWPOLY_WHEEL_VISUAL_RADIUS = 0.52;
+const LOWPOLY_WHEEL_VISUAL_RADIUS = 1.3;
 const LOWPOLY_DRIVER_VISIBLE_NODE_NAMES = new Set<string>([
   "SteeringWheel_02",
-  "Halo",
+  "FrontWheels_bar",
+  "Front_Wing3",
+  "Front_Wing2.001",
+  "Front_Spoiler",
   ...LOWPOLY_WHEEL_NODE_NAMES,
 ]);
 
 function LowPolyCar({
   body,
+  steerRef,
   speedRef,
   speed = 0,
   view = "chase",
 }: {
   body: string;
+  steerRef?: MutableRefObject<number>;
   speedRef?: MutableRefObject<number>;
   speed?: number;
   view?: "chase" | "driver";
 }) {
   const scene = usePreparedModel(assets.cars.lowPoly, true, true, true);
-  const wheelNodesRef = useRef<THREE.Object3D[]>([]);
+  const wheelNodesRef = useRef(new Map<string, THREE.Object3D>());
+  const visualSteerRef = useRef(0);
   const wheelSpinRef = useRef(0);
   // The LowPoly has a baked texture; tint its material so the livery color reads
   // through the stripes.
@@ -394,23 +420,33 @@ function LowPolyCar({
   const tinted = useLiveriedScene(scene, recolor);
 
   useMemo(() => {
-    const wheelNodes: THREE.Object3D[] = [];
+    const wheelNodes = new Map<string, THREE.Object3D>();
     tinted.traverse((object) => {
       if (object instanceof THREE.Mesh) {
         object.visible =
           view === "chase" ||
           LOWPOLY_DRIVER_VISIBLE_NODE_NAMES.has(object.name);
       }
-      if (isLowPolyWheelNodeName(object.name)) wheelNodes.push(object);
+      if (isLowPolyWheelNodeName(object.name)) {
+        wheelNodes.set(object.name, object);
+      }
     });
     wheelNodesRef.current = wheelNodes;
   }, [tinted, view]);
 
   useFrame((_, delta) => {
+    const targetSteer = -(steerRef?.current ?? 0);
+    visualSteerRef.current = THREE.MathUtils.damp(
+      visualSteerRef.current,
+      targetSteer,
+      12,
+      delta,
+    );
     wheelSpinRef.current +=
       ((speedRef?.current ?? speed) * delta) / LOWPOLY_WHEEL_VISUAL_RADIUS;
 
-    for (const wheel of wheelNodesRef.current) {
+    for (const [name, wheel] of wheelNodesRef.current) {
+      wheel.rotation.z = lowPolyWheelSteerYaw(name, visualSteerRef.current);
       wheel.rotation.x = -wheelSpinRef.current;
     }
   });
@@ -817,21 +853,25 @@ function RouteContinuousWalls({
   );
   const leftCapGeometry = useMemo(
     () =>
-      createRouteRibbonGeometry(
-        points,
-        ROUTE_RAIL_WIDTH,
-        railHeight,
-        -railOffset,
+      paintBarrierStripes(
+        createRouteRibbonGeometry(
+          points,
+          ROUTE_RAIL_WIDTH,
+          railHeight,
+          -railOffset,
+        ),
       ),
     [points, railHeight, railOffset],
   );
   const rightCapGeometry = useMemo(
     () =>
-      createRouteRibbonGeometry(
-        points,
-        ROUTE_RAIL_WIDTH,
-        railHeight,
-        railOffset,
+      paintBarrierStripes(
+        createRouteRibbonGeometry(
+          points,
+          ROUTE_RAIL_WIDTH,
+          railHeight,
+          railOffset,
+        ),
       ),
     [points, railHeight, railOffset],
   );
@@ -856,9 +896,9 @@ function RouteContinuousWalls({
       {[leftCapGeometry, rightCapGeometry].map((geometry, index) => (
         <mesh key={`wall-cap-${index}`} geometry={geometry} receiveShadow>
           <meshStandardMaterial
-            color="#151a22"
-            roughness={0.32}
-            metalness={0.12}
+            vertexColors
+            roughness={0.58}
+            metalness={0.02}
             side={THREE.DoubleSide}
           />
         </mesh>
@@ -1144,7 +1184,7 @@ function createRouteVerticalRibbonGeometry(
 
 // Paints the vertical wall ribbon with alternating red/white panels by writing
 // per-vertex colors. `panelLength` is the approximate world length of one panel.
-function paintBarrierStripes(
+export function paintBarrierStripes(
   geometry: THREE.BufferGeometry,
   panelLength = 9,
 ): THREE.BufferGeometry {
@@ -1171,7 +1211,10 @@ function paintBarrierStripes(
       colorArray[v * 3 + 2] = color.b;
     }
   }
-  geometry.setAttribute("color", new THREE.Float32BufferAttribute(colorArray, 3));
+  geometry.setAttribute(
+    "color",
+    new THREE.Float32BufferAttribute(colorArray, 3),
+  );
   return geometry;
 }
 
@@ -1288,10 +1331,10 @@ const DRIVER_HEIGHT = 1.22;
 const DRIVER_LOOK_AHEAD = 24;
 const DRIVER_LOOK_HEIGHT = 1.08;
 const DRIVER_FOV = 70;
-const LOWPOLY_DRIVER_BACK = 0.03;
-const LOWPOLY_DRIVER_HEIGHT = 0.68;
-const LOWPOLY_DRIVER_LOOK_HEIGHT = 0.66;
-const LOWPOLY_DRIVER_FOV = 78;
+const LOWPOLY_DRIVER_BACK = 0.34;
+const LOWPOLY_DRIVER_HEIGHT = 0.78;
+const LOWPOLY_DRIVER_LOOK_HEIGHT = 0.68;
+const LOWPOLY_DRIVER_FOV = 76;
 
 export function updateCamera(
   camera: THREE.Camera,

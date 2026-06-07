@@ -5,6 +5,9 @@ import { useReducer, useSpacetimeDB, useTable } from "spacetimedb/react";
 import { RacingScene, type RacingTelemetry } from "./game/RacingScene";
 import type { CarSnapshot } from "./game/network";
 import { RenderErrorBoundary } from "./game/RenderErrorBoundary";
+import { RaceHud } from "./game/RaceHud";
+import type { MinimapRacer } from "./game/Minimap";
+import { orderByProgress, type RacerProgress } from "./game/raceStats";
 import {
   CARS,
   DEFAULT_CAR_ID,
@@ -42,6 +45,11 @@ function App() {
     elapsedMs: 0,
   });
   const [lastError, setLastError] = useState("");
+  const [lapState] = useState<{
+    lap: number;
+    totalLaps: number;
+    bestLapMs?: number;
+  }>({ lap: 1, totalLaps: 3 });
 
   const { identity, isActive: connected } = useSpacetimeDB();
   const setPlayerName = useReducer(reducers.setPlayerName);
@@ -289,7 +297,7 @@ function App() {
 
               <div className="hero-tags" aria-label="Driver briefing">
                 <span>Driver briefing</span>
-                <span>Open-wheel setup</span>
+                <span>{selectedCar.name} setup</span>
                 <span>{selectedModeMeta.label} session</span>
               </div>
             </div>
@@ -570,9 +578,53 @@ function App() {
     );
   }
 
+  const minimapRacers: MinimapRacer[] = [
+    {
+      id: "me",
+      x: telemetry.x ?? sessionTrack.spawn.position.x,
+      z: telemetry.z ?? sessionTrack.spawn.position.z,
+      color: selectedLivery.body,
+      isMe: true,
+    },
+    ...roomCars.map((car) => ({
+      id: car.identity.toHexString(),
+      x: car.x,
+      z: car.z,
+      color: "#38bdf8",
+      isMe: false,
+    })),
+  ];
+
+  const racerProgress: RacerProgress[] = [
+    {
+      id: "me",
+      name: myName,
+      lap: lapState.lap,
+      checkpointIndex: telemetry.checkpointIndex,
+      distanceToNext: 0,
+      bestLapMs: lapState.bestLapMs,
+    },
+    ...roomCars.map((car) => {
+      const player = players.find((p) => p.identity.isEqual(car.identity));
+      return {
+        id: car.identity.toHexString(),
+        name: player?.name || car.identity.toHexString().slice(0, 8),
+        lap: 0,
+        checkpointIndex: car.checkpointIndex,
+        distanceToNext: 0,
+      };
+    }),
+  ];
+
+  const standings = orderByProgress(racerProgress).map((r, i) => ({
+    id: r.id,
+    name: r.name,
+    gapLabel: i === 0 ? "Leader" : `-${standingsCheckpointGap(racerProgress, r)} CP`,
+  }));
+
   return (
-    <main className="app-shell">
-      <section className="stage">
+    <main className="app-shell race-shell">
+      <section className="stage stage-full">
         <RenderErrorBoundary>
           <RacingScene
             localIdentity={identity?.toHexString() || "offline-preview"}
@@ -587,113 +639,30 @@ function App() {
             onTelemetry={setTelemetry}
           />
         </RenderErrorBoundary>
-      </section>
-
-      <aside className="hud">
-        <div>
-          <p className="eyebrow">{sessionModeMeta.label} Mode</p>
-          <h1>{sessionTrack.name}</h1>
-        </div>
-
-        <div className="hud-grid">
-          <Metric
-            label="Gear"
-            value={Math.max(
-              1,
-              Math.min(7, Math.ceil(Math.abs(telemetry.speed) / 10)),
-            ).toString()}
-          />
-          <Metric
-            label="Speed"
-            value={`${Math.round(telemetry.speed * 3.6)} km/h`}
-          />
-          <Metric label="Timer" value={formatMs(telemetry.elapsedMs)} />
-          <Metric
-            label="Checkpoint"
-            value={`${telemetry.checkpointIndex + 1}/${sessionTrack.checkpoints.length}`}
-          />
-          <Metric label="Car" value={selectedCar.name} />
-          <Metric label="Livery" value={selectedLivery.name} />
-          <Metric
-            label="Network"
-            value={connected ? activeRoom?.slug || "online" : "offline"}
-          />
-          {telemetry.cameraMode && (
-            <Metric label="Camera" value={telemetry.cameraMode.toUpperCase()} />
-          )}
-        </div>
+        <RaceHud
+          speedKmh={telemetry.speed * 3.6}
+          gear={Math.max(1, Math.min(7, Math.ceil(Math.abs(telemetry.speed) / 10)))}
+          lap={lapState.lap}
+          totalLaps={lapState.totalLaps}
+          currentLapMs={telemetry.elapsedMs}
+          bestLapMs={lapState.bestLapMs}
+          routePoints={sessionTrack.routePoints}
+          minimapRacers={minimapRacers}
+          standings={standings}
+          onLeaveRoom={() => void leaveLobby()}
+        />
         <p className="hint">
           Press R to Reset, C for Camera, Space for Handbrake
         </p>
-
-        <form
-          className="join-form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            void joinMultiplayerRoom();
-          }}
-        >
-          <label>
-            Driver
-            <input
-              value={displayName}
-              placeholder={myName}
-              onChange={(event) => setDisplayName(event.target.value)}
-            />
-          </label>
-          <label>
-            Room
-            <input
-              value={roomSlug}
-              onChange={(event) => setRoomSlug(event.target.value)}
-            />
-          </label>
-          <div className="room-actions">
-            <button
-              type="button"
-              disabled={!connected}
-              onClick={() => void createMultiplayerRoom()}
-            >
-              {connected ? "Create room" : "Connecting"}
-            </button>
-            <button type="submit" disabled={!connected}>
-              {connected ? "Join room" : "Connecting"}
-            </button>
-          </div>
-        </form>
-
-        {lastError && <p className="error">{lastError}</p>}
-
-        <section className="panel">
-          <h2>Drivers</h2>
-          <div className="driver-list">
-            {players
-              .filter((player) => player.online)
-              .slice(0, 8)
-              .map((player) => (
-                <span key={player.identity.toHexString()}>
-                  {player.name || player.identity.toHexString().slice(0, 8)}
-                </span>
-              ))}
-          </div>
-        </section>
-
-        <section className="panel">
-          <h2>Leaderboard</h2>
-          {leaderboard.length === 0 ? (
-            <p className="muted">No completed laps yet.</p>
-          ) : (
-            <ol className="leaderboard">
-              {leaderboard.map((lap) => (
-                <li key={lap.lapId.toString()}>
-                  <span>{lap.name}</span>
-                  <strong>{formatMs(Number(lap.elapsedMs))}</strong>
-                </li>
-              ))}
-            </ol>
-          )}
-        </section>
-      </aside>
+        <ol className="leaderboard sr-only" aria-label="Lap records">
+          {leaderboard.map((lap) => (
+            <li key={lap.lapId.toString()}>
+              <span>{lap.name}</span>
+              <strong>{formatMs(Number(lap.elapsedMs))}</strong>
+            </li>
+          ))}
+        </ol>
+      </section>
     </main>
   );
 }
@@ -791,6 +760,11 @@ function formatMs(ms: number) {
   return `${minutes}:${seconds.toString().padStart(2, "0")}.${millis
     .toString()
     .padStart(2, "0")}`;
+}
+
+function standingsCheckpointGap(all: RacerProgress[], r: RacerProgress) {
+  const leader = [...all].sort((a, b) => b.checkpointIndex - a.checkpointIndex)[0];
+  return Math.max(0, leader.checkpointIndex - r.checkpointIndex);
 }
 
 export default App;
