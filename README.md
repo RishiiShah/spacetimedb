@@ -1,8 +1,10 @@
-# SpaceTimeDB Racer
+# SpacetimeDB F1
 
-> **No install. No queue. Drop a room code — they're on your grid in seconds.**
+> **F1-inspired open-wheel racing in the browser — quali pace, racing lines, and live room rivalries.**
 
-A browser-based multiplayer open-wheel racing game built with React, Three.js, and [SpacetimeDB](https://spacetimedb.com). Drive on real-world-inspired circuits, a city loop, stunt arenas, or a flat practice road — alone or with friends in shared rooms — with live car positions, checkpoint timing, and lap leaderboards.
+**Play live:** [spacetimedb-f1.vercel.app](https://spacetimedb-f1.vercel.app)
+
+SpacetimeDB F1 is a browser-based multiplayer grand prix built with React, Three.js, and [SpacetimeDB](https://spacetimedb.com). Inspired by Formula 1 — low-poly open-wheel cars, iconic circuit layouts (Monza, Monaco, Interlagos, and more), checkpoint timing, and room leaderboards. Race solo, or share a room code and go wheel-to-wheel with friends.
 
 ## Why SpacetimeDB?
 
@@ -48,8 +50,8 @@ Static assets (GLB models, textures, audio, circuit map JSON) are served from th
 - **Three game modes** — Circuit, Stunt, and Practice, each with its own track selection
 - **Pre-race lobby** — display name, room slug, mode picker, and track picker
 - **Multiplayer rooms** — create or join by room code; host starts races when two or more players are ready
-- **Open-wheel driving** — WASD / arrow keys, handbrake, checkpoint reset
-- **Multiple tracks** — mapped circuits (Monza, Austria, Brands Hatch, Interlagos, Indy, Monaco, and more), a city loop, stunt showcase with loops and corkscrews, and a flat practice road
+- **F1-style open-wheel driving** — WASD / arrow keys, handbrake, checkpoint reset
+- **Iconic circuit layouts** — F1-inspired maps including Monza, Austria, Brands Hatch, Interlagos, Indy, and Monaco, plus a city loop, stunt showcase, and flat practice road
 - **Live multiplayer** — see other players' cars with interpolated movement
 - **Lap timing** — checkpoint gates, elapsed time, and room leaderboards
 - **Ghost replay frames** — sampled transforms stored for best-lap comparison (foundation for ghost racing)

@@ -1,6 +1,11 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import "./RetroGridMenu.css";
-import { GAME_HOOK_LINES, GAME_TAGLINE } from "./gameHook";
+import {
+  GAME_NAME,
+  GAME_TITLE_ACCENT,
+  GAME_TITLE_LINE,
+  GAME_TITLE_SUB,
+} from "./gameHook";
 import { RetroGridMenuScene } from "./RetroGridMenuScene";
 import {
   CARS,
@@ -65,14 +70,6 @@ export function RetroGridHomeScreen({
   onStartRace,
 }: RetroGridHomeScreenProps) {
   const [panel, setPanel] = useState<Panel>("home");
-  const [hookIndex, setHookIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setHookIndex((index) => (index + 1) % GAME_HOOK_LINES.length);
-    }, 5200);
-    return () => window.clearInterval(timer);
-  }, []);
 
   const joinRoom = (event: FormEvent) => {
     event.preventDefault();
@@ -105,18 +102,17 @@ export function RetroGridHomeScreen({
         <div className="retro-body">
           <aside className="retro-sidebar">
             <div className="retro-brand">
-              <h1 className="sr-only">Spacetime Racer</h1>
+              <h1 className="sr-only">{GAME_NAME}</h1>
               <h2 className="sr-only">Grid preview</h2>
               <div className="retro-game-title" aria-hidden="true">
-                <span className="retro-title-line">RETRO</span>
+                <span className="retro-title-line">{GAME_TITLE_LINE}</span>
                 <span className="retro-title-line retro-highlight">
-                  GRID <span className="retro-flag">🏁</span>
+                  {GAME_TITLE_ACCENT} <span className="retro-flag">🏁</span>
                 </span>
-                <span className="retro-title-sub">GRAND PRIX</span>
+                <span className="retro-title-sub">{GAME_TITLE_SUB}</span>
               </div>
-              <p className="retro-tagline">{GAME_TAGLINE}</p>
               <p className="retro-subtitle">
-                {selectedCar.name} · {selectedTrack.name}
+                Driver briefing · {selectedCar.name} setup
               </p>
             </div>
 
@@ -190,19 +186,6 @@ export function RetroGridHomeScreen({
           </aside>
 
           <main className="retro-stage">
-            {panel === "home" && (
-              <section className="retro-hook-panel" aria-label="Race pitch">
-                <p className="retro-hook-eyebrow">Live multiplayer · browser racing</p>
-                <p className="retro-hook-line" key={hookIndex}>
-                  {GAME_HOOK_LINES[hookIndex]}
-                </p>
-                <p className="retro-hook-cta">
-                  Hit <strong>START RACE</strong> solo, or open{" "}
-                  <strong>OPTIONS</strong> to create a room and send the code.
-                </p>
-              </section>
-            )}
-
             {panel === "garage" && (
               <section className="retro-stage-panel" aria-label="Garage">
                 <header className="retro-stage-header">
