@@ -34,12 +34,14 @@ import {
 } from "spacetimedb";
 
 // Import all reducer arg schemas
+import BeginCountdownReducer from "./begin_countdown_reducer";
 import ConfigureRoomReducer from "./configure_room_reducer";
 import CreateRoomReducer from "./create_room_reducer";
 import FinishLapReducer from "./finish_lap_reducer";
 import JoinOrCreateRoomReducer from "./join_or_create_room_reducer";
 import JoinRoomReducer from "./join_room_reducer";
 import LeaveRoomReducer from "./leave_room_reducer";
+import MarkLoadedReducer from "./mark_loaded_reducer";
 import PublishCarStateReducer from "./publish_car_state_reducer";
 import RecordCheckpointReducer from "./record_checkpoint_reducer";
 import RecordGhostFrameReducer from "./record_ghost_frame_reducer";
@@ -366,12 +368,14 @@ const tablesSchema = __schema({
 
 /** The schema information for all reducers in this module. This is defined the same way as the reducers would have been defined in the server, except the body of the reducer is omitted in code generation. */
 const reducersSchema = __reducers(
+  __reducerSchema("begin_countdown", BeginCountdownReducer),
   __reducerSchema("configure_room", ConfigureRoomReducer),
   __reducerSchema("create_room", CreateRoomReducer),
   __reducerSchema("finish_lap", FinishLapReducer),
   __reducerSchema("join_or_create_room", JoinOrCreateRoomReducer),
   __reducerSchema("join_room", JoinRoomReducer),
   __reducerSchema("leave_room", LeaveRoomReducer),
+  __reducerSchema("mark_loaded", MarkLoadedReducer),
   __reducerSchema("publish_car_state", PublishCarStateReducer),
   __reducerSchema("record_checkpoint", RecordCheckpointReducer),
   __reducerSchema("record_ghost_frame", RecordGhostFrameReducer),

@@ -312,21 +312,57 @@ export const startRoomRace = spacetimedb.reducer(
     if (!targetRoom.createdBy.equals(ctx.sender)) {
       throw new SenderError("Only the room creator can start the race");
     }
-
     requireMembership(ctx, roomId);
-
     const members = [...ctx.db.roomMember.roomId.filter(roomId)];
     if (members.length < 2) {
       throw new SenderError("At least two players are required to start");
     }
+    for (const m of members) {
+      ctx.db.roomMember.memberId.update({ ...m, ready: false });
+    }
+    if (!ctx.db.roomRaceStart.roomId.find(roomId)) {
+      ctx.db.roomRaceStart.insert({
+        roomId,
+        startedBy: ctx.sender,
+        startedAtMs: ctx.timestamp.toMillis(),
+      });
+    }
+  },
+);
 
-    const existingStart = ctx.db.roomRaceStart.roomId.find(roomId);
-    if (existingStart) return;
+// A client calls this once its track scene has finished loading. When every
+// member is loaded, the host's client calls beginCountdown to schedule GO.
+export const markLoaded = spacetimedb.reducer(
+  { roomId: t.u64() },
+  (ctx, { roomId }) => {
+    const membership = [
+      ...ctx.db.roomMember.by_room_identity.filter([roomId, ctx.sender]),
+    ][0];
+    if (!membership) throw new SenderError("Player is not in this room");
+    ctx.db.roomMember.memberId.update({ ...membership, ready: true });
+  },
+);
 
-    ctx.db.roomRaceStart.insert({
+// Host schedules the synchronized GO time. The 8s budget covers a 5s controls
+// modal plus a 3s 3-2-1 countdown, all derived from server time on each client.
+export const beginCountdown = spacetimedb.reducer(
+  { roomId: t.u64() },
+  (ctx, { roomId }) => {
+    const targetRoom = ctx.db.room.roomId.find(roomId);
+    if (!targetRoom) throw new SenderError("Room does not exist");
+    if (!targetRoom.createdBy.equals(ctx.sender)) {
+      throw new SenderError("Only the host can begin the countdown");
+    }
+    const members = [...ctx.db.roomMember.roomId.filter(roomId)];
+    if (members.length === 0 || members.some((m) => !m.ready)) {
+      throw new SenderError("All players must be loaded first");
+    }
+    if (ctx.db.roomCountdown.roomId.find(roomId)) return;
+    const nowMs = ctx.timestamp.toMillis();
+    ctx.db.roomCountdown.insert({
       roomId,
-      startedBy: ctx.sender,
-      startedAtMs: ctx.timestamp.toMillis(),
+      startedAtMs: nowMs,
+      startsAtMs: nowMs + 8000n,
     });
   },
 );
@@ -486,7 +522,7 @@ function enterRoom(ctx: any, targetRoom: any) {
       roomId: targetRoom.roomId,
       identity: ctx.sender,
       joinedAt: ctx.timestamp,
-      ready: true,
+      ready: false,
     });
   }
 

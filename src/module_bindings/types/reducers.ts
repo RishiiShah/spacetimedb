@@ -6,24 +6,28 @@
 import { type Infer as __Infer } from "spacetimedb";
 
 // Import all reducer arg schemas
+import BeginCountdownReducer from "../begin_countdown_reducer";
 import ConfigureRoomReducer from "../configure_room_reducer";
 import CreateRoomReducer from "../create_room_reducer";
 import FinishLapReducer from "../finish_lap_reducer";
 import JoinOrCreateRoomReducer from "../join_or_create_room_reducer";
 import JoinRoomReducer from "../join_room_reducer";
 import LeaveRoomReducer from "../leave_room_reducer";
+import MarkLoadedReducer from "../mark_loaded_reducer";
 import PublishCarStateReducer from "../publish_car_state_reducer";
 import RecordCheckpointReducer from "../record_checkpoint_reducer";
 import RecordGhostFrameReducer from "../record_ghost_frame_reducer";
 import SetPlayerNameReducer from "../set_player_name_reducer";
 import StartRoomRaceReducer from "../start_room_race_reducer";
 
+export type BeginCountdownParams = __Infer<typeof BeginCountdownReducer>;
 export type ConfigureRoomParams = __Infer<typeof ConfigureRoomReducer>;
 export type CreateRoomParams = __Infer<typeof CreateRoomReducer>;
 export type FinishLapParams = __Infer<typeof FinishLapReducer>;
 export type JoinOrCreateRoomParams = __Infer<typeof JoinOrCreateRoomReducer>;
 export type JoinRoomParams = __Infer<typeof JoinRoomReducer>;
 export type LeaveRoomParams = __Infer<typeof LeaveRoomReducer>;
+export type MarkLoadedParams = __Infer<typeof MarkLoadedReducer>;
 export type PublishCarStateParams = __Infer<typeof PublishCarStateReducer>;
 export type RecordCheckpointParams = __Infer<typeof RecordCheckpointReducer>;
 export type RecordGhostFrameParams = __Infer<typeof RecordGhostFrameReducer>;
