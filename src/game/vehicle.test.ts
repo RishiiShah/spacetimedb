@@ -275,6 +275,18 @@ describe("vehicle movement", () => {
     expect(next.speed).toBeLessThan(state.speed);
   });
 
+  it("ignores obstacles flagged inactive", () => {
+    const state = {
+      ...createInitialVehicleState(),
+      position: { x: 1, y: 0, z: 0 },
+      speed: 20,
+    };
+    const next = resolveVehicleObstacleCollisions(state, [
+      { x: 0, z: 0, active: false },
+    ]);
+    expect(next).toEqual(state);
+  });
+
   it("leaves the car unchanged when remote cars are not overlapping", () => {
     const state = {
       ...createInitialVehicleState(),

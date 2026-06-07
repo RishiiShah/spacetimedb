@@ -19,6 +19,9 @@ export type VehicleInput = {
 export type VehicleObstacle = {
   x: number;
   z: number;
+  // When false, the obstacle is ignored (e.g. a car still at spawn or with a
+  // stale snapshot). Defaults to active when omitted.
+  active?: boolean;
 };
 
 const MAX_FORWARD_SPEED = 72;
@@ -185,6 +188,7 @@ export function resolveVehicleObstacleCollisions(
   let resolved = state;
 
   for (const obstacle of obstacles) {
+    if (obstacle.active === false) continue;
     const dx = resolved.position.x - obstacle.x;
     const dz = resolved.position.z - obstacle.z;
     const distance = Math.hypot(dx, dz);
