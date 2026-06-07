@@ -1,5 +1,6 @@
 import { getRouteFenceInnerOffset, type TrackDef } from "./track";
 import { nearestRouteCurveProjection } from "./routeGeometry";
+import { getMultiplayerGridSpawn } from "./multiplayerSpawn";
 
 export type VehicleState = {
   position: { x: number; y: number; z: number };
@@ -73,24 +74,34 @@ export function createInitialVehicleState(): VehicleState {
   };
 }
 
+export type GridSpawnOptions = {
+  slotIndex: number;
+  gridSize: number;
+};
+
 export function createVehicleAtTrackReset(
   track: TrackDef,
   checkpointIndex?: number,
+  grid?: GridSpawnOptions,
 ): VehicleState {
   const checkpoint =
     checkpointIndex === undefined
       ? undefined
       : track.checkpoints[checkpointIndex];
-  const resetPoint = checkpoint?.position ?? track.spawn.position;
+  const gridSpawn =
+    checkpoint === undefined && grid
+      ? getMultiplayerGridSpawn(track, grid.slotIndex, grid.gridSize)
+      : undefined;
+  const resetPoint = checkpoint?.position ?? gridSpawn?.position ?? track.spawn.position;
 
   return {
     ...createInitialVehicleState(),
     position: {
       x: resetPoint.x,
-      y: track.spawn.position.y,
+      y: checkpoint ? track.spawn.position.y : resetPoint.y,
       z: resetPoint.z,
     },
-    heading: checkpoint?.rotationY ?? track.spawn.heading,
+    heading: checkpoint?.rotationY ?? gridSpawn?.heading ?? track.spawn.heading,
   };
 }
 

@@ -25,6 +25,8 @@ import {
   type GameMode,
   type TrackDef,
 } from "./game/track";
+import { sortRoomMembersForGrid } from "./game/multiplayerSpawn";
+import { screenFromPath, syncAppPath } from "./game/appNavigation";
 
 const DEFAULT_ROOM = "demo";
 const DEFAULT_MODE: GameMode = "circuit";
@@ -46,6 +48,7 @@ function App() {
     elapsedMs: 0,
   });
   const [lastError, setLastError] = useState("");
+  const [preferHome, setPreferHome] = useState(false);
   const [lapState, setLapState] = useState<{
     lap: number;
     totalLaps: number;
@@ -70,13 +73,20 @@ function App() {
 
   const [players] = useTable(tables.player);
   const [rooms] = useTable(tables.room);
-  const [members] = useTable(tables.roomMember);
+  const [myMembershipRows] = useTable(
+    identity
+      ? tables.roomMember.where((member) => member.identity.eq(identity))
+      : tables.roomMember.where((member) => member.roomId.eq(0n)),
+  );
+  const myRoomId = myMembershipRows[0]?.roomId ?? 0n;
+  const [roomMembers] = useTable(
+    tables.roomMember.where((member) => member.roomId.eq(myRoomId)),
+  );
   // car_state / lap_result are the high-volume tables; scope their subscription
   // to the active room so the roomId btree index is used instead of a full
   // sequential scan. roomId 0n never matches (autoInc starts at 1), so outside a
   // room these stay empty.
-  const roomIdForSub =
-    members.find((m) => identity && m.identity.isEqual(identity))?.roomId ?? 0n;
+  const roomIdForSub = myRoomId;
   const [cars] = useTable(
     tables.carState.where((r) => r.roomId.eq(roomIdForSub)),
   );
@@ -105,20 +115,14 @@ function App() {
     return players.find((player) => player.identity.isEqual(identity));
   }, [identity, players]);
 
-  const activeMembership = useMemo(() => {
-    if (!identity) return undefined;
-    return members.find((member) => member.identity.isEqual(identity));
-  }, [identity, members]);
+  const activeMembership = myMembershipRows[0];
 
   const activeRoom = useMemo(() => {
     if (!activeMembership) return undefined;
     return rooms.find((room) => room.roomId === activeMembership.roomId);
   }, [activeMembership, rooms]);
 
-  const activeRoomMembers = useMemo(() => {
-    if (!activeRoom) return [];
-    return members.filter((member) => member.roomId === activeRoom.roomId);
-  }, [activeRoom, members]);
+  const activeRoomMembers = roomMembers;
 
   const activeRaceStart = useMemo(() => {
     if (!activeRoom) return undefined;
@@ -160,12 +164,27 @@ function App() {
     );
   }, [activeRoom, cars, identity, sessionTrack.id]);
 
+  const sortedRoomMembers = useMemo(
+    () => sortRoomMembersForGrid(activeRoomMembers),
+    [activeRoomMembers],
+  );
+  const myGridSlot = useMemo(() => {
+    if (!identity || !activeRoom) return 0;
+    const slot = sortedRoomMembers.findIndex((member) =>
+      member.identity.isEqual(identity),
+    );
+    return slot >= 0 ? slot : 0;
+  }, [sortedRoomMembers, identity, activeRoom]);
+  const gridSize = Math.max(1, sortedRoomMembers.length);
+
   const setNameIfNeeded = async () => {
     if (displayName.trim()) await setPlayerName({ name: displayName.trim() });
   };
 
   const createMultiplayerRoom = async () => {
     setLastError("");
+    userExitedRaceRef.current = false;
+    setPreferHome(false);
     try {
       await setNameIfNeeded();
       await createRoom({ slug: roomSlug, trackId: selectedTrack.id });
@@ -177,6 +196,8 @@ function App() {
 
   const joinMultiplayerRoom = async () => {
     setLastError("");
+    userExitedRaceRef.current = false;
+    setPreferHome(false);
     try {
       await setNameIfNeeded();
       await joinRoom({ slug: roomSlug });
@@ -190,6 +211,8 @@ function App() {
     userExitedRaceRef.current = true;
     setLastError("");
     setRaceStarted(false);
+    setPreferHome(true);
+    syncAppPath("home");
     if (!activeRoom) return;
     try {
       await leaveRoom({ roomId: activeRoom.roomId });
@@ -222,6 +245,7 @@ function App() {
 
   const startRace = () => {
     userExitedRaceRef.current = false;
+    setPreferHome(false);
     setLastError("");
     setRaceStarted(true);
   };
@@ -333,14 +357,44 @@ function App() {
         setLastError(error instanceof Error ? error.message : String(error));
       }
     }
+    setPreferHome(false);
     setRaceStarted(false);
   };
 
   const myName = me?.name || identity?.toHexString().slice(0, 8) || "driver";
 
   useEffect(() => {
-    userExitedRaceRef.current = false;
-  }, [activeRoom?.roomId]);
+    if (!activeRoom && preferHome) {
+      setPreferHome(false);
+    }
+  }, [activeRoom, preferHome]);
+
+  useEffect(() => {
+    if (preferHome) {
+      syncAppPath("home");
+      return;
+    }
+    if (raceStarted) {
+      syncAppPath("race");
+      return;
+    }
+    if (activeRoom) {
+      syncAppPath("lobby", activeRoom.slug);
+    } else {
+      syncAppPath("home");
+    }
+  }, [preferHome, raceStarted, activeRoom?.slug, activeRoom]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (screenFromPath(window.location.pathname) === "home") {
+        setPreferHome(true);
+        setRaceStarted(false);
+      }
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
 
   useEffect(() => {
     if (userExitedRaceRef.current) return;
@@ -372,6 +426,36 @@ function App() {
     const id = setInterval(() => forceTick((n) => n + 1), 100);
     return () => clearInterval(id);
   }, [isMultiplayer, racing, goMs]);
+
+  if (preferHome) {
+    return (
+      <RetroGridHomeScreen
+        displayName={displayName}
+        roomSlug={roomSlug}
+        selectedMode={selectedMode}
+        selectedTrackId={selectedTrackId}
+        selectedCarId={selectedCarId}
+        selectedLiveryId={selectedLiveryId}
+        selectedTrack={selectedTrack}
+        selectedModeMeta={selectedModeMeta}
+        selectedCar={selectedCar}
+        selectedLivery={selectedLivery}
+        availableTracks={availableTracks}
+        connected={connected}
+        myName={myName}
+        lastError={lastError}
+        onDisplayNameChange={setDisplayName}
+        onRoomSlugChange={setRoomSlug}
+        onSelectMode={selectMode}
+        onSelectTrackId={setSelectedTrackId}
+        onSelectCarId={setSelectedCarId}
+        onSelectLiveryId={setSelectedLiveryId}
+        onCreateRoom={() => void createMultiplayerRoom()}
+        onJoinRoom={() => void joinMultiplayerRoom()}
+        onStartRace={startRace}
+      />
+    );
+  }
 
   if (activeRoom && !raceStarted) {
     return (
@@ -489,6 +573,8 @@ function App() {
             trackId={sessionTrack.id}
             carId={selectedCarId}
             liveryId={selectedLiveryId}
+            gridSlot={isMultiplayer ? myGridSlot : undefined}
+            gridSize={gridSize}
             remoteCars={roomCars}
             onSnapshot={onSnapshot}
             onCheckpoint={onCheckpoint}

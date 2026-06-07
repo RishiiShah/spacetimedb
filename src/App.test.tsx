@@ -37,7 +37,7 @@ vi.mock("spacetimedb/react", () => ({
     isActive: true,
   }),
   useReducer: () => reducerMocks[mockReducerIndex++ % reducerMocks.length],
-  useTable: () => [mockTables[mockTableIndex++ % 7] ?? []],
+  useTable: () => [mockTables[mockTableIndex++ % 8] ?? []],
 }));
 
 vi.mock("./game/RetroGridMenuScene", () => ({
@@ -185,8 +185,18 @@ describe("App start flow", () => {
           ready: true,
         },
       ],
+      [
+        {
+          memberId: 1n,
+          roomId: 7n,
+          identity: localIdentity,
+          joinedAt: {},
+          ready: true,
+        },
+      ],
       [],
       [{ roomId: 7n, startedBy: localIdentity, startedAtMs: 1n }],
+      [],
       [],
     ];
 
@@ -228,10 +238,20 @@ describe("App start flow", () => {
         },
       ],
       [
+        {
+          memberId: 1n,
+          roomId: 7n,
+          identity: localIdentity,
+          joinedAt: {},
+          ready: true,
+        },
+      ],
+      [
         { roomId: 7n, trackId: 2n, identity: remoteIdentityA },
         { roomId: 7n, trackId: 1n, identity: remoteIdentityB },
       ],
       [{ roomId: 7n, startedBy: localIdentity, startedAtMs: 1n }],
+      [],
       [],
     ];
 
@@ -263,6 +283,15 @@ describe("App start flow", () => {
           joinedAt: {},
           ready: true,
         },
+      ],
+      [
+        {
+          memberId: 1n,
+          roomId: 7n,
+          identity: localIdentity,
+          joinedAt: {},
+          ready: true,
+        },
         {
           memberId: 2n,
           roomId: 7n,
@@ -277,6 +306,7 @@ describe("App start flow", () => {
       [],
       [],
       [],
+      [],
     ];
 
     render(<App />);
@@ -286,6 +316,10 @@ describe("App start flow", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/lobby waiting/i)).toBeInTheDocument();
     expect(screen.getByText(/localdri/i)).toBeInTheDocument();
+    expect(screen.getAllByText("Drivers")[0].closest(".metric")).toHaveTextContent(
+      "2",
+    );
+    expect(screen.getByText(/remote-d/i)).toBeInTheDocument();
   });
 
   it("lets only the room host start the multiplayer race", async () => {
@@ -309,6 +343,15 @@ describe("App start flow", () => {
           joinedAt: {},
           ready: true,
         },
+      ],
+      [
+        {
+          memberId: 1n,
+          roomId: 7n,
+          identity: localIdentity,
+          joinedAt: {},
+          ready: true,
+        },
         {
           memberId: 2n,
           roomId: 7n,
@@ -320,6 +363,7 @@ describe("App start flow", () => {
           ready: true,
         },
       ],
+      [],
       [],
       [],
       [],
@@ -356,6 +400,15 @@ describe("App start flow", () => {
           joinedAt: {},
           ready: true,
         },
+      ],
+      [
+        {
+          memberId: 1n,
+          roomId: 7n,
+          identity: localIdentity,
+          joinedAt: {},
+          ready: true,
+        },
         {
           memberId: 2n,
           roomId: 7n,
@@ -364,6 +417,7 @@ describe("App start flow", () => {
           ready: true,
         },
       ],
+      [],
       [],
       [],
       [],
@@ -399,6 +453,16 @@ describe("App start flow", () => {
           ready: true,
         },
       ],
+      [
+        {
+          memberId: 1n,
+          roomId: 7n,
+          identity: localIdentity,
+          joinedAt: {},
+          ready: true,
+        },
+      ],
+      [],
       [],
       [],
       [],
@@ -409,6 +473,9 @@ describe("App start flow", () => {
     await user.click(screen.getByRole("button", { name: /leave lobby/i }));
 
     expect(leaveRoomMock).toHaveBeenCalledWith({ roomId: 7n });
+    expect(
+      screen.getByRole("heading", { name: /spacetime racer/i }),
+    ).toBeInTheDocument();
   });
 
   it("starts the shared room race when a race-start row exists", async () => {
@@ -432,8 +499,18 @@ describe("App start flow", () => {
           ready: true,
         },
       ],
+      [
+        {
+          memberId: 1n,
+          roomId: 7n,
+          identity: localIdentity,
+          joinedAt: {},
+          ready: true,
+        },
+      ],
       [],
       [{ roomId: 7n, startedBy: localIdentity, startedAtMs: 1n }],
+      [],
       [],
     ];
 
