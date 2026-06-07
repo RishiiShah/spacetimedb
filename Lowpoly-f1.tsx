@@ -4,31 +4,43 @@ Command: npx gltfjsx@6.5.3 /Users/rishi/Desktop/Codes/new/game/public/assets/car
 Files: /Users/rishi/Desktop/Codes/new/game/public/assets/cars/lowpoly-f1.glb [941.34KB] > /Users/rishi/Desktop/Codes/new/game/lowpoly-f1-transformed.glb [96.98KB] (90%)
 */
 
-import * as THREE from 'three'
-import React from 'react'
-import { useGLTF } from '@react-three/drei'
-import { GLTF } from 'three-stdlib'
+import * as THREE from "three";
+import React from "react";
+import { useGLTF } from "@react-three/drei";
+import { GLTF } from "three-stdlib";
 
 type GLTFResult = GLTF & {
   nodes: {
-    Spoiler002: THREE.Mesh
-    Cube001: THREE.Mesh
-  }
+    Spoiler002: THREE.Mesh;
+    Cube001: THREE.Mesh;
+  };
   materials: {
-    Material: THREE.MeshStandardMaterial
-    Material: THREE.MeshStandardMaterial
-  }
-  animations: GLTFAction[]
-}
+    Material: THREE.MeshStandardMaterial;
+    Material: THREE.MeshStandardMaterial;
+  };
+  animations: GLTFAction[];
+};
 
-export function Model(props: JSX.IntrinsicElements['group']) {
-  const { nodes, materials } = useGLTF('/lowpoly-f1-transformed.glb') as GLTFResult
+export function Model(props: JSX.IntrinsicElements["group"]) {
+  const { nodes, materials } = useGLTF(
+    "/lowpoly-f1-transformed.glb",
+  ) as GLTFResult;
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Spoiler002.geometry} material={materials.Material} position={[0.035, -281.273, 56.92]} scale={41.805} />
-      <mesh geometry={nodes.Cube001.geometry} material={materials.Material} position={[0.035, -275.329, 23.618]} scale={43.483} />
+      <mesh
+        geometry={nodes.Spoiler002.geometry}
+        material={materials.Material}
+        position={[0.035, -281.273, 56.92]}
+        scale={41.805}
+      />
+      <mesh
+        geometry={nodes.Cube001.geometry}
+        material={materials.Material}
+        position={[0.035, -275.329, 23.618]}
+        scale={43.483}
+      />
     </group>
-  )
+  );
 }
 
-useGLTF.preload('/lowpoly-f1-transformed.glb')
+useGLTF.preload("/lowpoly-f1-transformed.glb");

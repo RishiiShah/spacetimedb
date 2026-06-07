@@ -40,6 +40,10 @@ vi.mock("spacetimedb/react", () => ({
   useTable: () => [mockTables[mockTableIndex++ % 7] ?? []],
 }));
 
+vi.mock("./game/RetroGridMenuScene", () => ({
+  RetroGridMenuScene: () => <div data-testid="retro-menu-scene" />,
+}));
+
 vi.mock("./game/RacingScene", () => ({
   RacingScene: ({
     trackId,
@@ -141,6 +145,7 @@ describe("App start flow", () => {
     render(<App />);
 
     await user.click(screen.getByRole("button", { name: /stunt/i }));
+    await user.click(screen.getByRole("button", { name: /^options$/i }));
     await user.click(screen.getByRole("button", { name: /create room/i }));
 
     expect(createRoomMock).toHaveBeenCalledWith({ slug: "demo", trackId: 2n });
@@ -152,6 +157,7 @@ describe("App start flow", () => {
     render(<App />);
 
     await user.click(screen.getByRole("button", { name: /stunt/i }));
+    await user.click(screen.getByRole("button", { name: /^options$/i }));
     await user.click(screen.getByRole("button", { name: /^join room$/i }));
 
     expect(joinRoomMock).toHaveBeenCalledWith({ slug: "demo" });

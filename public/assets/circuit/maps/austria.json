@@ -943,12 +943,7 @@
           "u": 0.124
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 0,
@@ -1009,12 +1004,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 0,
@@ -1099,12 +1089,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 0,
@@ -1165,12 +1150,7 @@
           "u": 2
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 350,
       "ringStart": 0,
@@ -1231,12 +1211,7 @@
           "u": 0.2
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 350,
       "ringStart": 110,
@@ -1297,12 +1272,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 0,
@@ -1412,14 +1382,8 @@
         }
       ],
       "lineIndices": [
-        [
-          0,
-          1
-        ],
-        [
-          3,
-          2
-        ]
+        [0, 1],
+        [3, 2]
       ],
       "ringMod": 1,
       "ringCount": 72,
@@ -1530,14 +1494,8 @@
         }
       ],
       "lineIndices": [
-        [
-          0,
-          1
-        ],
-        [
-          3,
-          2
-        ]
+        [0, 1],
+        [3, 2]
       ],
       "ringMod": 1,
       "ringCount": 88,
@@ -1648,14 +1606,8 @@
         }
       ],
       "lineIndices": [
-        [
-          0,
-          1
-        ],
-        [
-          3,
-          2
-        ]
+        [0, 1],
+        [3, 2]
       ],
       "ringMod": 1,
       "ringCount": 88,
@@ -1766,18 +1718,9 @@
         }
       ],
       "lineIndices": [
-        [
-          0,
-          1
-        ],
-        [
-          2,
-          3
-        ],
-        [
-          4,
-          5
-        ]
+        [0, 1],
+        [2, 3],
+        [4, 5]
       ],
       "ringMod": 1,
       "ringCount": 10,
@@ -1839,12 +1782,7 @@
           "u": 0.2
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 350,
       "ringStart": 245,
@@ -1929,12 +1867,7 @@
           "u": 0.124
         }
       ],
-      "lineIndices": [
-        [
-          2,
-          3
-        ]
-      ],
+      "lineIndices": [[2, 3]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 0,
@@ -2044,14 +1977,8 @@
         }
       ],
       "lineIndices": [
-        [
-          0,
-          1
-        ],
-        [
-          3,
-          2
-        ]
+        [0, 1],
+        [3, 2]
       ],
       "ringMod": 1,
       "ringCount": 88,
@@ -2137,12 +2064,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          2,
-          3
-        ]
-      ],
+      "lineIndices": [[2, 3]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 0,
@@ -2227,12 +2149,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 141,
@@ -2317,12 +2234,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          2,
-          3
-        ]
-      ],
+      "lineIndices": [[2, 3]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 218,
@@ -2407,12 +2319,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 94,
@@ -2497,12 +2404,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          2,
-          3
-        ]
-      ],
+      "lineIndices": [[2, 3]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 0,
@@ -2563,12 +2465,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          1,
-          0
-        ]
-      ],
+      "lineIndices": [[1, 0]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 100,
@@ -2629,12 +2526,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 100,
@@ -2695,12 +2587,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 88,
@@ -2761,12 +2648,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          1,
-          0
-        ]
-      ],
+      "lineIndices": [[1, 0]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 0,
@@ -2827,12 +2709,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          1,
-          0
-        ]
-      ],
+      "lineIndices": [[1, 0]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 88,
@@ -2893,12 +2770,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          0,
-          1
-        ]
-      ],
+      "lineIndices": [[0, 1]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 221,
@@ -2959,12 +2831,7 @@
           "u": 1
         }
       ],
-      "lineIndices": [
-        [
-          1,
-          0
-        ]
-      ],
+      "lineIndices": [[1, 0]],
       "ringMod": 1,
       "ringCount": 400,
       "ringStart": 155,
@@ -4981,9 +4848,7 @@
       "z": -446.60805670566145
     },
     "cameraQuaternion": [
-      -0.15193648693288742,
-      -0.7279816180465458,
-      -0.17114625405663333,
+      -0.15193648693288742, -0.7279816180465458, -0.17114625405663333,
       0.6462716359606137
     ]
   },

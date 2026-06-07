@@ -41,7 +41,12 @@ export function Minimap({
   if (!projection) return null;
 
   return (
-    <svg className="minimap" width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
+    <svg
+      className="minimap"
+      width={SIZE}
+      height={SIZE}
+      viewBox={`0 0 ${SIZE} ${SIZE}`}
+    >
       <polygon className="minimap-track" points={projection.path} fill="none" />
       {racers.map((r) => {
         const [cx, cy] = projection.project(r.x, r.z);

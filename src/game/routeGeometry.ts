@@ -25,7 +25,15 @@ export function createRouteFrames(points: Vec3[], yOffset = 0) {
   );
   const sampleCount = Math.max(720, points.length * 64);
   const frames: RouteFrame[] = [];
-  let previousRight: THREE.Vector3 | undefined;
+  const seamTangent = curve.getTangentAt((sampleCount - 1) / sampleCount);
+  seamTangent.y = 0;
+  if (seamTangent.lengthSq() < 0.0001) seamTangent.set(0, 0, -1);
+  seamTangent.normalize();
+  let previousRight: THREE.Vector3 | undefined = new THREE.Vector3(
+    seamTangent.z,
+    0,
+    -seamTangent.x,
+  ).normalize();
 
   for (let index = 0; index < sampleCount; index += 1) {
     const t = index / sampleCount;

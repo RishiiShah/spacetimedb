@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import { reducers, tables } from "./module_bindings";
 import { countdownPhase } from "./game/countdown";
 import { useReducer, useSpacetimeDB, useTable } from "spacetimedb/react";
+import { RetroGridHomeScreen } from "./game/RetroGridHomeScreen";
 import { RacingScene, type RacingTelemetry } from "./game/RacingScene";
 import type { CarSnapshot } from "./game/network";
 import { RenderErrorBoundary } from "./game/RenderErrorBoundary";
@@ -11,15 +12,12 @@ import { orderResults } from "./game/results";
 import type { MinimapRacer } from "./game/Minimap";
 import { orderByProgress, type RacerProgress } from "./game/raceStats";
 import {
-  CARS,
   DEFAULT_CAR_ID,
   DEFAULT_LIVERY_ID,
-  LIVERIES,
   getCarById,
   getLiveryById,
 } from "./game/driving";
 import {
-  GAME_MODES,
   getDefaultTrackForMode,
   getModeMeta,
   getTrackById,
@@ -53,6 +51,8 @@ function App() {
     totalLaps: number;
     bestLapMs?: number;
   }>({ lap: 1, totalLaps: 3 });
+
+  const userExitedRaceRef = useRef(false);
 
   const { identity, isActive: connected } = useSpacetimeDB();
   const setPlayerName = useReducer(reducers.setPlayerName);
@@ -135,21 +135,21 @@ function App() {
     [activeRoom, countdowns],
   );
   const goMs = activeCountdown ? Number(activeCountdown.startsAtMs) : undefined;
-  const startMs = activeCountdown ? Number(activeCountdown.startedAtMs) : undefined;
+  const startMs = activeCountdown
+    ? Number(activeCountdown.startedAtMs)
+    : undefined;
   const isMultiplayer = Boolean(activeRoom);
   const racing = !isMultiplayer || (goMs !== undefined && Date.now() >= goMs);
 
   const isRoomHost = Boolean(
     activeRoom && identity && activeRoom.createdBy.isEqual(identity),
   );
-  const canStartRoomRace = activeRoomMembers.length >= 2;
+  const canStartRoomRace = activeRoomMembers.length >= 1;
 
   const sessionTrack = useMemo(
     () => (activeRoom ? getTrackById(activeRoom.trackId) : selectedTrack),
     [activeRoom, selectedTrack],
   );
-  const sessionModeMeta = getModeMeta(sessionTrack.mode);
-
   const roomCars = useMemo(() => {
     if (!activeRoom || !identity) return [];
     return cars.filter(
@@ -186,16 +186,19 @@ function App() {
     }
   };
 
-  const leaveLobby = async () => {
-    if (!activeRoom) return;
+  const exitRace = async () => {
+    userExitedRaceRef.current = true;
     setLastError("");
+    setRaceStarted(false);
+    if (!activeRoom) return;
     try {
       await leaveRoom({ roomId: activeRoom.roomId });
-      setRaceStarted(false);
     } catch (error) {
       setLastError(error instanceof Error ? error.message : String(error));
     }
   };
+
+  const leaveLobby = () => void exitRace();
 
   const startMultiplayerRace = async () => {
     if (!activeRoom) return;
@@ -218,6 +221,7 @@ function App() {
   };
 
   const startRace = () => {
+    userExitedRaceRef.current = false;
     setLastError("");
     setRaceStarted(true);
   };
@@ -242,6 +246,8 @@ function App() {
       speed: snapshot.speed,
       checkpointIndex: snapshot.checkpointIndex,
       runStartedAtMs: BigInt(snapshot.elapsedMs),
+      carId: selectedCarId,
+      liveryId: selectedLiveryId,
     }).catch((error) => {
       setLastError(error instanceof Error ? error.message : String(error));
     });
@@ -333,6 +339,11 @@ function App() {
   const myName = me?.name || identity?.toHexString().slice(0, 8) || "driver";
 
   useEffect(() => {
+    userExitedRaceRef.current = false;
+  }, [activeRoom?.roomId]);
+
+  useEffect(() => {
+    if (userExitedRaceRef.current) return;
     if (activeRoom && activeRaceStart && !raceStarted) {
       setRaceStarted(true);
     }
@@ -341,10 +352,19 @@ function App() {
   useEffect(() => {
     if (!activeRoom || !isRoomHost) return;
     if (activeCountdown) return;
-    if (activeRoomMembers.length >= 2 && activeRoomMembers.every((m) => m.ready)) {
+    if (
+      activeRoomMembers.length >= 1 &&
+      activeRoomMembers.every((m) => m.ready)
+    ) {
       void beginCountdown({ roomId: activeRoom.roomId });
     }
-  }, [activeRoom, isRoomHost, activeRoomMembers, activeCountdown, beginCountdown]);
+  }, [
+    activeRoom,
+    isRoomHost,
+    activeRoomMembers,
+    activeCountdown,
+    beginCountdown,
+  ]);
 
   const [, forceTick] = useState(0);
   useEffect(() => {
@@ -386,297 +406,31 @@ function App() {
 
   if (!raceStarted) {
     return (
-      <main className="home-shell">
-        <section className="home-panel">
-          <div className="home-hero">
-            <div className="hero-copy-block">
-              <p className="eyebrow">SpaceTimeDB Multiplayer</p>
-              <h1>Spacetime Racer</h1>
-              <p className="home-copy">
-                Stage the next run with a focused pre-race menu, then launch
-                straight into the live WASD session.
-              </p>
-
-              <div className="hero-tags" aria-label="Driver briefing">
-                <span>Driver briefing</span>
-                <span>{selectedCar.name} setup</span>
-                <span>{selectedModeMeta.label} session</span>
-              </div>
-            </div>
-
-            <section
-              className="hero-visual"
-              aria-labelledby="grid-preview-title"
-            >
-              <div className="hero-visual-copy">
-                <p className="eyebrow">Grid preview</p>
-                <h2 id="grid-preview-title">Grid preview</h2>
-                <p>
-                  A front-row read on the selected route, with the driver and
-                  chassis framed as the menu focal point.
-                </p>
-              </div>
-
-              <div className="hero-illustration" aria-hidden="true">
-                <svg viewBox="0 0 520 320" role="presentation">
-                  <defs>
-                    <linearGradient
-                      id="bodyGlow"
-                      x1="0%"
-                      x2="100%"
-                      y1="50%"
-                      y2="50%"
-                    >
-                      <stop offset="0%" stopColor="#f97316" />
-                      <stop offset="50%" stopColor="#facc15" />
-                      <stop offset="100%" stopColor="#38bdf8" />
-                    </linearGradient>
-                    <linearGradient
-                      id="visorGlow"
-                      x1="0%"
-                      x2="100%"
-                      y1="0%"
-                      y2="100%"
-                    >
-                      <stop offset="0%" stopColor="#dbeafe" />
-                      <stop offset="100%" stopColor="#38bdf8" />
-                    </linearGradient>
-                  </defs>
-
-                  <ellipse
-                    cx="278"
-                    cy="252"
-                    rx="184"
-                    ry="26"
-                    fill="rgba(15, 23, 32, 0.78)"
-                  />
-                  <path
-                    d="M118 224c22-38 62-66 121-83 10-29 33-49 67-49 24 0 44 10 58 29 23 0 47 9 74 31l38 31-32 13-19 32H109l9-26Z"
-                    fill="#101923"
-                    stroke="rgba(248,250,252,0.16)"
-                    strokeWidth="4"
-                  />
-                  <path
-                    d="M151 210c18-31 52-53 101-67 12-24 31-36 55-36 18 0 33 6 44 18 20 1 40 8 61 25l16 13-21 9-16 29H141l10-21Z"
-                    fill="url(#bodyGlow)"
-                    opacity="0.92"
-                  />
-                  <path
-                    d="M259 112c15-16 31-24 49-24 19 0 35 7 49 22l8 10-16 13h-80l-17-10Z"
-                    fill="#f8fafc"
-                    opacity="0.16"
-                  />
-                  <path
-                    d="M252 111c14-15 28-22 44-22 17 0 31 7 44 21l6 9-13 11h-71l-15-9Z"
-                    fill="#0f1720"
-                  />
-                  <path
-                    d="M261 112c13-12 24-18 36-18 13 0 24 5 35 17l-4 16h-58Z"
-                    fill="url(#visorGlow)"
-                  />
-                  <circle
-                    cx="294"
-                    cy="88"
-                    r="25"
-                    fill="#f8fafc"
-                    opacity="0.92"
-                  />
-                  <path
-                    d="M274 82c6-9 12-14 20-14 9 0 16 4 23 13l-3 16h-34Z"
-                    fill="#0f1720"
-                  />
-                  <path
-                    d="M174 163h66l25 21h-114Z"
-                    fill="rgba(248,250,252,0.16)"
-                  />
-                  <path
-                    d="M118 183h44l-12 17H92Z"
-                    fill="#38bdf8"
-                    opacity="0.9"
-                  />
-                  <path
-                    d="M383 171h63l31 24h-82Z"
-                    fill="#38bdf8"
-                    opacity="0.9"
-                  />
-                  <path d="M203 143h67v14h-84Z" fill="#f8fafc" opacity="0.2" />
-                  <path
-                    d="M130 221h284"
-                    stroke="rgba(255,255,255,0.18)"
-                    strokeWidth="4"
-                  />
-                  <circle cx="184" cy="224" r="34" fill="#020617" />
-                  <circle cx="184" cy="224" r="17" fill="#94a3b8" />
-                  <circle cx="394" cy="224" r="34" fill="#020617" />
-                  <circle cx="394" cy="224" r="17" fill="#94a3b8" />
-                  <path
-                    d="M94 254h342"
-                    stroke="rgba(56,189,248,0.38)"
-                    strokeWidth="3"
-                  />
-                  <path
-                    d="M112 266h304"
-                    stroke="rgba(249,115,22,0.34)"
-                    strokeWidth="2"
-                  />
-                </svg>
-              </div>
-
-              <div className="hero-stats" aria-label="Selected run summary">
-                <div>
-                  <span>Track</span>
-                  <strong>{selectedTrack.name}</strong>
-                </div>
-                <div>
-                  <span>Mode</span>
-                  <strong>{selectedModeMeta.label}</strong>
-                </div>
-                <div>
-                  <span>Room</span>
-                  <strong>{roomSlug}</strong>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          <div className="home-controls">
-            <div className="mode-switch" aria-label="Race mode">
-              {GAME_MODES.map((mode) => (
-                <button
-                  key={mode.id}
-                  type="button"
-                  aria-pressed={selectedMode === mode.id}
-                  onClick={() => selectMode(mode.id)}
-                >
-                  <strong>{mode.label}</strong>
-                  <span>{mode.summary}</span>
-                </button>
-              ))}
-            </div>
-
-            <label className="home-select">
-              Track
-              <select
-                value={selectedTrack.id.toString()}
-                onChange={(event) => setSelectedTrackId(event.target.value)}
-              >
-                {availableTracks.map((track) => (
-                  <option key={track.id.toString()} value={track.id.toString()}>
-                    {track.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="home-select">
-              Car
-              <select
-                value={selectedCarId}
-                onChange={(event) =>
-                  setSelectedCarId(getCarById(event.target.value).id)
-                }
-              >
-                {CARS.map((car) => (
-                  <option key={car.id} value={car.id}>
-                    {car.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <div className="selected-track">
-              <span>{selectedModeMeta.label}</span>
-              <strong>{selectedTrack.name}</strong>
-              <p>{selectedTrack.summary}</p>
-            </div>
-
-            <label className="home-select">
-              Livery
-              <select
-                value={selectedLiveryId}
-                onChange={(event) =>
-                  setSelectedLiveryId(getLiveryById(event.target.value).id)
-                }
-              >
-                {LIVERIES.map((livery) => (
-                  <option key={livery.id} value={livery.id}>
-                    {livery.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <div className="selected-track">
-              <span>Car</span>
-              <strong>{selectedCar.name}</strong>
-              <p>{selectedCar.summary}</p>
-              <span
-                className="livery-swatch"
-                aria-label={`Livery: ${selectedLivery.name}`}
-                style={{
-                  display: "inline-flex",
-                  gap: 6,
-                  marginTop: 6,
-                  alignItems: "center",
-                }}
-              >
-                <span
-                  style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: 4,
-                    background: selectedLivery.body,
-                    border: `2px solid ${selectedLivery.accent}`,
-                  }}
-                />
-                {selectedLivery.name}
-              </span>
-            </div>
-
-            <form
-              className="join-form"
-              onSubmit={(event) => {
-                event.preventDefault();
-                void joinMultiplayerRoom();
-              }}
-            >
-              <label>
-                Driver
-                <input
-                  value={displayName}
-                  placeholder={myName}
-                  onChange={(event) => setDisplayName(event.target.value)}
-                />
-              </label>
-              <label>
-                Room
-                <input
-                  value={roomSlug}
-                  onChange={(event) => setRoomSlug(event.target.value)}
-                />
-              </label>
-              <div className="room-actions">
-                <button
-                  type="button"
-                  disabled={!connected}
-                  onClick={() => void createMultiplayerRoom()}
-                >
-                  {connected ? "Create room" : "Connecting"}
-                </button>
-                <button type="submit" disabled={!connected}>
-                  {connected ? "Join room" : "Connecting"}
-                </button>
-              </div>
-            </form>
-
-            <button className="start-button" type="button" onClick={startRace}>
-              Start race
-            </button>
-
-            {lastError && <p className="error">{lastError}</p>}
-          </div>
-        </section>
-      </main>
+      <RetroGridHomeScreen
+        displayName={displayName}
+        roomSlug={roomSlug}
+        selectedMode={selectedMode}
+        selectedTrackId={selectedTrackId}
+        selectedCarId={selectedCarId}
+        selectedLiveryId={selectedLiveryId}
+        selectedTrack={selectedTrack}
+        selectedModeMeta={selectedModeMeta}
+        selectedCar={selectedCar}
+        selectedLivery={selectedLivery}
+        availableTracks={availableTracks}
+        connected={connected}
+        myName={myName}
+        lastError={lastError}
+        onDisplayNameChange={setDisplayName}
+        onRoomSlugChange={setRoomSlug}
+        onSelectMode={selectMode}
+        onSelectTrackId={setSelectedTrackId}
+        onSelectCarId={setSelectedCarId}
+        onSelectLiveryId={setSelectedLiveryId}
+        onCreateRoom={() => void createMultiplayerRoom()}
+        onJoinRoom={() => void joinMultiplayerRoom()}
+        onStartRace={startRace}
+      />
     );
   }
 
@@ -721,7 +475,8 @@ function App() {
   const standings = orderByProgress(racerProgress).map((r, i) => ({
     id: r.id,
     name: r.name,
-    gapLabel: i === 0 ? "Leader" : `-${standingsCheckpointGap(racerProgress, r)} CP`,
+    gapLabel:
+      i === 0 ? "Leader" : `-${standingsCheckpointGap(racerProgress, r)} CP`,
   }));
 
   return (
@@ -747,7 +502,10 @@ function App() {
         </RenderErrorBoundary>
         <RaceHud
           speedKmh={telemetry.speed * 3.6}
-          gear={Math.max(1, Math.min(7, Math.ceil(Math.abs(telemetry.speed) / 10)))}
+          gear={Math.max(
+            1,
+            Math.min(7, Math.ceil(Math.abs(telemetry.speed) / 10)),
+          )}
           lap={lapState.lap}
           totalLaps={lapState.totalLaps}
           currentLapMs={telemetry.elapsedMs}
@@ -755,9 +513,13 @@ function App() {
           routePoints={sessionTrack.routePoints}
           minimapRacers={minimapRacers}
           standings={standings}
-          onLeaveRoom={() => void leaveLobby()}
+          onLeaveRoom={() => void exitRace()}
+          isMultiplayer={isMultiplayer}
           countdown={
-            isMultiplayer && goMs !== undefined && startMs !== undefined && !racing
+            isMultiplayer &&
+            goMs !== undefined &&
+            startMs !== undefined &&
+            !racing
               ? countdownPhase(Date.now(), startMs, goMs)
               : undefined
           }
@@ -821,7 +583,7 @@ function LobbyScreen({
           <Metric label="Track" value={trackName} />
           <Metric label="Drivers" value={memberCount.toString()} />
           <Metric label="Host" value={isHost ? "You" : "Waiting"} />
-          <Metric label="Status" value={canStart ? "Ready" : "Need 2"} />
+          <Metric label="Status" value={canStart ? "Ready" : "Waiting"} />
         </div>
 
         <section className="driver-panel" aria-label="Lobby drivers">
@@ -871,14 +633,21 @@ function LobbyScreen({
         )}
 
         {isHost ? (
-          <button
-            className="start-button"
-            type="button"
-            disabled={!connected || !canStart}
-            onClick={onStart}
-          >
-            Start race
-          </button>
+          <>
+            <button
+              className="start-button"
+              type="button"
+              disabled={!connected || !canStart}
+              onClick={onStart}
+            >
+              Start race
+            </button>
+            {memberCount === 1 && (
+              <p className="lobby-waiting">
+                Solo start is allowed — others can join before you launch.
+              </p>
+            )}
+          </>
         ) : (
           <p className="lobby-waiting">Waiting for the host to start.</p>
         )}
@@ -899,7 +668,9 @@ function Metric({ label, value }: { label: string; value: string }) {
 }
 
 function standingsCheckpointGap(all: RacerProgress[], r: RacerProgress) {
-  const leader = [...all].sort((a, b) => b.checkpointIndex - a.checkpointIndex)[0];
+  const leader = [...all].sort(
+    (a, b) => b.checkpointIndex - a.checkpointIndex,
+  )[0];
   return Math.max(0, leader.checkpointIndex - r.checkpointIndex);
 }
 

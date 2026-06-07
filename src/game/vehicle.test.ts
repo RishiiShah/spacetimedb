@@ -205,7 +205,7 @@ describe("vehicle movement", () => {
     expect(reset.heading).toBe(checkpoint.rotationY);
   });
 
-  it("stops route-based tracks at the rendered wall edge", () => {
+  it("clamps route-based tracks at the rendered wall edge", () => {
     const state = {
       ...createInitialVehicleState(),
       position: { x: -250, y: 0, z: 260 },
@@ -230,7 +230,50 @@ describe("vehicle movement", () => {
         cityLoopV1Track.railOffset,
       ) - VEHICLE_COLLISION_HALF_WIDTH,
     );
-    expect(next.speed).toBe(0);
+  });
+
+  it("slides along the barrier on a glancing hit instead of stopping", () => {
+    const state = {
+      ...createInitialVehicleState(),
+      position: { x: -250, y: 0, z: 260 },
+      speed: 20,
+    };
+
+    const next = stepVehicle(
+      state,
+      { throttle: 0, brake: 0, steer: 0 },
+      0.016,
+      cityLoopV1Track,
+    );
+
+    // Glancing contact keeps most of the momentum running along the wall.
+    expect(next.speed).toBeGreaterThan(15);
+  });
+
+  it("scrubs to a stop on a head-on barrier hit", () => {
+    const position = { x: -250, y: 0, z: 260 };
+    const closest = nearestRouteCurveProjection(
+      position,
+      cityLoopV1Track.routePoints ?? [],
+    );
+    // Aim the car straight along the outward wall normal (fully head-on).
+    const normalX = (position.x - closest.x) / closest.distance;
+    const normalZ = (position.z - closest.z) / closest.distance;
+    const state = {
+      ...createInitialVehicleState(),
+      position,
+      heading: Math.atan2(normalX, -normalZ),
+      speed: 20,
+    };
+
+    const next = stepVehicle(
+      state,
+      { throttle: 0, brake: 0, steer: 0 },
+      0.016,
+      cityLoopV1Track,
+    );
+
+    expect(next.speed).toBeCloseTo(0, 1);
   });
 
   it("does not collide early on smoothed route curves", () => {

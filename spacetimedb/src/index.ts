@@ -89,6 +89,8 @@ const carState = table(
     checkpointIndex: t.u32(),
     runStartedAtMs: t.u64(),
     updatedAt: t.timestamp(),
+    carId: t.string().default("lowpoly"),
+    liveryId: t.string().default("ghost"),
   },
 );
 
@@ -206,7 +208,9 @@ export const onDisconnect = spacetimedb.clientDisconnected((ctx) => {
   // so a reconnecting client lands on the home screen rather than dropping back
   // into a race it no longer has local state for.
   for (const membership of [...ctx.db.roomMember.identity.filter(ctx.sender)]) {
+    const roomId = membership.roomId;
     ctx.db.roomMember.memberId.delete(membership.memberId);
+    maybeReleaseEmptyRoom(ctx, roomId);
   }
   if (ctx.db.carState.identity.find(ctx.sender)) {
     ctx.db.carState.identity.delete(ctx.sender);
@@ -232,6 +236,13 @@ export const joinOrCreateRoom = spacetimedb.reducer(
     const roomTrackId = resolveRoomTrackId(ctx, trackId);
 
     let targetRoom = ctx.db.room.slug.find(roomSlug);
+    if (targetRoom) {
+      const members = [...ctx.db.roomMember.roomId.filter(targetRoom.roomId)];
+      if (members.length === 0) {
+        releaseRoom(ctx, targetRoom.roomId);
+        targetRoom = null;
+      }
+    }
     if (!targetRoom) {
       ctx.db.room.insert({
         roomId: 0n,
@@ -254,12 +265,16 @@ export const createRoom = spacetimedb.reducer(
   (ctx, { slug, trackId }) => {
     const roomSlug = normalizeSlug(slug || "demo");
     const existingRoom = ctx.db.room.slug.find(roomSlug);
-    if (existingRoom && existingRoom.createdBy.equals(ctx.sender)) {
-      enterRoom(ctx, existingRoom);
-      return;
-    }
     if (existingRoom) {
-      throw new SenderError("Room already exists");
+      const members = [...ctx.db.roomMember.roomId.filter(existingRoom.roomId)];
+      if (members.length === 0) {
+        releaseRoom(ctx, existingRoom.roomId);
+      } else if (existingRoom.createdBy.equals(ctx.sender)) {
+        enterRoom(ctx, existingRoom);
+        return;
+      } else {
+        throw new SenderError("Room already exists");
+      }
     }
 
     ctx.db.room.insert({
@@ -283,6 +298,10 @@ export const joinRoom = spacetimedb.reducer(
     const roomSlug = normalizeSlug(slug || "demo");
     const targetRoom = ctx.db.room.slug.find(roomSlug);
     if (!targetRoom) throw new SenderError("Room does not exist");
+    const members = [...ctx.db.roomMember.roomId.filter(targetRoom.roomId)];
+    if (members.length === 0) {
+      clearRoomSession(ctx, targetRoom.roomId);
+    }
     enterRoom(ctx, targetRoom);
   },
 );
@@ -301,6 +320,8 @@ export const leaveRoom = spacetimedb.reducer(
     if (car && car.roomId === roomId) {
       ctx.db.carState.identity.delete(ctx.sender);
     }
+
+    maybeReleaseEmptyRoom(ctx, roomId);
   },
 );
 
@@ -314,8 +335,8 @@ export const startRoomRace = spacetimedb.reducer(
     }
     requireMembership(ctx, roomId);
     const members = [...ctx.db.roomMember.roomId.filter(roomId)];
-    if (members.length < 2) {
-      throw new SenderError("At least two players are required to start");
+    if (members.length < 1) {
+      throw new SenderError("At least one player is required to start");
     }
     for (const m of members) {
       ctx.db.roomMember.memberId.update({ ...m, ready: false });
@@ -401,6 +422,8 @@ export const publishCarState = spacetimedb.reducer(
     speed: t.f64(),
     checkpointIndex: t.u32(),
     runStartedAtMs: t.u64(),
+    carId: t.string(),
+    liveryId: t.string(),
   },
   (ctx, state) => {
     requireMembership(ctx, state.roomId);
@@ -501,7 +524,9 @@ function enterRoom(ctx: any, targetRoom: any) {
   // rooms the player has visibly left.
   for (const membership of [...ctx.db.roomMember.identity.filter(ctx.sender)]) {
     if (membership.roomId !== targetRoom.roomId) {
+      const previousRoomId = membership.roomId;
       ctx.db.roomMember.memberId.delete(membership.memberId);
+      maybeReleaseEmptyRoom(ctx, previousRoomId);
     }
   }
   const priorCar = ctx.db.carState.identity.find(ctx.sender);
@@ -571,6 +596,40 @@ export const resetRoomRace = spacetimedb.reducer(
     }
   },
 );
+
+function maybeReleaseEmptyRoom(ctx: any, roomId: bigint) {
+  const members = [...ctx.db.roomMember.roomId.filter(roomId)];
+  if (members.length > 0) return;
+  releaseRoom(ctx, roomId);
+}
+
+function releaseRoom(ctx: any, roomId: bigint) {
+  clearRoomSession(ctx, roomId);
+  if (ctx.db.room.roomId.find(roomId)) {
+    ctx.db.room.roomId.delete(roomId);
+  }
+}
+
+function clearRoomSession(ctx: any, roomId: bigint) {
+  if (ctx.db.roomRaceStart.roomId.find(roomId)) {
+    ctx.db.roomRaceStart.roomId.delete(roomId);
+  }
+  if (ctx.db.roomCountdown.roomId.find(roomId)) {
+    ctx.db.roomCountdown.roomId.delete(roomId);
+  }
+  for (const car of [...ctx.db.carState.roomId.filter(roomId)]) {
+    ctx.db.carState.identity.delete(car.identity);
+  }
+  for (const member of [...ctx.db.roomMember.roomId.filter(roomId)]) {
+    ctx.db.roomMember.memberId.delete(member.memberId);
+  }
+  for (const event of [...ctx.db.checkpointEvent.roomId.filter(roomId)]) {
+    ctx.db.checkpointEvent.eventId.delete(event.eventId);
+  }
+  for (const lap of [...ctx.db.lapResult.roomId.filter(roomId)]) {
+    ctx.db.lapResult.lapId.delete(lap.lapId);
+  }
+}
 
 function normalizeSlug(slug: string) {
   const normalized = slug

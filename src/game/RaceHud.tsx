@@ -14,6 +14,7 @@ export type RaceHudProps = {
   minimapRacers: MinimapRacer[];
   standings: { id: string; name: string; gapLabel: string }[];
   onLeaveRoom: () => void;
+  isMultiplayer?: boolean;
   countdown?: import("./countdown").CountdownState;
   finished?: boolean;
   results?: {
@@ -28,7 +29,12 @@ export type RaceHudProps = {
 
 const VOLUME_KEY = "racer.volume";
 type Volumes = { master: number; sfx: number; music: number; muted: boolean };
-const DEFAULT_VOLUMES: Volumes = { master: 80, sfx: 80, music: 60, muted: false };
+const DEFAULT_VOLUMES: Volumes = {
+  master: 80,
+  sfx: 80,
+  music: 60,
+  muted: false,
+};
 
 function loadVolumes(): Volumes {
   try {
@@ -69,16 +75,24 @@ export function RaceHud(props: RaceHudProps) {
             <div className="countdown-controls">
               <h2>Get Ready</h2>
               <ul className="instructions-list">
-                <li><kbd>W</kbd>/<kbd>S</kbd> Throttle / Brake</li>
-                <li><kbd>A</kbd>/<kbd>D</kbd> Steer · <kbd>Space</kbd> Handbrake</li>
-                <li><kbd>C</kbd> Camera · <kbd>R</kbd> Reset</li>
+                <li>
+                  <kbd>W</kbd>/<kbd>S</kbd> Throttle / Brake
+                </li>
+                <li>
+                  <kbd>A</kbd>/<kbd>D</kbd> Steer · <kbd>Space</kbd> Handbrake
+                </li>
+                <li>
+                  <kbd>C</kbd> Camera · <kbd>R</kbd> Reset
+                </li>
               </ul>
             </div>
           )}
           {props.countdown.phase === "count" && (
             <div className="countdown-number">{props.countdown.count}</div>
           )}
-          {props.countdown.phase === "go" && <div className="countdown-number">GO</div>}
+          {props.countdown.phase === "go" && (
+            <div className="countdown-number">GO</div>
+          )}
         </div>
       )}
       {props.finished && (
@@ -136,7 +150,10 @@ export function RaceHud(props: RaceHudProps) {
         <span className="hud-gear">Gear {props.gear}</span>
       </div>
 
-      <button className="hud-help-tab" onClick={() => setShowInstructions(true)}>
+      <button
+        className="hud-help-tab"
+        onClick={() => setShowInstructions(true)}
+      >
         Press I for controls
       </button>
 
@@ -180,7 +197,10 @@ export function RaceHud(props: RaceHudProps) {
                     max={100}
                     value={volumes[key]}
                     onChange={(e) =>
-                      setVolumes((v) => ({ ...v, [key]: Number(e.target.value) }))
+                      setVolumes((v) => ({
+                        ...v,
+                        [key]: Number(e.target.value),
+                      }))
                     }
                   />
                 </label>
@@ -196,8 +216,14 @@ export function RaceHud(props: RaceHudProps) {
                 Mute
               </label>
             </fieldset>
-            <button className="danger" onClick={props.onLeaveRoom}>
-              Leave room
+            <button
+              className="danger"
+              onClick={() => {
+                setPaused(false);
+                props.onLeaveRoom();
+              }}
+            >
+              {props.isMultiplayer ? "Leave room" : "Exit to menu"}
             </button>
           </div>
         </Modal>

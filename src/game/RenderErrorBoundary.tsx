@@ -1,4 +1,4 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { Component, type ErrorInfo, type ReactNode } from "react";
 
 type RenderErrorBoundaryProps = {
   children: ReactNode;
@@ -19,7 +19,7 @@ export class RenderErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('3D renderer failed', error, info.componentStack);
+    console.error("3D renderer failed", error, info.componentStack);
   }
 
   render() {

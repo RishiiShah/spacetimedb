@@ -25,6 +25,8 @@ export const CarState = __t.object("CarState", {
   checkpointIndex: __t.u32(),
   runStartedAtMs: __t.u64(),
   updatedAt: __t.timestamp(),
+  carId: __t.string(),
+  liveryId: __t.string(),
 });
 export type CarState = __Infer<typeof CarState>;
 

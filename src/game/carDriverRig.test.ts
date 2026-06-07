@@ -43,9 +43,7 @@ describe("car driver camera rig", () => {
     const point = new Vector3();
     const map = getCarDriverCameraMap("open-wheel");
 
-    expect(
-      resolveDriverAnchorInRig(rig, null, map.eye, point),
-    ).toBe(true);
+    expect(resolveDriverAnchorInRig(rig, null, map.eye, point)).toBe(true);
     expect(point.toArray()).toEqual(map.eye.position);
   });
 

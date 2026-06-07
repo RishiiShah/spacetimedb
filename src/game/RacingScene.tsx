@@ -13,7 +13,6 @@ import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.j
 import { assets } from "./assets";
 import {
   CAR_MODEL_FORWARD_YAW_OFFSET,
-  CAR_MODEL_RIDE_HEIGHT,
   CAR_SUSPENSION_LINKS,
   CAR_WHEEL_SPECS,
   CAR_VISUAL_MAX_STEER_YAW,
@@ -29,13 +28,20 @@ import {
   visualWheelSteerYaw,
 } from "./driving";
 import { createSnapshot, type CarSnapshot } from "./network";
+import {
+  carStateToSnapshot,
+  normalizeCarId,
+  RemoteCarSnapshotBuffer,
+} from "./remoteCarBuffer";
 import { RaceAudioController } from "./raceAudio";
 import {
   GROUND_PLANE_Y,
   ROAD_SURFACE_Y,
   ROUTE_RAIL_WIDTH,
   cityAssetPaths,
+  getRouteCurbOuterOffset,
   getRouteRailOffset,
+  getRouteShoulderOuterOffset,
   getTrackById,
   type AssetPlacement,
   type TrackDef,
@@ -80,6 +86,8 @@ type RacingSceneProps = {
 export const RACING_RENDER_SETTINGS = {
   dpr: [1, 1.35] as [number, number],
   shadowMapSize: [1024, 1024] as [number, number],
+  carCastShadow: false,
+  carReceiveShadow: false,
 };
 
 export function RacingScene(props: RacingSceneProps) {
@@ -305,7 +313,7 @@ function SceneContent({
     if (
       roomId &&
       trackId &&
-      clock.elapsedTime - lastPublishRef.current > 0.1
+      clock.elapsedTime - lastPublishRef.current > 0.05
     ) {
       lastPublishRef.current = clock.elapsedTime;
       onSnapshot(
@@ -374,12 +382,7 @@ function CarModel({
 }) {
   if (carId === "lowpoly") return <LowPolyCar body={body} />;
   return (
-    <CircuitCar
-      body={body}
-      accent={accent}
-      steerRef={steerRef}
-      view={view}
-    />
+    <CircuitCar body={body} accent={accent} steerRef={steerRef} view={view} />
   );
 }
 
@@ -413,7 +416,12 @@ const LOWPOLY_SCALE = 0.008;
 const LOWPOLY_UPRIGHT_X = -Math.PI / 2;
 
 function LowPolyCar({ body }: { body: string }) {
-  const scene = usePreparedModel(assets.cars.lowPoly, true, true, true);
+  const scene = usePreparedModel(
+    assets.cars.lowPoly,
+    RACING_RENDER_SETTINGS.carCastShadow,
+    RACING_RENDER_SETTINGS.carReceiveShadow,
+    true,
+  );
   // The LowPoly has a baked texture; tint its material so the livery color reads
   // through the stripes.
   const recolor = useMemo(
@@ -442,7 +450,12 @@ function CircuitCar({
   steerRef?: MutableRefObject<number>;
   view?: "chase" | "driver";
 }) {
-  const rawChassis = usePreparedModel(assets.cars.chassis, true, true, true);
+  const rawChassis = usePreparedModel(
+    assets.cars.chassis,
+    RACING_RENDER_SETTINGS.carCastShadow,
+    RACING_RENDER_SETTINGS.carReceiveShadow,
+    true,
+  );
   // Paint the body + accent materials, with a glossier finish so it reads as
   // racecar paint instead of matte plastic.
   const recolor = useMemo(
@@ -461,11 +474,16 @@ function CircuitCar({
     [body, accent],
   );
   const chassisScene = useLiveriedScene(rawChassis, recolor);
-  const wheelScene = usePreparedModel(assets.cars.wheel, true, true, true);
+  const wheelScene = usePreparedModel(
+    assets.cars.wheel,
+    RACING_RENDER_SETTINGS.carCastShadow,
+    RACING_RENDER_SETTINGS.carReceiveShadow,
+    true,
+  );
   const steeringWheelScene = usePreparedModel(
     assets.cars.steeringWheel,
-    true,
-    true,
+    RACING_RENDER_SETTINGS.carCastShadow,
+    RACING_RENDER_SETTINGS.carReceiveShadow,
     true,
   );
   const wheelGroupsRef = useRef(new Map<CarWheelSpec["id"], THREE.Group>());
@@ -513,14 +531,20 @@ function CircuitCar({
           }}
           position={wheel.position}
         >
-          <mesh castShadow position={[wheel.position[0] * -0.14, 0.02, 0]}>
+          <mesh
+            castShadow={RACING_RENDER_SETTINGS.carCastShadow}
+            position={[wheel.position[0] * -0.14, 0.02, 0]}
+          >
             <sphereGeometry args={[0.12, 10, 8]} />
             <meshStandardMaterial color="#050505" roughness={0.75} />
           </mesh>
           <primitive object={wheelScene.clone()} scale={0.85} />
         </group>
       ))}
-      <mesh castShadow position={[0, 0.6, 0]}>
+      <mesh
+        castShadow={RACING_RENDER_SETTINGS.carCastShadow}
+        position={[0, 0.6, 0]}
+      >
         <boxGeometry args={[1.8, 0.28, 3.2]} />
         <meshStandardMaterial color={body} transparent opacity={0.18} />
       </mesh>
@@ -536,16 +560,23 @@ function DriverFigure() {
   return (
     // Sunk down into the cockpit so the driver reads as seated, not perched.
     <group position={[0, 0.02, -0.02]}>
-      <mesh castShadow position={[0, 0.24, -0.08]} scale={[0.34, 0.42, 0.32]}>
+      <mesh
+        castShadow={RACING_RENDER_SETTINGS.carCastShadow}
+        position={[0, 0.24, -0.08]}
+        scale={[0.34, 0.42, 0.32]}
+      >
         <capsuleGeometry args={[0.32, 0.38, 4, 8]} />
         <meshStandardMaterial color="#111827" roughness={0.7} />
       </mesh>
-      <mesh castShadow position={[0, 0.78, 0.06]}>
+      <mesh
+        castShadow={RACING_RENDER_SETTINGS.carCastShadow}
+        position={[0, 0.78, 0.06]}
+      >
         <sphereGeometry args={[0.22, 12, 10]} />
         <meshStandardMaterial color="#f8fafc" roughness={0.55} />
       </mesh>
       <mesh
-        castShadow
+        castShadow={RACING_RENDER_SETTINGS.carCastShadow}
         position={[0, 0.76, 0.24]}
         rotation={[0.35, 0, 0]}
         scale={[0.18, 0.08, 0.08]}
@@ -556,7 +587,7 @@ function DriverFigure() {
       {[-1, 1].map((side) => (
         <mesh
           key={side}
-          castShadow
+          castShadow={RACING_RENDER_SETTINGS.carCastShadow}
           position={[side * 0.24, 0.48, 0.26]}
           rotation={[0.95, 0, side * 0.38]}
         >
@@ -589,8 +620,8 @@ function SuspensionLink({ link }: { link: CarSuspensionLink }) {
 
   return (
     <mesh
-      castShadow
-      receiveShadow
+      castShadow={RACING_RENDER_SETTINGS.carCastShadow}
+      receiveShadow={RACING_RENDER_SETTINGS.carReceiveShadow}
       position={transform.position}
       quaternion={transform.quaternion}
     >
@@ -602,33 +633,31 @@ function SuspensionLink({ link }: { link: CarSuspensionLink }) {
 
 function RemoteCar({ car }: { car: CarState }) {
   const groupRef = useRef<THREE.Group>(null);
-  // Latest target transform from the newest snapshot; updated every render.
-  const targetPos = useRef(
-    new THREE.Vector3(car.x, car.y + CAR_MODEL_RIDE_HEIGHT, car.z),
-  );
-  const targetQuat = useRef(
-    new THREE.Quaternion(car.qx, car.qy, car.qz, car.qw),
-  );
-  targetPos.current.set(car.x, car.y + CAR_MODEL_RIDE_HEIGHT, car.z);
-  targetQuat.current.set(car.qx, car.qy, car.qz, car.qw);
+  const bufferRef = useRef(new RemoteCarSnapshotBuffer());
+  const lastSampleKeyRef = useRef("");
 
-  useFrame((_, delta) => {
+  const carId = normalizeCarId(car.carId);
+  const livery = getLiveryById(car.liveryId);
+  const groundOffset = getCarVisualGroundOffset(carId);
+
+  const sampleKey = `${car.x}|${car.y}|${car.z}|${car.qx}|${car.qy}|${car.qz}|${car.qw}|${car.updatedAt.toDate().getTime()}`;
+  if (lastSampleKeyRef.current !== sampleKey) {
+    lastSampleKeyRef.current = sampleKey;
+    bufferRef.current.push(carStateToSnapshot(car), performance.now());
+  }
+
+  useFrame(() => {
     const group = groupRef.current;
     if (!group) return;
-    // Critically-damped follow toward the latest snapshot — smooths the gap
-    // between low-rate network updates without adding visible lag.
-    const k = 1 - Math.exp(-12 * delta);
-    group.position.lerp(targetPos.current, k);
-    group.quaternion.slerp(targetQuat.current, k);
+    const sampled = bufferRef.current.sample(performance.now());
+    if (!sampled) return;
+    group.position.set(sampled.x, sampled.y + groundOffset, sampled.z);
+    group.quaternion.set(sampled.qx, sampled.qy, sampled.qz, sampled.qw);
   });
 
   return (
-    <group
-      ref={groupRef}
-      position={[car.x, car.y + CAR_MODEL_RIDE_HEIGHT, car.z]}
-      quaternion={[car.qx, car.qy, car.qz, car.qw]}
-    >
-      <CircuitCar body="#38bdf8" accent="#10212a" />
+    <group ref={groupRef}>
+      <CarModel carId={carId} body={livery.body} accent={livery.accent} />
     </group>
   );
 }
@@ -639,7 +668,11 @@ function CityTrackAssets({ track }: { track: TrackDef }) {
 
   return (
     <>
-      <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, GROUND_PLANE_Y, 0]}>
+      <mesh
+        receiveShadow
+        rotation-x={-Math.PI / 2}
+        position={[0, GROUND_PLANE_Y, 0]}
+      >
         <planeGeometry args={isPractice ? [720, 520] : [1120, 760]} />
         <meshStandardMaterial
           color={isPractice ? "#778a70" : "#78956c"}
@@ -721,16 +754,37 @@ function RouteRoad({
       createRouteRibbonGeometry(points, 2.6, ROAD_SURFACE_Y, width / 2 + 1.3),
     [points, width],
   );
+  const shoulderInner = getRouteCurbOuterOffset(width);
+  const shoulderOuter = getRouteShoulderOuterOffset(width);
+  const leftShoulderGeometry = useMemo(
+    () =>
+      railHeight
+        ? createRouteShoulderGeometry(points, shoulderInner, shoulderOuter, -1)
+        : undefined,
+    [points, railHeight, shoulderInner, shoulderOuter],
+  );
+  const rightShoulderGeometry = useMemo(
+    () =>
+      railHeight
+        ? createRouteShoulderGeometry(points, shoulderInner, shoulderOuter, 1)
+        : undefined,
+    [points, railHeight, shoulderInner, shoulderOuter],
+  );
+  const asphaltMaterialProps = {
+    color: "#2f3740",
+    roughness: 0.88,
+    metalness: 0.02,
+    side: THREE.DoubleSide,
+  } as const;
+  const shoulderMaterialProps = {
+    ...asphaltMaterialProps,
+    side: THREE.FrontSide,
+  } as const;
 
   return (
     <>
       <mesh geometry={asphaltGeometry} receiveShadow>
-        <meshStandardMaterial
-          color="#2f3740"
-          roughness={0.88}
-          metalness={0.02}
-          side={THREE.DoubleSide}
-        />
+        <meshStandardMaterial {...asphaltMaterialProps} />
       </mesh>
       <mesh geometry={leftEdgeGeometry}>
         <meshStandardMaterial
@@ -772,6 +826,16 @@ function RouteRoad({
           polygonOffsetUnits={-4}
         />
       </mesh>
+      {leftShoulderGeometry && (
+        <mesh geometry={leftShoulderGeometry} receiveShadow renderOrder={1}>
+          <meshStandardMaterial {...shoulderMaterialProps} />
+        </mesh>
+      )}
+      {rightShoulderGeometry && (
+        <mesh geometry={rightShoulderGeometry} receiveShadow renderOrder={1}>
+          <meshStandardMaterial {...shoulderMaterialProps} />
+        </mesh>
+      )}
       {railHeight && (
         <RouteContinuousWalls
           points={points}
@@ -841,6 +905,7 @@ function RouteContinuousWalls({
           material={wallMaterial}
           castShadow
           receiveShadow
+          renderOrder={2}
         />
       ))}
     </>
@@ -1136,6 +1201,76 @@ export function collectBarrierDistances(
   return [...distances].sort((a, b) => a - b);
 }
 
+export function createRouteShoulderGeometry(
+  points: Vec3[],
+  innerOffset: number,
+  outerOffset: number,
+  side: -1 | 1,
+  roadSurfaceY = ROAD_SURFACE_Y,
+) {
+  const curve = new THREE.CatmullRomCurve3(
+    points.map(
+      (point) => new THREE.Vector3(point.x, point.y + roadSurfaceY, point.z),
+    ),
+    true,
+    "centripetal",
+  );
+  const curveLength = curve.getLength();
+  if (curveLength <= 0 || outerOffset <= innerOffset) {
+    return new THREE.BufferGeometry();
+  }
+
+  const distances = collectBarrierDistances(curveLength);
+  const positions: number[] = [];
+  const indices: number[] = [];
+  let previousRight: THREE.Vector3 | undefined;
+
+  for (const distance of distances) {
+    const u = distance / curveLength;
+    const point = curve.getPointAt(u);
+    const tangent = curve.getTangentAt(u);
+    tangent.y = 0;
+    if (tangent.lengthSq() < 0.0001) tangent.set(0, 0, -1);
+    tangent.normalize();
+
+    const right = new THREE.Vector3(tangent.z, 0, -tangent.x).normalize();
+    if (previousRight && right.dot(previousRight) < 0) right.multiplyScalar(-1);
+    previousRight = right.clone();
+
+    const inner = point.clone().addScaledVector(right, side * innerOffset);
+    const outer = point.clone().addScaledVector(right, side * outerOffset);
+
+    positions.push(
+      inner.x,
+      roadSurfaceY,
+      inner.z,
+      outer.x,
+      roadSurfaceY,
+      outer.z,
+    );
+  }
+
+  for (let index = 0; index < distances.length; index += 1) {
+    const base = index * 2;
+    const next = ((index + 1) % distances.length) * 2;
+    if (side === 1) {
+      indices.push(base, base + 1, next + 1, base, next + 1, next);
+    } else {
+      indices.push(base, next, next + 1, base, next + 1, base + 1);
+    }
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(positions, 3),
+  );
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+  geometry.computeBoundingSphere();
+  return geometry;
+}
+
 export function createRouteBarrierGeometry(
   points: Vec3[],
   railOffset: number,
@@ -1148,8 +1283,7 @@ export function createRouteBarrierGeometry(
 ) {
   const curve = new THREE.CatmullRomCurve3(
     points.map(
-      (point) =>
-        new THREE.Vector3(point.x, point.y + roadSurfaceY, point.z),
+      (point) => new THREE.Vector3(point.x, point.y + roadSurfaceY, point.z),
     ),
     true,
     "centripetal",
@@ -1178,12 +1312,8 @@ export function createRouteBarrierGeometry(
     if (previousRight && right.dot(previousRight) < 0) right.multiplyScalar(-1);
     previousRight = right.clone();
 
-    const inner = point
-      .clone()
-      .addScaledVector(right, side * innerOffset);
-    const outer = point
-      .clone()
-      .addScaledVector(right, side * outerOffset);
+    const inner = point.clone().addScaledVector(right, side * innerOffset);
+    const outer = point.clone().addScaledVector(right, side * outerOffset);
     const panelColor = barrierPanelColor(distance, panelLength);
 
     positions.push(

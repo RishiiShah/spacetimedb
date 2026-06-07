@@ -20,9 +20,9 @@ spacetime generate --lang typescript --out-dir src/module_bindings --module-path
 
 The Vite client reads two env vars from `.env.local`:
 
-| Variable | Purpose |
-| --- | --- |
-| `VITE_SPACETIMEDB_HOST` | WebSocket URI |
+| Variable                   | Purpose       |
+| -------------------------- | ------------- |
+| `VITE_SPACETIMEDB_HOST`    | WebSocket URI |
 | `VITE_SPACETIMEDB_DB_NAME` | Database name |
 
 Local development defaults in `src/main.tsx` when unset:

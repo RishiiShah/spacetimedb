@@ -50,21 +50,66 @@ export function createSnapshot(input: SnapshotInput): CarSnapshot {
 export function interpolateSnapshot(
   from: CarSnapshot,
   to: CarSnapshot,
-  alpha: number
+  alpha: number,
 ): CarSnapshot {
   const t = clamp(alpha, 0, 1);
+  const [qx, qy, qz, qw] = slerpQuat(from, to, t);
 
   return {
     ...to,
     x: lerp(from.x, to.x, t),
     y: lerp(from.y, to.y, t),
     z: lerp(from.z, to.z, t),
-    qx: lerp(from.qx, to.qx, t),
-    qy: lerp(from.qy, to.qy, t),
-    qz: lerp(from.qz, to.qz, t),
-    qw: lerp(from.qw, to.qw, t),
+    qx,
+    qy,
+    qz,
+    qw,
     speed: lerp(from.speed, to.speed, t),
   };
+}
+
+function slerpQuat(
+  from: Pick<CarSnapshot, "qx" | "qy" | "qz" | "qw">,
+  to: Pick<CarSnapshot, "qx" | "qy" | "qz" | "qw">,
+  t: number,
+): [number, number, number, number] {
+  const ax = from.qx;
+  const ay = from.qy;
+  const az = from.qz;
+  const aw = from.qw;
+  let bx = to.qx;
+  let by = to.qy;
+  let bz = to.qz;
+  let bw = to.qw;
+
+  let dot = ax * bx + ay * by + az * bz + aw * bw;
+  if (dot < 0) {
+    bx = -bx;
+    by = -by;
+    bz = -bz;
+    bw = -bw;
+    dot = -dot;
+  }
+
+  if (dot > 0.9995) {
+    const rx = ax + t * (bx - ax);
+    const ry = ay + t * (by - ay);
+    const rz = az + t * (bz - az);
+    const rw = aw + t * (bw - aw);
+    const len = Math.hypot(rx, ry, rz, rw) || 1;
+    return [rx / len, ry / len, rz / len, rw / len];
+  }
+
+  const theta = Math.acos(Math.min(1, dot));
+  const sinTheta = Math.sin(theta);
+  const wa = Math.sin((1 - t) * theta) / sinTheta;
+  const wb = Math.sin(t * theta) / sinTheta;
+  return [
+    ax * wa + bx * wb,
+    ay * wa + by * wb,
+    az * wa + bz * wb,
+    aw * wa + bw * wb,
+  ];
 }
 
 function lerp(a: number, b: number, t: number) {

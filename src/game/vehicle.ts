@@ -60,6 +60,9 @@ const DRIFT_SPEED_THRESHOLD = 38;
 const VEHICLE_OBSTACLE_SPEED_MULTIPLIER = 0.45;
 export const VEHICLE_OBSTACLE_COLLISION_RADIUS = 2.4;
 export const VEHICLE_COLLISION_HALF_WIDTH = 1.55;
+// Scraping a barrier sheds a little speed but should not stop the car; the
+// momentum running along the wall is preserved so the car slides instead.
+const WALL_SLIDE_FRICTION = 0.92;
 
 export function createInitialVehicleState(): VehicleState {
   return {
@@ -226,10 +229,23 @@ function constrainToRoute(state: VehicleState, track?: TrackDef): VehicleState {
   );
   if (closest.distance <= maxDistance) return state;
 
+  // Outward wall normal at the contact point (perpendicular to the route).
+  const normalX = (state.position.x - closest.x) / closest.distance;
+  const normalZ = (state.position.z - closest.z) / closest.distance;
+
+  // Travel direction from heading and the sign of speed. Keep the momentum
+  // running along the barrier and shed only the part driving into it, so a
+  // glancing hit slides while a head-on hit still scrubs to a stop.
+  const speedSign = Math.sign(state.speed) || 1;
+  const travelX = Math.sin(state.heading) * speedSign;
+  const travelZ = -Math.cos(state.heading) * speedSign;
+  const intoWall = Math.max(0, travelX * normalX + travelZ * normalZ);
+  const tangentialFraction = Math.sqrt(Math.max(0, 1 - intoWall * intoWall));
+
   const scale = maxDistance / closest.distance;
   return {
     ...state,
-    speed: 0,
+    speed: state.speed * tangentialFraction * WALL_SLIDE_FRICTION,
     position: {
       ...state.position,
       x: closest.x + (state.position.x - closest.x) * scale,

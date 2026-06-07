@@ -47,6 +47,11 @@ describe("racing camera", () => {
     expect(RACING_RENDER_SETTINGS.dpr).toEqual([1, 1.35]);
     expect(RACING_RENDER_SETTINGS.shadowMapSize).toEqual([1024, 1024]);
   });
+
+  it("keeps car models from casting or receiving dynamic shadows", () => {
+    expect(RACING_RENDER_SETTINGS.carCastShadow).toBe(false);
+    expect(RACING_RENDER_SETTINGS.carReceiveShadow).toBe(false);
+  });
 });
 
 describe("route walls", () => {

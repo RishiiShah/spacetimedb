@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest";
 import { orderResults, type ResultRow } from "./results";
 
 const row = (o: Partial<ResultRow>): ResultRow => ({
-  id: "x", name: "x", lapsDone: 0, totalMs: 0, bestLapMs: undefined, ...o,
+  id: "x",
+  name: "x",
+  lapsDone: 0,
+  totalMs: 0,
+  bestLapMs: undefined,
+  ...o,
 });
 
 describe("orderResults", () => {

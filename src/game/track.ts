@@ -5,6 +5,8 @@ export const ROUTE_RAIL_WIDTH = 1.6;
 export const ROUTE_WALL_HEIGHT = 1.4;
 // Shoulder gap between the red curb ribbon and the barrier wall inner face.
 export const ROUTE_CURB_WALL_GAP = 0.8;
+// Keep asphalt shoulder off the wall face so ribbons do not z-fight on curves.
+export const ROUTE_SHOULDER_WALL_CLEARANCE = 0.12;
 // World Y of the driven road surface. Route points and vehicle physics use y=0;
 // ribbons add this only when a track needs a raised deck (default 0 = flush).
 export const ROAD_SURFACE_Y = 0;
@@ -25,6 +27,29 @@ export function getRouteFenceInnerOffset(
   railOffset = getRouteRailOffset(roadWidth),
 ) {
   return railOffset - ROUTE_RAIL_WIDTH / 2;
+}
+
+export function getRouteCurbOuterOffset(roadWidth: number) {
+  return roadWidth / 2 + ROUTE_CURB_WIDTH;
+}
+
+export function getRouteShoulderOuterOffset(roadWidth: number) {
+  return getRouteFenceInnerOffset(roadWidth) - ROUTE_SHOULDER_WALL_CLEARANCE;
+}
+
+export function getRouteShoulderWidth(roadWidth: number) {
+  return Math.max(
+    0,
+    getRouteShoulderOuterOffset(roadWidth) - getRouteCurbOuterOffset(roadWidth),
+  );
+}
+
+export function getRouteShoulderCenterOffset(roadWidth: number) {
+  return (
+    (getRouteCurbOuterOffset(roadWidth) +
+      getRouteShoulderOuterOffset(roadWidth)) /
+    2
+  );
 }
 
 export type GameMode = "circuit" | "stunt" | "practice";

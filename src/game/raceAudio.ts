@@ -173,11 +173,7 @@ export class RaceAudioController {
 
     const screech = this.loops.screech;
     if (screech) {
-      const volume = screechVolume(
-        input.steer,
-        input.speed,
-        input.handbrake,
-      );
+      const volume = screechVolume(input.steer, input.speed, input.handbrake);
       screech.gain.gain.value = volume;
       screech.source.playbackRate.value = Math.max(
         0.8,
