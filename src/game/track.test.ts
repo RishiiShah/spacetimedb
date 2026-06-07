@@ -229,7 +229,7 @@ describe("track registry", () => {
     expect(track.routePoints?.length).toBeGreaterThanOrEqual(11);
     expect(track.checkpoints.length).toBeGreaterThanOrEqual(6);
     expect(track.roadWidth).toBeGreaterThanOrEqual(34);
-    expect(track.railHeight).toBeGreaterThanOrEqual(2);
+    expect(track.railHeight).toBeCloseTo(1.4);
     expect(track.railOffset).toBeGreaterThanOrEqual(18);
     expect(
       track.placements.some(
@@ -251,8 +251,8 @@ describe("track registry", () => {
     expect(bounds.width).toBeGreaterThanOrEqual(850);
     expect(bounds.height).toBeGreaterThanOrEqual(480);
     expect(nonAdjacentSegmentsDoNotCross(points)).toBe(true);
-    expect(track.roadWidth).toBeGreaterThanOrEqual(50);
-    expect(track.railOffset).toBeGreaterThanOrEqual(32);
+    expect(track.roadWidth).toBeCloseTo(40.5);
+    expect(track.railOffset).toBeCloseTo((track.roadWidth ?? 0) / 2 + 3.4);
     expect(closestNonAdjacentSegmentDistance(points)).toBeGreaterThanOrEqual(
       (track.roadWidth ?? 0) * 2,
     );
@@ -315,7 +315,7 @@ describe("track registry", () => {
     expect(track.slug).toBe("flat-road-practice");
     expect(track.origin).toBe("local");
     expect(track.routePoints?.length).toBeGreaterThanOrEqual(4);
-    expect(track.roadWidth).toBeGreaterThanOrEqual(42);
+    expect(track.roadWidth).toBeCloseTo(39);
     expect(track.placements).toEqual([]);
     expect(getDefaultTrackForMode("practice")).toBe(track);
   });

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { reducers, tables } from "./module_bindings";
 import { useReducer, useSpacetimeDB, useTable } from "spacetimedb/react";
@@ -45,7 +45,10 @@ function App() {
 
   const { identity, isActive: connected } = useSpacetimeDB();
   const setPlayerName = useReducer(reducers.setPlayerName);
-  const joinOrCreateRoom = useReducer(reducers.joinOrCreateRoom);
+  const createRoom = useReducer(reducers.createRoom);
+  const joinRoom = useReducer(reducers.joinRoom);
+  const leaveRoom = useReducer(reducers.leaveRoom);
+  const startRoomRace = useReducer(reducers.startRoomRace);
   const publishCarState = useReducer(reducers.publishCarState);
   const recordCheckpoint = useReducer(reducers.recordCheckpoint);
   const finishLap = useReducer(reducers.finishLap);
@@ -54,6 +57,7 @@ function App() {
   const [rooms] = useTable(tables.room);
   const [members] = useTable(tables.roomMember);
   const [cars] = useTable(tables.carState);
+  const [raceStarts] = useTable(tables.roomRaceStart);
   const [laps] = useTable(tables.lapResult);
 
   const availableTracks = useMemo(
@@ -85,13 +89,38 @@ function App() {
     return rooms.find((room) => room.roomId === activeMembership.roomId);
   }, [activeMembership, rooms]);
 
+  const activeRoomMembers = useMemo(() => {
+    if (!activeRoom) return [];
+    return members.filter((member) => member.roomId === activeRoom.roomId);
+  }, [activeRoom, members]);
+
+  const activeRaceStart = useMemo(() => {
+    if (!activeRoom) return undefined;
+    return raceStarts.find(
+      (raceStart) => raceStart.roomId === activeRoom.roomId,
+    );
+  }, [activeRoom, raceStarts]);
+
+  const isRoomHost = Boolean(
+    activeRoom && identity && activeRoom.createdBy.isEqual(identity),
+  );
+  const canStartRoomRace = activeRoomMembers.length >= 2;
+
+  const sessionTrack = useMemo(
+    () => (activeRoom ? getTrackById(activeRoom.trackId) : selectedTrack),
+    [activeRoom, selectedTrack],
+  );
+  const sessionModeMeta = getModeMeta(sessionTrack.mode);
+
   const roomCars = useMemo(() => {
     if (!activeRoom || !identity) return [];
     return cars.filter(
       (car) =>
-        car.roomId === activeRoom.roomId && !car.identity.isEqual(identity),
+        car.roomId === activeRoom.roomId &&
+        car.trackId === sessionTrack.id &&
+        !car.identity.isEqual(identity),
     );
-  }, [activeRoom, cars, identity]);
+  }, [activeRoom, cars, identity, sessionTrack.id]);
 
   const leaderboard = useMemo(() => {
     const nameFor = (lap: (typeof laps)[number]) => {
@@ -99,16 +128,58 @@ function App() {
       return player?.name || lap.identity.toHexString().slice(0, 8);
     };
     return [...laps]
+      .filter(
+        (lap) =>
+          !activeRoom ||
+          (lap.roomId === activeRoom.roomId && lap.trackId === sessionTrack.id),
+      )
       .sort((a, b) => Number(a.elapsedMs - b.elapsedMs))
       .slice(0, 8)
       .map((lap) => ({ ...lap, name: nameFor(lap) }));
-  }, [laps, players]);
+  }, [activeRoom, laps, players, sessionTrack.id]);
 
-  const joinRoom = async () => {
+  const setNameIfNeeded = async () => {
+    if (displayName.trim()) await setPlayerName({ name: displayName.trim() });
+  };
+
+  const createMultiplayerRoom = async () => {
     setLastError("");
     try {
-      if (displayName.trim()) await setPlayerName({ name: displayName.trim() });
-      await joinOrCreateRoom({ slug: roomSlug });
+      await setNameIfNeeded();
+      await createRoom({ slug: roomSlug, trackId: selectedTrack.id });
+      setRaceStarted(false);
+    } catch (error) {
+      setLastError(error instanceof Error ? error.message : String(error));
+    }
+  };
+
+  const joinMultiplayerRoom = async () => {
+    setLastError("");
+    try {
+      await setNameIfNeeded();
+      await joinRoom({ slug: roomSlug });
+      setRaceStarted(false);
+    } catch (error) {
+      setLastError(error instanceof Error ? error.message : String(error));
+    }
+  };
+
+  const leaveLobby = async () => {
+    if (!activeRoom) return;
+    setLastError("");
+    try {
+      await leaveRoom({ roomId: activeRoom.roomId });
+      setRaceStarted(false);
+    } catch (error) {
+      setLastError(error instanceof Error ? error.message : String(error));
+    }
+  };
+
+  const startMultiplayerRace = async () => {
+    if (!activeRoom) return;
+    setLastError("");
+    try {
+      await startRoomRace({ roomId: activeRoom.roomId });
     } catch (error) {
       setLastError(error instanceof Error ? error.message : String(error));
     }
@@ -128,7 +199,7 @@ function App() {
     if (!activeRoom) return;
     publishCarState({
       roomId: activeRoom.roomId,
-      trackId: selectedTrack.id,
+      trackId: sessionTrack.id,
       x: snapshot.x,
       y: snapshot.y,
       z: snapshot.z,
@@ -148,7 +219,7 @@ function App() {
     if (!activeRoom) return;
     recordCheckpoint({
       roomId: activeRoom.roomId,
-      trackId: selectedTrack.id,
+      trackId: sessionTrack.id,
       checkpointIndex,
       elapsedMs: BigInt(elapsedMs),
     }).catch((error) => {
@@ -160,7 +231,7 @@ function App() {
     if (!activeRoom) return;
     finishLap({
       roomId: activeRoom.roomId,
-      trackId: selectedTrack.id,
+      trackId: sessionTrack.id,
       elapsedMs: BigInt(elapsedMs),
       checkpointCount,
     }).catch((error) => {
@@ -169,6 +240,39 @@ function App() {
   };
 
   const myName = me?.name || identity?.toHexString().slice(0, 8) || "driver";
+
+  useEffect(() => {
+    if (activeRoom && activeRaceStart && !raceStarted) {
+      setRaceStarted(true);
+    }
+  }, [activeRaceStart, activeRoom, raceStarted]);
+
+  if (activeRoom && !raceStarted) {
+    return (
+      <LobbyScreen
+        roomSlug={activeRoom.slug}
+        trackName={sessionTrack.name}
+        memberCount={activeRoomMembers.length}
+        members={activeRoomMembers.map((member) => {
+          const player = players.find((row) =>
+            row.identity.isEqual(member.identity),
+          );
+          return {
+            key: member.memberId.toString(),
+            name: player?.name || member.identity.toHexString().slice(0, 8),
+            isHost: activeRoom.createdBy.isEqual(member.identity),
+            isMe: Boolean(identity && member.identity.isEqual(identity)),
+          };
+        })}
+        connected={connected}
+        isHost={isRoomHost}
+        canStart={canStartRoomRace}
+        lastError={lastError}
+        onStart={() => void startMultiplayerRace()}
+        onLeave={() => void leaveLobby()}
+      />
+    );
+  }
 
   if (!raceStarted) {
     return (
@@ -423,7 +527,7 @@ function App() {
               className="join-form"
               onSubmit={(event) => {
                 event.preventDefault();
-                void joinRoom();
+                void joinMultiplayerRoom();
               }}
             >
               <label>
@@ -441,9 +545,18 @@ function App() {
                   onChange={(event) => setRoomSlug(event.target.value)}
                 />
               </label>
-              <button type="submit" disabled={!connected}>
-                {connected ? "Join multiplayer room" : "Connecting"}
-              </button>
+              <div className="room-actions">
+                <button
+                  type="button"
+                  disabled={!connected}
+                  onClick={() => void createMultiplayerRoom()}
+                >
+                  {connected ? "Create room" : "Connecting"}
+                </button>
+                <button type="submit" disabled={!connected}>
+                  {connected ? "Join room" : "Connecting"}
+                </button>
+              </div>
             </form>
 
             <button className="start-button" type="button" onClick={startRace}>
@@ -464,7 +577,7 @@ function App() {
           <RacingScene
             localIdentity={identity?.toHexString() || "offline-preview"}
             roomId={activeRoom?.roomId}
-            trackId={selectedTrack.id}
+            trackId={sessionTrack.id}
             carId={selectedCarId}
             liveryId={selectedLiveryId}
             remoteCars={roomCars}
@@ -478,8 +591,8 @@ function App() {
 
       <aside className="hud">
         <div>
-          <p className="eyebrow">{selectedModeMeta.label} Mode</p>
-          <h1>{selectedTrack.name}</h1>
+          <p className="eyebrow">{sessionModeMeta.label} Mode</p>
+          <h1>{sessionTrack.name}</h1>
         </div>
 
         <div className="hud-grid">
@@ -497,7 +610,7 @@ function App() {
           <Metric label="Timer" value={formatMs(telemetry.elapsedMs)} />
           <Metric
             label="Checkpoint"
-            value={`${telemetry.checkpointIndex + 1}/${selectedTrack.checkpoints.length}`}
+            value={`${telemetry.checkpointIndex + 1}/${sessionTrack.checkpoints.length}`}
           />
           <Metric label="Car" value={selectedCar.name} />
           <Metric label="Livery" value={selectedLivery.name} />
@@ -517,7 +630,7 @@ function App() {
           className="join-form"
           onSubmit={(event) => {
             event.preventDefault();
-            void joinRoom();
+            void joinMultiplayerRoom();
           }}
         >
           <label>
@@ -535,9 +648,18 @@ function App() {
               onChange={(event) => setRoomSlug(event.target.value)}
             />
           </label>
-          <button type="submit" disabled={!connected}>
-            {connected ? "Join race" : "Connecting"}
-          </button>
+          <div className="room-actions">
+            <button
+              type="button"
+              disabled={!connected}
+              onClick={() => void createMultiplayerRoom()}
+            >
+              {connected ? "Create room" : "Connecting"}
+            </button>
+            <button type="submit" disabled={!connected}>
+              {connected ? "Join room" : "Connecting"}
+            </button>
+          </div>
         </form>
 
         {lastError && <p className="error">{lastError}</p>}
@@ -572,6 +694,83 @@ function App() {
           )}
         </section>
       </aside>
+    </main>
+  );
+}
+
+function LobbyScreen({
+  roomSlug,
+  trackName,
+  memberCount,
+  members,
+  connected,
+  isHost,
+  canStart,
+  lastError,
+  onStart,
+  onLeave,
+}: {
+  roomSlug: string;
+  trackName: string;
+  memberCount: number;
+  members: { key: string; name: string; isHost: boolean; isMe: boolean }[];
+  connected: boolean;
+  isHost: boolean;
+  canStart: boolean;
+  lastError: string;
+  onStart: () => void;
+  onLeave: () => void;
+}) {
+  return (
+    <main className="lobby-shell">
+      <section className="lobby-panel" aria-label="Room lobby">
+        <div className="lobby-header">
+          <div>
+            <p className="eyebrow">Lobby waiting</p>
+            <h1>Room {roomSlug}</h1>
+          </div>
+          <button className="secondary-button" type="button" onClick={onLeave}>
+            Leave lobby
+          </button>
+        </div>
+
+        <div className="hud-grid">
+          <Metric label="Track" value={trackName} />
+          <Metric label="Drivers" value={memberCount.toString()} />
+          <Metric label="Host" value={isHost ? "You" : "Waiting"} />
+          <Metric label="Status" value={canStart ? "Ready" : "Need 2"} />
+        </div>
+
+        <section className="driver-panel" aria-label="Lobby drivers">
+          <h2>Drivers</h2>
+          <div className="lobby-driver-list">
+            {members.map((member) => (
+              <div key={member.key} className="lobby-driver">
+                <span>{member.name}</span>
+                <strong>
+                  {member.isHost ? "Host" : "Driver"}
+                  {member.isMe ? " / You" : ""}
+                </strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {isHost ? (
+          <button
+            className="start-button"
+            type="button"
+            disabled={!connected || !canStart}
+            onClick={onStart}
+          >
+            Start race
+          </button>
+        ) : (
+          <p className="lobby-waiting">Waiting for the host to start.</p>
+        )}
+
+        {lastError && <p className="error">{lastError}</p>}
+      </section>
     </main>
   );
 }

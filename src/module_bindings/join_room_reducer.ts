@@ -12,5 +12,4 @@ import {
 
 export default {
   slug: __t.string(),
-  trackId: __t.u64(),
 };

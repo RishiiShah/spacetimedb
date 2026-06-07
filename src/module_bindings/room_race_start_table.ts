@@ -10,7 +10,8 @@ import {
   type Infer as __Infer,
 } from "spacetimedb";
 
-export default {
-  slug: __t.string(),
-  trackId: __t.u64(),
-};
+export default __t.row({
+  roomId: __t.u64().primaryKey().name("room_id"),
+  startedBy: __t.identity().name("started_by"),
+  startedAtMs: __t.u64().name("started_at_ms"),
+});

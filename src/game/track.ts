@@ -1,5 +1,20 @@
 export type Vec3 = { x: number; y: number; z: number };
 
+export const ROUTE_CURB_WIDTH = 2.6;
+export const ROUTE_RAIL_WIDTH = 1.6;
+export const ROUTE_WALL_HEIGHT = 1.4;
+
+export function getRouteRailOffset(roadWidth: number) {
+  return roadWidth / 2 + ROUTE_CURB_WIDTH + ROUTE_RAIL_WIDTH / 2;
+}
+
+export function getRouteFenceInnerOffset(
+  roadWidth: number,
+  railOffset = getRouteRailOffset(roadWidth),
+) {
+  return railOffset - ROUTE_RAIL_WIDTH / 2;
+}
+
 export type GameMode = "circuit" | "stunt" | "practice";
 
 export type GameModeMeta = {
@@ -258,9 +273,9 @@ export const cityLoopV1Track: TrackDef = {
     { x: -455, y: 0, z: -80 },
     { x: -485, y: 0, z: 70 },
   ],
-  roadWidth: 54,
-  railOffset: 34,
-  railHeight: 2.8,
+  roadWidth: 40.5,
+  railOffset: getRouteRailOffset(40.5),
+  railHeight: ROUTE_WALL_HEIGHT,
   railColor: "#d8dde4",
   checkpoints: [
     {
@@ -483,7 +498,7 @@ export const flatRoadPracticeTrack: TrackDef = {
     { x: -120, y: 0, z: -80 },
     { x: -170, y: 0, z: -20 },
   ],
-  roadWidth: 52,
+  roadWidth: 39,
   checkpoints: [
     {
       index: 0,
@@ -527,13 +542,14 @@ export const cityMonacoTrack: TrackDef = {
   name: "Circuit de Monaco",
   mode: "circuit",
   type: "circuit",
-  summary: "Tight, twisting street circuit winding through Casino Square, a narrow hairpin, and harbor sweepers.",
+  summary:
+    "Tight, twisting street circuit winding through Casino Square, a narrow hairpin, and harbor sweepers.",
   origin: "local",
   environment: "city",
   spawn: { position: { x: -80, y: 0, z: 160 }, heading: Math.PI / 2 },
-  roadWidth: 26,
-  railOffset: 34,
-  railHeight: 2.8,
+  roadWidth: 19.5,
+  railOffset: getRouteRailOffset(19.5),
+  railHeight: ROUTE_WALL_HEIGHT,
   railColor: "#d8dde4",
   routePoints: [
     // Main Straight (z = 160)
@@ -598,175 +614,175 @@ export const cityMonacoTrack: TrackDef = {
   ],
   placements: [
     {
-      "assetId": "ecoGrid",
-      "position": {
-        "x": 74,
-        "y": 0,
-        "z": -176
+      assetId: "ecoGrid",
+      position: {
+        x: 74,
+        y: 0,
+        z: -176,
       },
-      "rotationY": 3.46,
-      "scale": 1.66
+      rotationY: 3.46,
+      scale: 1.66,
     },
     {
-      "assetId": "palm",
-      "position": {
-        "x": 83,
-        "y": 0,
-        "z": -180
+      assetId: "palm",
+      position: {
+        x: 83,
+        y: 0,
+        z: -180,
       },
-      "rotationY": 4.89,
-      "scale": 1
+      rotationY: 4.89,
+      scale: 1,
     },
     {
-      "assetId": "ecoTerrace",
-      "position": {
-        "x": 80,
-        "y": 0,
-        "z": -179
+      assetId: "ecoTerrace",
+      position: {
+        x: 80,
+        y: 0,
+        z: -179,
       },
-      "rotationY": 2.94,
-      "scale": 1.69
+      rotationY: 2.94,
+      scale: 1.69,
     },
     {
-      "assetId": "twistedTower",
-      "position": {
-        "x": 74,
-        "y": 0,
-        "z": -173
+      assetId: "twistedTower",
+      position: {
+        x: 74,
+        y: 0,
+        z: -173,
       },
-      "rotationY": 5.34,
-      "scale": 1.65
+      rotationY: 5.34,
+      scale: 1.65,
     },
     {
-      "assetId": "ecoGrid",
-      "position": {
-        "x": 203,
-        "y": 0,
-        "z": 1
+      assetId: "ecoGrid",
+      position: {
+        x: 203,
+        y: 0,
+        z: 1,
       },
-      "rotationY": 3.89,
-      "scale": 1.51
+      rotationY: 3.89,
+      scale: 1.51,
     },
     {
-      "assetId": "trafficLight",
-      "position": {
-        "x": 185,
-        "y": 0,
-        "z": 21
+      assetId: "trafficLight",
+      position: {
+        x: 185,
+        y: 0,
+        z: 21,
       },
-      "rotationY": 2.21,
-      "scale": 1
+      rotationY: 2.21,
+      scale: 1,
     },
     {
-      "assetId": "ecoGrid",
-      "position": {
-        "x": 183,
-        "y": 0,
-        "z": 37
+      assetId: "ecoGrid",
+      position: {
+        x: 183,
+        y: 0,
+        z: 37,
       },
-      "rotationY": 1.81,
-      "scale": 1.29
+      rotationY: 1.81,
+      scale: 1.29,
     },
     {
-      "assetId": "ecoTerrace",
-      "position": {
-        "x": 196,
-        "y": 0,
-        "z": 27
+      assetId: "ecoTerrace",
+      position: {
+        x: 196,
+        y: 0,
+        z: 27,
       },
-      "rotationY": 4.68,
-      "scale": 1.5
+      rotationY: 4.68,
+      scale: 1.5,
     },
     {
-      "assetId": "ecoGrid",
-      "position": {
-        "x": -224,
-        "y": 0,
-        "z": 19
+      assetId: "ecoGrid",
+      position: {
+        x: -224,
+        y: 0,
+        z: 19,
       },
-      "rotationY": 1.5,
-      "scale": 1.59
+      rotationY: 1.5,
+      scale: 1.59,
     },
     {
-      "assetId": "twistedTower",
-      "position": {
-        "x": -231,
-        "y": 0,
-        "z": 17
+      assetId: "twistedTower",
+      position: {
+        x: -231,
+        y: 0,
+        z: 17,
       },
-      "rotationY": 4.19,
-      "scale": 1.42
+      rotationY: 4.19,
+      scale: 1.42,
     },
     {
-      "assetId": "trafficLight",
-      "position": {
-        "x": -233,
-        "y": 0,
-        "z": 23
+      assetId: "trafficLight",
+      position: {
+        x: -233,
+        y: 0,
+        z: 23,
       },
-      "rotationY": 1.69,
-      "scale": 1
+      rotationY: 1.69,
+      scale: 1,
     },
     {
-      "assetId": "twistedTower",
-      "position": {
-        "x": -223,
-        "y": 0,
-        "z": 55
+      assetId: "twistedTower",
+      position: {
+        x: -223,
+        y: 0,
+        z: 55,
       },
-      "rotationY": 5.47,
-      "scale": 1.69
+      rotationY: 5.47,
+      scale: 1.69,
     },
     {
-      "assetId": "twistedTower",
-      "position": {
-        "x": -227,
-        "y": 0,
-        "z": 32
+      assetId: "twistedTower",
+      position: {
+        x: -227,
+        y: 0,
+        z: 32,
       },
-      "rotationY": 5.5,
-      "scale": 1.21
+      rotationY: 5.5,
+      scale: 1.21,
     },
     {
-      "assetId": "palm",
-      "position": {
-        "x": -60,
-        "y": 0,
-        "z": 215
+      assetId: "palm",
+      position: {
+        x: -60,
+        y: 0,
+        z: 215,
       },
-      "rotationY": 0,
-      "scale": 1.3
+      rotationY: 0,
+      scale: 1.3,
     },
     {
-      "assetId": "palm",
-      "position": {
-        "x": -10,
-        "y": 0,
-        "z": 215
+      assetId: "palm",
+      position: {
+        x: -10,
+        y: 0,
+        z: 215,
       },
-      "rotationY": 0,
-      "scale": 1.35
+      rotationY: 0,
+      scale: 1.35,
     },
     {
-      "assetId": "palm",
-      "position": {
-        "x": 30,
-        "y": 0,
-        "z": 215
+      assetId: "palm",
+      position: {
+        x: 30,
+        y: 0,
+        z: 215,
       },
-      "rotationY": 0,
-      "scale": 1.25
+      rotationY: 0,
+      scale: 1.25,
     },
     {
-      "assetId": "trafficLight",
-      "position": {
-        "x": -45,
-        "y": 0,
-        "z": 215
+      assetId: "trafficLight",
+      position: {
+        x: -45,
+        y: 0,
+        z: 215,
       },
-      "rotationY": 0,
-      "scale": 1
-    }
+      rotationY: 0,
+      scale: 1,
+    },
   ],
 };
 

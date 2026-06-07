@@ -1,64 +1,82 @@
-import { schema, table, t, SenderError } from 'spacetimedb/server';
+import { schema, table, t, SenderError } from "spacetimedb/server";
 
 const player = table(
-  { name: 'player', public: true },
+  { name: "player", public: true },
   {
     identity: t.identity().primaryKey(),
     name: t.option(t.string()),
     online: t.bool(),
     lastSeen: t.timestamp(),
-  }
+  },
 );
 
 const track = table(
-  { name: 'track', public: true },
+  { name: "track", public: true },
   {
     trackId: t.u64().primaryKey().autoInc(),
     slug: t.string().unique(),
     name: t.string(),
     layoutJson: t.string(),
     createdAt: t.timestamp(),
-  }
+  },
 );
 
 const room = table(
-  { name: 'room', public: true },
+  { name: "room", public: true },
   {
     roomId: t.u64().primaryKey().autoInc(),
     slug: t.string().unique(),
-    trackId: t.u64().index('btree'),
+    trackId: t.u64().index("btree"),
     createdBy: t.identity(),
     createdAt: t.timestamp(),
-  }
+  },
 );
 
 const roomMember = table(
   {
-    name: 'room_member',
+    name: "room_member",
     public: true,
     indexes: [
       {
-        accessor: 'by_room_identity',
-        algorithm: 'btree',
-        columns: ['roomId', 'identity'],
+        accessor: "by_room_identity",
+        algorithm: "btree",
+        columns: ["roomId", "identity"],
       },
     ],
   },
   {
     memberId: t.u64().primaryKey().autoInc(),
-    roomId: t.u64().index('btree'),
-    identity: t.identity().index('btree'),
+    roomId: t.u64().index("btree"),
+    identity: t.identity().index("btree"),
     joinedAt: t.timestamp(),
     ready: t.bool(),
-  }
+  },
+);
+
+const roomCountdown = table(
+  { name: "room_countdown", public: true },
+  {
+    roomId: t.u64().primaryKey(),
+    startedAtMs: t.u64(),
+    startsAtMs: t.u64(),
+  },
+);
+
+const roomRaceStart = table(
+  { name: "room_race_start", public: true },
+  {
+    roomId: t.u64().primaryKey(),
+    startedBy: t.identity(),
+    startedAtMs: t.u64(),
+  },
 );
 
 const carState = table(
-  { name: 'car_state', public: true },
+  { name: "car_state", public: true },
   {
     identity: t.identity().primaryKey(),
-    roomId: t.u64().index('btree'),
-    trackId: t.u64().index('btree'),
+    roomId: t.u64().index("btree"),
+    trackId: t.u64().index("btree"),
     x: t.f64(),
     y: t.f64(),
     z: t.f64(),
@@ -70,40 +88,40 @@ const carState = table(
     checkpointIndex: t.u32(),
     runStartedAtMs: t.u64(),
     updatedAt: t.timestamp(),
-  }
+  },
 );
 
 const checkpointEvent = table(
-  { name: 'checkpoint_event', public: true },
+  { name: "checkpoint_event", public: true },
   {
     eventId: t.u64().primaryKey().autoInc(),
-    identity: t.identity().index('btree'),
-    roomId: t.u64().index('btree'),
-    trackId: t.u64().index('btree'),
+    identity: t.identity().index("btree"),
+    roomId: t.u64().index("btree"),
+    trackId: t.u64().index("btree"),
     checkpointIndex: t.u32(),
     elapsedMs: t.u64(),
     createdAt: t.timestamp(),
-  }
+  },
 );
 
 const lapResult = table(
-  { name: 'lap_result', public: true },
+  { name: "lap_result", public: true },
   {
     lapId: t.u64().primaryKey().autoInc(),
-    identity: t.identity().index('btree'),
-    roomId: t.u64().index('btree'),
-    trackId: t.u64().index('btree'),
+    identity: t.identity().index("btree"),
+    roomId: t.u64().index("btree"),
+    trackId: t.u64().index("btree"),
     elapsedMs: t.u64(),
     checkpointCount: t.u32(),
     createdAt: t.timestamp(),
-  }
+  },
 );
 
 const ghostFrame = table(
-  { name: 'ghost_frame', public: true },
+  { name: "ghost_frame", public: true },
   {
     frameId: t.u64().primaryKey().autoInc(),
-    lapId: t.u64().index('btree'),
+    lapId: t.u64().index("btree"),
     elapsedMs: t.u64(),
     x: t.f64(),
     y: t.f64(),
@@ -113,7 +131,7 @@ const ghostFrame = table(
     qz: t.f64(),
     qw: t.f64(),
     speed: t.f64(),
-  }
+  },
 );
 
 const spacetimedb = schema({
@@ -121,6 +139,8 @@ const spacetimedb = schema({
   track,
   room,
   roomMember,
+  roomCountdown,
+  roomRaceStart,
   carState,
   checkpointEvent,
   lapResult,
@@ -129,8 +149,8 @@ const spacetimedb = schema({
 
 export default spacetimedb;
 
-const DEFAULT_TRACK_SLUG = 'city-sprint';
-const DEFAULT_TRACK_NAME = 'City Sprint';
+const DEFAULT_TRACK_SLUG = "city-sprint";
+const DEFAULT_TRACK_NAME = "City Sprint";
 const DEFAULT_TRACK_LAYOUT = JSON.stringify({
   spawn: { x: 0, y: 0, z: 16, heading: 0 },
   checkpoints: [
@@ -141,7 +161,7 @@ const DEFAULT_TRACK_LAYOUT = JSON.stringify({
   ],
 });
 
-export const init = spacetimedb.init(ctx => {
+export const init = spacetimedb.init((ctx) => {
   if (!ctx.db.track.slug.find(DEFAULT_TRACK_SLUG)) {
     ctx.db.track.insert({
       trackId: 0n,
@@ -153,7 +173,7 @@ export const init = spacetimedb.init(ctx => {
   }
 });
 
-export const onConnect = spacetimedb.clientConnected(ctx => {
+export const onConnect = spacetimedb.clientConnected((ctx) => {
   const existing = ctx.db.player.identity.find(ctx.sender);
   if (existing) {
     ctx.db.player.identity.update({
@@ -171,7 +191,7 @@ export const onConnect = spacetimedb.clientConnected(ctx => {
   }
 });
 
-export const onDisconnect = spacetimedb.clientDisconnected(ctx => {
+export const onDisconnect = spacetimedb.clientDisconnected((ctx) => {
   const existing = ctx.db.player.identity.find(ctx.sender);
   if (existing) {
     ctx.db.player.identity.update({
@@ -186,75 +206,72 @@ export const setPlayerName = spacetimedb.reducer(
   { name: t.string() },
   (ctx, { name }) => {
     const trimmed = name.trim();
-    if (!trimmed) throw new SenderError('Names must not be empty');
+    if (!trimmed) throw new SenderError("Names must not be empty");
     const existing = ctx.db.player.identity.find(ctx.sender);
-    if (!existing) throw new SenderError('Cannot set name before connecting');
+    if (!existing) throw new SenderError("Cannot set name before connecting");
 
     ctx.db.player.identity.update({ ...existing, name: trimmed });
-  }
+  },
 );
 
 export const joinOrCreateRoom = spacetimedb.reducer(
-  { slug: t.string() },
-  (ctx, { slug }) => {
-    const roomSlug = normalizeSlug(slug || 'demo');
-    const defaultTrack = ctx.db.track.slug.find(DEFAULT_TRACK_SLUG);
-    if (!defaultTrack) throw new SenderError('Default track is not initialized');
+  { slug: t.string(), trackId: t.u64() },
+  (ctx, { slug, trackId }) => {
+    const roomSlug = normalizeSlug(slug || "demo");
+    const roomTrackId = resolveRoomTrackId(ctx, trackId);
 
     let targetRoom = ctx.db.room.slug.find(roomSlug);
     if (!targetRoom) {
       ctx.db.room.insert({
         roomId: 0n,
         slug: roomSlug,
-        trackId: defaultTrack.trackId,
+        trackId: roomTrackId,
         createdBy: ctx.sender,
         createdAt: ctx.timestamp,
       });
       targetRoom = ctx.db.room.slug.find(roomSlug);
     }
-    if (!targetRoom) throw new SenderError('Room could not be created');
+    if (!targetRoom) throw new SenderError("Room could not be created");
 
-    const existingMembership = [
-      ...ctx.db.roomMember.by_room_identity.filter([
-        targetRoom.roomId,
-        ctx.sender,
-      ]),
-    ][0];
+    enterRoom(ctx, targetRoom);
+  },
+);
 
-    if (!existingMembership) {
-      ctx.db.roomMember.insert({
-        memberId: 0n,
-        roomId: targetRoom.roomId,
-        identity: ctx.sender,
-        joinedAt: ctx.timestamp,
-        ready: true,
-      });
+export const createRoom = spacetimedb.reducer(
+  { slug: t.string(), trackId: t.u64() },
+  (ctx, { slug, trackId }) => {
+    const roomSlug = normalizeSlug(slug || "demo");
+    const existingRoom = ctx.db.room.slug.find(roomSlug);
+    if (existingRoom && existingRoom.createdBy.equals(ctx.sender)) {
+      enterRoom(ctx, existingRoom);
+      return;
+    }
+    if (existingRoom) {
+      throw new SenderError("Room already exists");
     }
 
-    const existingCar = ctx.db.carState.identity.find(ctx.sender);
-    const initialCar = {
-      identity: ctx.sender,
-      roomId: targetRoom.roomId,
-      trackId: targetRoom.trackId,
-      x: 0,
-      y: 0,
-      z: 16,
-      qx: 0,
-      qy: 0,
-      qz: 0,
-      qw: 1,
-      speed: 0,
-      checkpointIndex: 0,
-      runStartedAtMs: 0n,
-      updatedAt: ctx.timestamp,
-    };
+    ctx.db.room.insert({
+      roomId: 0n,
+      slug: roomSlug,
+      trackId: resolveRoomTrackId(ctx, trackId),
+      createdBy: ctx.sender,
+      createdAt: ctx.timestamp,
+    });
 
-    if (existingCar) {
-      ctx.db.carState.identity.update(initialCar);
-    } else {
-      ctx.db.carState.insert(initialCar);
-    }
-  }
+    const targetRoom = ctx.db.room.slug.find(roomSlug);
+    if (!targetRoom) throw new SenderError("Room could not be created");
+    enterRoom(ctx, targetRoom);
+  },
+);
+
+export const joinRoom = spacetimedb.reducer(
+  { slug: t.string() },
+  (ctx, { slug }) => {
+    const roomSlug = normalizeSlug(slug || "demo");
+    const targetRoom = ctx.db.room.slug.find(roomSlug);
+    if (!targetRoom) throw new SenderError("Room does not exist");
+    enterRoom(ctx, targetRoom);
+  },
 );
 
 export const leaveRoom = spacetimedb.reducer(
@@ -271,7 +288,34 @@ export const leaveRoom = spacetimedb.reducer(
     if (car && car.roomId === roomId) {
       ctx.db.carState.identity.delete(ctx.sender);
     }
-  }
+  },
+);
+
+export const startRoomRace = spacetimedb.reducer(
+  { roomId: t.u64() },
+  (ctx, { roomId }) => {
+    const targetRoom = ctx.db.room.roomId.find(roomId);
+    if (!targetRoom) throw new SenderError("Room does not exist");
+    if (!targetRoom.createdBy.equals(ctx.sender)) {
+      throw new SenderError("Only the room creator can start the race");
+    }
+
+    requireMembership(ctx, roomId);
+
+    const members = [...ctx.db.roomMember.roomId.filter(roomId)];
+    if (members.length < 2) {
+      throw new SenderError("At least two players are required to start");
+    }
+
+    const existingStart = ctx.db.roomRaceStart.roomId.find(roomId);
+    if (existingStart) return;
+
+    ctx.db.roomRaceStart.insert({
+      roomId,
+      startedBy: ctx.sender,
+      startedAtMs: ctx.timestamp.toMillis(),
+    });
+  },
 );
 
 export const publishCarState = spacetimedb.reducer(
@@ -302,7 +346,7 @@ export const publishCarState = spacetimedb.reducer(
     } else {
       ctx.db.carState.insert(row);
     }
-  }
+  },
 );
 
 export const recordCheckpoint = spacetimedb.reducer(
@@ -320,7 +364,7 @@ export const recordCheckpoint = spacetimedb.reducer(
       ...event,
       createdAt: ctx.timestamp,
     });
-  }
+  },
 );
 
 export const finishLap = spacetimedb.reducer(
@@ -338,7 +382,7 @@ export const finishLap = spacetimedb.reducer(
       ...result,
       createdAt: ctx.timestamp,
     });
-  }
+  },
 );
 
 export const recordGhostFrame = spacetimedb.reducer(
@@ -357,32 +401,84 @@ export const recordGhostFrame = spacetimedb.reducer(
   (ctx, frame) => {
     const lap = ctx.db.lapResult.lapId.find(frame.lapId);
     if (!lap || !lap.identity.equals(ctx.sender)) {
-      throw new SenderError('Cannot record ghost frames for another player');
+      throw new SenderError("Cannot record ghost frames for another player");
     }
 
     ctx.db.ghostFrame.insert({
       frameId: 0n,
       ...frame,
     });
-  }
+  },
 );
 
 function requireMembership(ctx: any, roomId: bigint) {
   const membership = [
     ...ctx.db.roomMember.by_room_identity.filter([roomId, ctx.sender]),
   ][0];
-  if (!membership) throw new SenderError('Player is not in this room');
+  if (!membership) throw new SenderError("Player is not in this room");
+}
+
+function resolveRoomTrackId(ctx: any, trackId: bigint) {
+  if (trackId !== 0n) return trackId;
+
+  const defaultTrack = ctx.db.track.slug.find(DEFAULT_TRACK_SLUG);
+  if (!defaultTrack) throw new SenderError("Default track is not initialized");
+  return defaultTrack.trackId;
+}
+
+function enterRoom(ctx: any, targetRoom: any) {
+  const existingMembership = [
+    ...ctx.db.roomMember.by_room_identity.filter([
+      targetRoom.roomId,
+      ctx.sender,
+    ]),
+  ][0];
+
+  if (!existingMembership) {
+    ctx.db.roomMember.insert({
+      memberId: 0n,
+      roomId: targetRoom.roomId,
+      identity: ctx.sender,
+      joinedAt: ctx.timestamp,
+      ready: true,
+    });
+  }
+
+  const existingCar = ctx.db.carState.identity.find(ctx.sender);
+  const initialCar = {
+    identity: ctx.sender,
+    roomId: targetRoom.roomId,
+    trackId: targetRoom.trackId,
+    x: 0,
+    y: 0,
+    z: 16,
+    qx: 0,
+    qy: 0,
+    qz: 0,
+    qw: 1,
+    speed: 0,
+    checkpointIndex: 0,
+    runStartedAtMs: 0n,
+    updatedAt: ctx.timestamp,
+  };
+
+  if (existingCar) {
+    ctx.db.carState.identity.update(initialCar);
+  } else {
+    ctx.db.carState.insert(initialCar);
+  }
 }
 
 function normalizeSlug(slug: string) {
   const normalized = slug
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9-]/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
+    .replace(/[^a-z0-9-]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
     .slice(0, 32);
 
-  if (!normalized) throw new SenderError('Room code must contain a letter or number');
+  if (!normalized)
+    throw new SenderError("Room code must contain a letter or number");
   return normalized;
 }

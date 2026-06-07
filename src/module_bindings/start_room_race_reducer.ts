@@ -11,6 +11,5 @@ import {
 } from "spacetimedb";
 
 export default {
-  slug: __t.string(),
-  trackId: __t.u64(),
+  roomId: __t.u64(),
 };

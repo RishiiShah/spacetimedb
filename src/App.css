@@ -230,6 +230,98 @@
   cursor: pointer;
 }
 
+.start-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  background: #101923;
+  color: #f8fafc;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.lobby-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background:
+    linear-gradient(180deg, rgba(16, 21, 28, 0.78), rgba(16, 21, 28, 0.94)),
+    url("/assets/skybox/night/front.png") center / cover;
+  color: #f8fafc;
+}
+
+.lobby-panel {
+  width: min(760px, 100%);
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: rgba(10, 16, 23, 0.9);
+  box-shadow: 0 22px 80px rgba(0, 0, 0, 0.34);
+}
+
+.lobby-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.driver-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.lobby-driver-list {
+  display: grid;
+  gap: 8px;
+}
+
+.lobby-driver {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: #101923;
+}
+
+.lobby-driver span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #f8fafc;
+  font-weight: 800;
+}
+
+.lobby-driver strong {
+  flex: 0 0 auto;
+  color: #93c5fd;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.lobby-waiting {
+  min-height: 54px;
+  display: grid;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 8px;
+  background: #101923;
+  color: #cbd5e1;
+  font-weight: 800;
+}
+
 .stage {
   position: relative;
   min-width: 0;
@@ -366,6 +458,12 @@ h2 {
   cursor: not-allowed;
 }
 
+.room-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
 .panel {
   display: grid;
   gap: 10px;
@@ -443,6 +541,10 @@ h2 {
     max-height: 42vh;
     border-left: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .lobby-header {
+    display: grid;
   }
 }
 
