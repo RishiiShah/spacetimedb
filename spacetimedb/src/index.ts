@@ -238,7 +238,10 @@ export const joinOrCreateRoom = spacetimedb.reducer(
     let targetRoom = ctx.db.room.slug.find(roomSlug);
     if (targetRoom) {
       const members = [...ctx.db.roomMember.roomId.filter(targetRoom.roomId)];
-      if (members.length === 0) {
+      const hasOtherMembers = members.some(
+        (member) => !member.identity.equals(ctx.sender),
+      );
+      if (!hasOtherMembers) {
         releaseRoom(ctx, targetRoom.roomId);
         targetRoom = null;
       }
@@ -267,7 +270,12 @@ export const createRoom = spacetimedb.reducer(
     const existingRoom = ctx.db.room.slug.find(roomSlug);
     if (existingRoom) {
       const members = [...ctx.db.roomMember.roomId.filter(existingRoom.roomId)];
-      if (members.length === 0) {
+      const hasOtherMembers = members.some(
+        (member) => !member.identity.equals(ctx.sender),
+      );
+      if (!hasOtherMembers) {
+        // Slug is empty or only the caller is left (original host disconnected
+        // without releasing the row). Reclaim it so create always works.
         releaseRoom(ctx, existingRoom.roomId);
       } else if (existingRoom.createdBy.equals(ctx.sender)) {
         enterRoom(ctx, existingRoom);
