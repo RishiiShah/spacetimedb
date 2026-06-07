@@ -14,6 +14,7 @@ export type RaceHudProps = {
   minimapRacers: MinimapRacer[];
   standings: { id: string; name: string; gapLabel: string }[];
   onLeaveRoom: () => void;
+  countdown?: import("./countdown").CountdownState;
 };
 
 const VOLUME_KEY = "racer.volume";
@@ -53,6 +54,24 @@ export function RaceHud(props: RaceHudProps) {
 
   return (
     <>
+      {props.countdown && (
+        <div className="countdown-overlay">
+          {props.countdown.phase === "controls" && (
+            <div className="countdown-controls">
+              <h2>Get Ready</h2>
+              <ul className="instructions-list">
+                <li><kbd>W</kbd>/<kbd>S</kbd> Throttle / Brake</li>
+                <li><kbd>A</kbd>/<kbd>D</kbd> Steer · <kbd>Space</kbd> Handbrake</li>
+                <li><kbd>C</kbd> Camera · <kbd>R</kbd> Reset</li>
+              </ul>
+            </div>
+          )}
+          {props.countdown.phase === "count" && (
+            <div className="countdown-number">{props.countdown.count}</div>
+          )}
+          {props.countdown.phase === "go" && <div className="countdown-number">GO</div>}
+        </div>
+      )}
       <div className="hud-corner hud-top-left">
         <h3>Race</h3>
         <ol className="hud-standings">

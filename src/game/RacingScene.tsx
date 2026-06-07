@@ -1,13 +1,6 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Html, Text, useGLTF } from "@react-three/drei";
-import {
-  Suspense,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type MutableRefObject,
-} from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { assets } from "./assets";
@@ -15,22 +8,20 @@ import {
   CAR_MODEL_FORWARD_YAW_OFFSET,
   CAR_MODEL_RIDE_HEIGHT,
   CAR_SUSPENSION_LINKS,
-  CAR_VISUAL_MAX_STEER_YAW,
   CAR_WHEEL_SPECS,
   LIVERY_ACCENT_MATERIAL,
   LIVERY_BODY_MATERIAL,
   LOWPOLY_WHEEL_NODE_NAMES,
+  LOWPOLY_FRONT_WHEEL_NODE_NAMES,
   type CarId,
   type CarSuspensionLink,
   type CarWheelSpec,
   drivingActionFromKeyboardEvent,
   getLiveryById,
   inputFromDrivingActions,
-  isLowPolyWheelNodeName,
-  lowPolyWheelSteerYaw,
-  visualWheelSteerYaw,
 } from "./driving";
 import { createSnapshot, type CarSnapshot } from "./network";
+import { RaceAudioController } from "./raceAudio";
 import {
   ROUTE_RAIL_WIDTH,
   cityAssetPaths,
@@ -67,11 +58,13 @@ type RacingSceneProps = {
   trackId?: bigint;
   carId?: CarId;
   liveryId?: string;
+  racing?: boolean;
   remoteCars: CarState[];
   onSnapshot: (snapshot: CarSnapshot) => void;
   onCheckpoint: (checkpointIndex: number, elapsedMs: number) => void;
   onFinishLap: (elapsedMs: number, checkpointCount: number) => void;
   onTelemetry: (telemetry: RacingTelemetry) => void;
+  onLoaded?: () => void;
 };
 
 export const RACING_RENDER_SETTINGS = {
@@ -122,11 +115,13 @@ function SceneContent({
   trackId,
   carId,
   liveryId,
+  racing = true,
   remoteCars,
   onSnapshot,
   onCheckpoint,
   onFinishLap,
   onTelemetry,
+  onLoaded,
 }: RacingSceneProps) {
   const livery = getLiveryById(liveryId);
   const currentTrack = useMemo(() => getTrackById(trackId), [trackId]);
@@ -140,14 +135,18 @@ function SceneContent({
     createVehicleAtTrackReset(currentTrack),
   );
   const localCarRef = useRef<THREE.Group>(null);
-  const localSteerRef = useRef(0);
-  const localSpeedRef = useRef(0);
   const cameraTargetRef = useRef(new THREE.Vector3());
   const lastPublishRef = useRef(0);
   const startMsRef = useRef(performance.now());
   const nextCheckpointRef = useRef(0);
   const awaitingFinishRef = useRef(false);
-  const [cameraMode, setCameraMode] = useState<"chase" | "driver">("chase");
+  const audioRef = useRef<RaceAudioController | null>(null);
+  const [cameraMode, setCameraMode] = useState<"chase" | "driver">("driver");
+  const onLoadedRef = useRef(onLoaded);
+  onLoadedRef.current = onLoaded;
+  useEffect(() => {
+    onLoadedRef.current?.();
+  }, []);
 
   const resetVehicle = (checkpointIndex?: number) => {
     vehicleRef.current = createVehicleAtTrackReset(
@@ -171,6 +170,31 @@ function SceneContent({
     resetVehicle();
   }, [currentTrack]);
 
+  useEffect(() => {
+    const audio = new RaceAudioController();
+    audioRef.current = audio;
+
+    const tryStartCountdown = () => {
+      void audio.unlock().then((ready) => {
+        if (ready && !audio.hasStartedCountdown()) {
+          audio.startCountdown();
+        }
+      });
+    };
+
+    void audio.preload().then(tryStartCountdown);
+
+    const onUnlock = () => tryStartCountdown();
+    window.addEventListener("keydown", onUnlock, { once: true });
+    window.addEventListener("pointerdown", onUnlock, { once: true });
+
+    return () => {
+      window.removeEventListener("keydown", onUnlock);
+      audio.dispose();
+      audioRef.current = null;
+    };
+  }, [currentTrack.id]);
+
   useKeyboardInput(
     inputRef,
     () => {
@@ -185,8 +209,11 @@ function SceneContent({
 
   useFrame(({ camera, clock }, delta) => {
     const now = Date.now();
+    const activeInput = racing
+      ? inputRef.current
+      : { throttle: 0, brake: 0, steer: 0, handbrake: true };
     const vehicle = resolveVehicleObstacleCollisions(
-      stepVehicle(vehicleRef.current, inputRef.current, delta, currentTrack),
+      stepVehicle(vehicleRef.current, activeInput, delta, currentTrack),
       remoteCars.map((car) => ({
         x: car.x,
         z: car.z,
@@ -198,8 +225,6 @@ function SceneContent({
       })),
     );
     vehicleRef.current = vehicle;
-    localSteerRef.current = vehicle.steer;
-    localSpeedRef.current = vehicle.speed;
 
     if (localCarRef.current) {
       localCarRef.current.position.set(
@@ -212,6 +237,7 @@ function SceneContent({
 
     updateCamera(camera, cameraTargetRef.current, vehicle, cameraMode, carId);
 
+    if (!racing) startMsRef.current = performance.now();
     const elapsedMs = Math.max(
       0,
       Math.floor(performance.now() - startMsRef.current),
@@ -223,6 +249,7 @@ function SceneContent({
       distance2D(vehicle.position, nextCheckpoint.position) <=
         checkpointRadius(nextCheckpoint)
     ) {
+      audioRef.current?.playCheckpoint();
       onCheckpoint(nextCheckpoint.index, elapsedMs);
       nextCheckpointRef.current += 1;
       if (nextCheckpointRef.current >= currentTrack.checkpoints.length) {
@@ -237,6 +264,7 @@ function SceneContent({
       distance2D(vehicle.position, currentTrack.spawn.position) <=
         FINISH_LINE_RADIUS
     ) {
+      audioRef.current?.playLap();
       onFinishLap(elapsedMs, currentTrack.checkpoints.length);
       startMsRef.current = performance.now();
       nextCheckpointRef.current = 0;
@@ -250,6 +278,14 @@ function SceneContent({
       cameraMode,
       x: vehicle.position.x,
       z: vehicle.position.z,
+    });
+
+    audioRef.current?.updateDriving({
+      speed: vehicle.speed,
+      throttle: inputRef.current.throttle,
+      brake: inputRef.current.brake,
+      steer: vehicle.steer,
+      handbrake: Boolean(inputRef.current.handbrake),
     });
 
     if (
@@ -291,8 +327,6 @@ function SceneContent({
           carId={carId}
           body={livery.body}
           accent={livery.accent}
-          steerRef={localSteerRef}
-          speedRef={localSpeedRef}
           view={cameraMode}
         />
       </group>
@@ -314,40 +348,17 @@ function CarModel({
   carId,
   body,
   accent,
-  steerRef,
-  speedRef,
-  speed = 0,
   view = "chase",
 }: {
   carId?: CarId;
   body: string;
   accent: string;
-  steerRef?: MutableRefObject<number>;
-  speedRef?: MutableRefObject<number>;
-  speed?: number;
   view?: "chase" | "driver";
 }) {
   if (carId === "lowpoly") {
-    return (
-      <LowPolyCar
-        body={body}
-        steerRef={steerRef}
-        speedRef={speedRef}
-        speed={speed}
-        view={view}
-      />
-    );
+    return <LowPolyCar body={body} view={view} />;
   }
-  return (
-    <CircuitCar
-      body={body}
-      accent={accent}
-      steerRef={steerRef}
-      speedRef={speedRef}
-      speed={speed}
-      view={view}
-    />
-  );
+  return <CircuitCar body={body} accent={accent} view={view} />;
 }
 
 // Clone the meshes' materials for this instance and recolor by material name, so
@@ -380,34 +391,28 @@ function useLiveriedScene(
 const LOWPOLY_SCALE = 0.008;
 const LOWPOLY_Y = 0.04;
 const LOWPOLY_UPRIGHT_X = -Math.PI / 2;
-const WHEEL_VISUAL_RADIUS = 0.46;
-const LOWPOLY_WHEEL_VISUAL_RADIUS = 1.3;
 const LOWPOLY_DRIVER_VISIBLE_NODE_NAMES = new Set<string>([
   "SteeringWheel_02",
+  "Main_body.COmmiting",
   "FrontWheels_bar",
   "Front_Wing3",
   "Front_Wing2.001",
   "Front_Spoiler",
-  ...LOWPOLY_WHEEL_NODE_NAMES,
+  "Wheel_Holder",
+  "Wheel_Holder.002",
+  "intake",
+  "intake2",
+  ...LOWPOLY_FRONT_WHEEL_NODE_NAMES,
 ]);
 
 function LowPolyCar({
   body,
-  steerRef,
-  speedRef,
-  speed = 0,
   view = "chase",
 }: {
   body: string;
-  steerRef?: MutableRefObject<number>;
-  speedRef?: MutableRefObject<number>;
-  speed?: number;
   view?: "chase" | "driver";
 }) {
   const scene = usePreparedModel(assets.cars.lowPoly, true, true, true);
-  const wheelNodesRef = useRef(new Map<string, THREE.Object3D>());
-  const visualSteerRef = useRef(0);
-  const wheelSpinRef = useRef(0);
   // The LowPoly has a baked texture; tint its material so the livery color reads
   // through the stripes.
   const recolor = useMemo(
@@ -420,36 +425,14 @@ function LowPolyCar({
   const tinted = useLiveriedScene(scene, recolor);
 
   useMemo(() => {
-    const wheelNodes = new Map<string, THREE.Object3D>();
     tinted.traverse((object) => {
       if (object instanceof THREE.Mesh) {
         object.visible =
           view === "chase" ||
           LOWPOLY_DRIVER_VISIBLE_NODE_NAMES.has(object.name);
       }
-      if (isLowPolyWheelNodeName(object.name)) {
-        wheelNodes.set(object.name, object);
-      }
     });
-    wheelNodesRef.current = wheelNodes;
   }, [tinted, view]);
-
-  useFrame((_, delta) => {
-    const targetSteer = -(steerRef?.current ?? 0);
-    visualSteerRef.current = THREE.MathUtils.damp(
-      visualSteerRef.current,
-      targetSteer,
-      12,
-      delta,
-    );
-    wheelSpinRef.current +=
-      ((speedRef?.current ?? speed) * delta) / LOWPOLY_WHEEL_VISUAL_RADIUS;
-
-    for (const [name, wheel] of wheelNodesRef.current) {
-      wheel.rotation.z = lowPolyWheelSteerYaw(name, visualSteerRef.current);
-      wheel.rotation.x = -wheelSpinRef.current;
-    }
-  });
 
   return (
     <group
@@ -465,16 +448,10 @@ function LowPolyCar({
 function CircuitCar({
   body,
   accent,
-  steerRef,
-  speedRef,
-  speed = 0,
   view = "chase",
 }: {
   body: string;
   accent: string;
-  steerRef?: MutableRefObject<number>;
-  speedRef?: MutableRefObject<number>;
-  speed?: number;
   view?: "chase" | "driver";
 }) {
   const rawChassis = usePreparedModel(assets.cars.chassis, true, true, true);
@@ -503,37 +480,8 @@ function CircuitCar({
     true,
     true,
   );
-  const wheelGroupsRef = useRef(new Map<CarWheelSpec["id"], THREE.Group>());
-  const wheelVisualsRef = useRef(new Map<CarWheelSpec["id"], THREE.Group>());
-  const steeringWheelRef = useRef<THREE.Group>(null);
-  const visualSteerRef = useRef(0);
-  const wheelSpinRef = useRef(0);
   const visibleWheels =
     view === "driver" ? CAR_WHEEL_SPECS.filter(isFrontWheel) : CAR_WHEEL_SPECS;
-
-  useFrame((_, delta) => {
-    const targetSteer = -(steerRef?.current ?? 0);
-    visualSteerRef.current = THREE.MathUtils.damp(
-      visualSteerRef.current,
-      targetSteer,
-      12,
-      delta,
-    );
-    const steerYaw = visualWheelSteerYaw(visualSteerRef.current);
-    wheelSpinRef.current +=
-      ((speedRef?.current ?? speed) * delta) / WHEEL_VISUAL_RADIUS;
-
-    for (const wheel of CAR_WHEEL_SPECS) {
-      const group = wheelGroupsRef.current.get(wheel.id);
-      if (group) group.rotation.y = isFrontWheel(wheel) ? steerYaw : 0;
-      const visual = wheelVisualsRef.current.get(wheel.id);
-      if (visual) visual.rotation.x = -wheelSpinRef.current;
-    }
-    if (steeringWheelRef.current) {
-      steeringWheelRef.current.rotation.z =
-        -(steerYaw / CAR_VISUAL_MAX_STEER_YAW) * 0.85;
-    }
-  });
 
   return (
     <group scale={0.9} rotation-y={CAR_MODEL_FORWARD_YAW_OFFSET}>
@@ -541,7 +489,6 @@ function CircuitCar({
       {/* You don't see yourself from the cockpit; passengers only show in chase. */}
       {view === "chase" && <DriverFigure />}
       <group
-        ref={steeringWheelRef}
         position={[0, 0.82, 0.36]}
         rotation={[Math.PI * 0.08, 0, 0]}
         scale={0.42}
@@ -553,26 +500,12 @@ function CircuitCar({
           <SuspensionLink key={link.id} link={link} />
         ))}
       {visibleWheels.map((wheel) => (
-        <group
-          key={wheel.id}
-          ref={(group) => {
-            if (group) wheelGroupsRef.current.set(wheel.id, group);
-            else wheelGroupsRef.current.delete(wheel.id);
-          }}
-          position={wheel.position}
-        >
+        <group key={wheel.id} position={wheel.position}>
           <mesh castShadow position={[wheel.position[0] * -0.14, 0.02, 0]}>
             <sphereGeometry args={[0.12, 10, 8]} />
             <meshStandardMaterial color="#050505" roughness={0.75} />
           </mesh>
-          <group
-            ref={(group) => {
-              if (group) wheelVisualsRef.current.set(wheel.id, group);
-              else wheelVisualsRef.current.delete(wheel.id);
-            }}
-          >
-            <primitive object={wheelScene.clone()} scale={0.85} />
-          </group>
+          <primitive object={wheelScene.clone()} scale={0.85} />
         </group>
       ))}
       {view === "chase" && (
@@ -685,7 +618,7 @@ function RemoteCar({ car }: { car: CarState }) {
       position={[car.x, car.y + CAR_MODEL_RIDE_HEIGHT, car.z]}
       quaternion={[car.qx, car.qy, car.qz, car.qw]}
     >
-      <CircuitCar body="#38bdf8" accent="#10212a" speed={car.speed} />
+      <CircuitCar body="#38bdf8" accent="#10212a" />
     </group>
   );
 }
@@ -829,52 +762,46 @@ function RouteContinuousWalls({
   points,
   railOffset,
   railHeight,
-  railColor: _railColor,
+  railColor,
 }: {
   points: Vec3[];
   railOffset: number;
   railHeight: number;
   railColor: string;
 }) {
-  const innerOffset = railOffset - ROUTE_RAIL_WIDTH / 2;
   const leftWallGeometry = useMemo(
     () =>
-      paintBarrierStripes(
-        createRouteVerticalRibbonGeometry(points, railHeight, -innerOffset),
+      createRouteBarrierGeometry(
+        points,
+        railOffset,
+        ROUTE_RAIL_WIDTH,
+        railHeight,
+        -1,
+        railColor,
       ),
-    [innerOffset, points, railHeight],
+    [points, railHeight, railColor, railOffset],
   );
   const rightWallGeometry = useMemo(
     () =>
-      paintBarrierStripes(
-        createRouteVerticalRibbonGeometry(points, railHeight, innerOffset),
+      createRouteBarrierGeometry(
+        points,
+        railOffset,
+        ROUTE_RAIL_WIDTH,
+        railHeight,
+        1,
+        railColor,
       ),
-    [innerOffset, points, railHeight],
+    [points, railHeight, railColor, railOffset],
   );
-  const leftCapGeometry = useMemo(
+  const wallMaterial = useMemo(
     () =>
-      paintBarrierStripes(
-        createRouteRibbonGeometry(
-          points,
-          ROUTE_RAIL_WIDTH,
-          railHeight,
-          -railOffset,
-        ),
-      ),
-    [points, railHeight, railOffset],
+      new THREE.MeshLambertMaterial({
+        vertexColors: true,
+        side: THREE.FrontSide,
+      }),
+    [],
   );
-  const rightCapGeometry = useMemo(
-    () =>
-      paintBarrierStripes(
-        createRouteRibbonGeometry(
-          points,
-          ROUTE_RAIL_WIDTH,
-          railHeight,
-          railOffset,
-        ),
-      ),
-    [points, railHeight, railOffset],
-  );
+  useEffect(() => () => wallMaterial.dispose(), [wallMaterial]);
 
   return (
     <>
@@ -882,26 +809,9 @@ function RouteContinuousWalls({
         <mesh
           key={`wall-${index}`}
           geometry={geometry}
-          castShadow
+          material={wallMaterial}
           receiveShadow
-        >
-          <meshStandardMaterial
-            vertexColors
-            roughness={0.5}
-            metalness={0.04}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
-      ))}
-      {[leftCapGeometry, rightCapGeometry].map((geometry, index) => (
-        <mesh key={`wall-cap-${index}`} geometry={geometry} receiveShadow>
-          <meshStandardMaterial
-            vertexColors
-            roughness={0.58}
-            metalness={0.02}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
+        />
       ))}
     </>
   );
@@ -1130,43 +1040,117 @@ function createRouteRibbonGeometry(
   return geometry;
 }
 
-function createRouteVerticalRibbonGeometry(
+const BARRIER_PANEL_LENGTH = 9;
+const BARRIER_BAND_HEIGHT_RATIO = 0.36;
+const BARRIER_PANEL_RED = new THREE.Color("#d43f32");
+const BARRIER_PANEL_WHITE = new THREE.Color("#f1f3f5");
+const BARRIER_SHADE_COLOR = new THREE.Color("#47515a");
+
+export function createRouteBarrierGeometry(
   points: Vec3[],
+  railOffset: number,
+  railWidth: number,
   height: number,
-  lateralOffset: number,
-  yBase = 0,
+  side: -1 | 1,
+  railColor = "#d8dde4",
+  panelLength = BARRIER_PANEL_LENGTH,
 ) {
   const frames = createRouteFrames(points);
+  const innerOffset = railOffset - railWidth / 2;
+  const outerOffset = railOffset + railWidth / 2;
+  const bodyTopY = height * (1 - BARRIER_BAND_HEIGHT_RATIO);
+  const bodyBase = new THREE.Color(railColor);
+  const bodyShadow = bodyBase.clone().lerp(BARRIER_SHADE_COLOR, 0.38);
+  const capColor = bodyBase.clone();
 
   const positions: number[] = [];
-  const uvs: number[] = [];
+  const colors: number[] = [];
   const indices: number[] = [];
+  let distance = 0;
+  let previousX = frames[0]?.point.x ?? 0;
+  let previousZ = frames[0]?.point.z ?? 0;
 
   for (let index = 0; index < frames.length; index += 1) {
     const frame = frames[index];
-    const base = frame.point
-      .clone()
-      .addScaledVector(frame.right, lateralOffset);
-    positions.push(
-      base.x,
-      base.y + yBase,
-      base.z,
-      base.x,
-      base.y + yBase + height,
-      base.z,
+    distance += Math.hypot(
+      frame.point.x - previousX,
+      frame.point.z - previousZ,
     );
-    uvs.push(index / frames.length, 0, index / frames.length, 1);
+    previousX = frame.point.x;
+    previousZ = frame.point.z;
+
+    const inner = frame.point
+      .clone()
+      .addScaledVector(frame.right, side * innerOffset);
+    const outer = frame.point
+      .clone()
+      .addScaledVector(frame.right, side * outerOffset);
+    const panelColor =
+      Math.floor(distance / panelLength) % 2 === 0
+        ? BARRIER_PANEL_RED
+        : BARRIER_PANEL_WHITE;
+
+    positions.push(
+      inner.x,
+      inner.y,
+      inner.z,
+      inner.x,
+      inner.y + bodyTopY,
+      inner.z,
+      inner.x,
+      inner.y + bodyTopY,
+      inner.z,
+      inner.x,
+      inner.y + height,
+      inner.z,
+      outer.x,
+      outer.y + height,
+      outer.z,
+    );
+    colors.push(
+      bodyShadow.r,
+      bodyShadow.g,
+      bodyShadow.b,
+      bodyBase.r,
+      bodyBase.g,
+      bodyBase.b,
+      panelColor.r,
+      panelColor.g,
+      panelColor.b,
+      panelColor.r,
+      panelColor.g,
+      panelColor.b,
+      capColor.r,
+      capColor.g,
+      capColor.b,
+    );
 
     const nextIndex = (index + 1) % frames.length;
-    const baseIndex = index * 2;
-    const nextBase = nextIndex * 2;
-    indices.push(
+    const baseIndex = index * 5;
+    const nextBase = nextIndex * 5;
+    pushBarrierQuad(
+      indices,
       baseIndex,
       nextBase,
       baseIndex + 1,
-      baseIndex + 1,
-      nextBase,
       nextBase + 1,
+      side,
+    );
+    pushBarrierQuad(
+      indices,
+      baseIndex + 2,
+      nextBase + 2,
+      baseIndex + 3,
+      nextBase + 3,
+      side,
+    );
+    pushBarrierQuad(
+      indices,
+      baseIndex + 3,
+      nextBase + 3,
+      baseIndex + 4,
+      nextBase + 4,
+      side,
     );
   }
 
@@ -1175,47 +1159,26 @@ function createRouteVerticalRibbonGeometry(
     "position",
     new THREE.Float32BufferAttribute(positions, 3),
   );
-  geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
   geometry.setIndex(indices);
   geometry.computeVertexNormals();
   geometry.computeBoundingSphere();
   return geometry;
 }
 
-// Paints the vertical wall ribbon with alternating red/white panels by writing
-// per-vertex colors. `panelLength` is the approximate world length of one panel.
-export function paintBarrierStripes(
-  geometry: THREE.BufferGeometry,
-  panelLength = 9,
-): THREE.BufferGeometry {
-  const position = geometry.getAttribute("position");
-  const colorArray = new Float32Array(position.count * 3);
-  const red = new THREE.Color("#d43f32");
-  const white = new THREE.Color("#f1f3f5");
-
-  // Vertices are emitted in column pairs (base, top) along the route, so each
-  // pair shares one panel; flip the color every panelLength of travel.
-  let distance = 0;
-  let lastX = position.getX(0);
-  let lastZ = position.getZ(0);
-  for (let i = 0; i < position.count; i += 2) {
-    const x = position.getX(i);
-    const z = position.getZ(i);
-    distance += Math.hypot(x - lastX, z - lastZ);
-    lastX = x;
-    lastZ = z;
-    const color = Math.floor(distance / panelLength) % 2 === 0 ? red : white;
-    for (const v of [i, i + 1]) {
-      colorArray[v * 3] = color.r;
-      colorArray[v * 3 + 1] = color.g;
-      colorArray[v * 3 + 2] = color.b;
-    }
+function pushBarrierQuad(
+  indices: number[],
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  side: -1 | 1,
+) {
+  if (side === 1) {
+    indices.push(a, b, c, c, b, d);
+    return;
   }
-  geometry.setAttribute(
-    "color",
-    new THREE.Float32BufferAttribute(colorArray, 3),
-  );
-  return geometry;
+  indices.push(a, c, b, c, d, b);
 }
 
 function createDirectionSignPlacements(
@@ -1323,18 +1286,18 @@ const CHASE_FOV = 58;
 // Per-frame follow factor. Higher catches up faster, which shrinks the extra
 // gap the camera falls behind by at high speed (steady-state lag ~= speed/factor).
 const CHASE_FOLLOW = 0.2;
-// Driver camera: a cockpit seat near the car's center at head height, looking
-// down the track. A wider FOV adds peripheral view and a sense of speed.
-// DRIVER_BACK > 0 sits behind center (more car visible); negative sits forward.
+// Driver camera: seated behind the wheel, looking over the nose with front tyres
+// in frame. Values are tuned for the low-poly F1 cockpit reference.
 const DRIVER_BACK = 0.15;
 const DRIVER_HEIGHT = 1.22;
 const DRIVER_LOOK_AHEAD = 24;
 const DRIVER_LOOK_HEIGHT = 1.08;
 const DRIVER_FOV = 70;
-const LOWPOLY_DRIVER_BACK = 0.34;
-const LOWPOLY_DRIVER_HEIGHT = 0.78;
-const LOWPOLY_DRIVER_LOOK_HEIGHT = 0.68;
-const LOWPOLY_DRIVER_FOV = 76;
+const LOWPOLY_DRIVER_BACK = 0.26;
+const LOWPOLY_DRIVER_HEIGHT = 0.7;
+const LOWPOLY_DRIVER_LOOK_AHEAD = 16;
+const LOWPOLY_DRIVER_LOOK_HEIGHT = 0.5;
+const LOWPOLY_DRIVER_FOV = 74;
 
 export function updateCamera(
   camera: THREE.Camera,
@@ -1351,12 +1314,14 @@ export function updateCamera(
       ? {
           back: LOWPOLY_DRIVER_BACK,
           height: LOWPOLY_DRIVER_HEIGHT,
+          lookAhead: LOWPOLY_DRIVER_LOOK_AHEAD,
           lookHeight: LOWPOLY_DRIVER_LOOK_HEIGHT,
           fov: LOWPOLY_DRIVER_FOV,
         }
       : {
           back: DRIVER_BACK,
           height: DRIVER_HEIGHT,
+          lookAhead: DRIVER_LOOK_AHEAD,
           lookHeight: DRIVER_LOOK_HEIGHT,
           fov: DRIVER_FOV,
         };
@@ -1379,9 +1344,9 @@ export function updateCamera(
       vehicle.position.z - forwardZ * driverProfile.back,
     );
     target.set(
-      vehicle.position.x + forwardX * DRIVER_LOOK_AHEAD,
+      vehicle.position.x + forwardX * driverProfile.lookAhead,
       vehicle.position.y + driverProfile.lookHeight,
-      vehicle.position.z + forwardZ * DRIVER_LOOK_AHEAD,
+      vehicle.position.z + forwardZ * driverProfile.lookAhead,
     );
     camera.lookAt(target);
     return;

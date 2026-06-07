@@ -26,6 +26,8 @@ const reducerMocks = [
   reducerMock,
   reducerMock,
   reducerMock,
+  reducerMock,
+  reducerMock,
 ];
 
 vi.mock("spacetimedb/react", () => ({
@@ -34,7 +36,7 @@ vi.mock("spacetimedb/react", () => ({
     isActive: true,
   }),
   useReducer: () => reducerMocks[mockReducerIndex++ % reducerMocks.length],
-  useTable: () => [mockTables[mockTableIndex++ % 6] ?? []],
+  useTable: () => [mockTables[mockTableIndex++ % 7] ?? []],
 }));
 
 vi.mock("./game/RacingScene", () => ({

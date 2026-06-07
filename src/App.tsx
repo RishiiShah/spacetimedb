@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { reducers, tables } from "./module_bindings";
+import { countdownPhase } from "./game/countdown";
 import { useReducer, useSpacetimeDB, useTable } from "spacetimedb/react";
 import { RacingScene, type RacingTelemetry } from "./game/RacingScene";
 import type { CarSnapshot } from "./game/network";
@@ -62,6 +63,8 @@ function App() {
   const recordCheckpoint = useReducer(reducers.recordCheckpoint);
   const finishLap = useReducer(reducers.finishLap);
   const configureRoom = useReducer(reducers.configureRoom);
+  const markLoaded = useReducer(reducers.markLoaded);
+  const beginCountdown = useReducer(reducers.beginCountdown);
 
   const [players] = useTable(tables.player);
   const [rooms] = useTable(tables.room);
@@ -69,6 +72,7 @@ function App() {
   const [cars] = useTable(tables.carState);
   const [raceStarts] = useTable(tables.roomRaceStart);
   const [laps] = useTable(tables.lapResult);
+  const [countdowns] = useTable(tables.roomCountdown);
 
   const availableTracks = useMemo(
     () => getTracksByMode(selectedMode),
@@ -110,6 +114,18 @@ function App() {
       (raceStart) => raceStart.roomId === activeRoom.roomId,
     );
   }, [activeRoom, raceStarts]);
+
+  const activeCountdown = useMemo(
+    () =>
+      activeRoom
+        ? countdowns.find((c) => c.roomId === activeRoom.roomId)
+        : undefined,
+    [activeRoom, countdowns],
+  );
+  const goMs = activeCountdown ? Number(activeCountdown.startsAtMs) : undefined;
+  const startMs = activeCountdown ? Number(activeCountdown.startedAtMs) : undefined;
+  const isMultiplayer = Boolean(activeRoom);
+  const racing = !isMultiplayer || (goMs !== undefined && Date.now() >= goMs);
 
   const isRoomHost = Boolean(
     activeRoom && identity && activeRoom.createdBy.isEqual(identity),
@@ -266,6 +282,21 @@ function App() {
       setRaceStarted(true);
     }
   }, [activeRaceStart, activeRoom, raceStarted]);
+
+  useEffect(() => {
+    if (!activeRoom || !isRoomHost) return;
+    if (activeCountdown) return;
+    if (activeRoomMembers.length >= 2 && activeRoomMembers.every((m) => m.ready)) {
+      void beginCountdown({ roomId: activeRoom.roomId });
+    }
+  }, [activeRoom, isRoomHost, activeRoomMembers, activeCountdown, beginCountdown]);
+
+  const [, forceTick] = useState(0);
+  useEffect(() => {
+    if (!isMultiplayer || racing || goMs === undefined) return;
+    const id = setInterval(() => forceTick((n) => n + 1), 100);
+    return () => clearInterval(id);
+  }, [isMultiplayer, racing, goMs]);
 
   if (activeRoom && !raceStarted) {
     return (
@@ -653,6 +684,10 @@ function App() {
             onCheckpoint={onCheckpoint}
             onFinishLap={onFinishLap}
             onTelemetry={setTelemetry}
+            racing={racing}
+            onLoaded={() => {
+              if (activeRoom) void markLoaded({ roomId: activeRoom.roomId });
+            }}
           />
         </RenderErrorBoundary>
         <RaceHud
@@ -666,6 +701,11 @@ function App() {
           minimapRacers={minimapRacers}
           standings={standings}
           onLeaveRoom={() => void leaveLobby()}
+          countdown={
+            isMultiplayer && goMs !== undefined && startMs !== undefined && !racing
+              ? countdownPhase(Date.now(), startMs, goMs)
+              : undefined
+          }
         />
         <p className="hint">
           Press R to Reset, C for Camera, Space for Handbrake
