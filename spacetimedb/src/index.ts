@@ -200,6 +200,16 @@ export const onDisconnect = spacetimedb.clientDisconnected((ctx) => {
       lastSeen: ctx.timestamp,
     });
   }
+
+  // A disconnect (including a page refresh) leaves any room the player was in,
+  // so a reconnecting client lands on the home screen rather than dropping back
+  // into a race it no longer has local state for.
+  for (const membership of [...ctx.db.roomMember.identity.filter(ctx.sender)]) {
+    ctx.db.roomMember.memberId.delete(membership.memberId);
+  }
+  if (ctx.db.carState.identity.find(ctx.sender)) {
+    ctx.db.carState.identity.delete(ctx.sender);
+  }
 });
 
 export const setPlayerName = spacetimedb.reducer(
