@@ -562,8 +562,30 @@ function SuspensionLink({ link }: { link: CarSuspensionLink }) {
 }
 
 function RemoteCar({ car }: { car: CarState }) {
+  const groupRef = useRef<THREE.Group>(null);
+  // Latest target transform from the newest snapshot; updated every render.
+  const targetPos = useRef(
+    new THREE.Vector3(car.x, car.y + CAR_MODEL_RIDE_HEIGHT, car.z),
+  );
+  const targetQuat = useRef(
+    new THREE.Quaternion(car.qx, car.qy, car.qz, car.qw),
+  );
+  targetPos.current.set(car.x, car.y + CAR_MODEL_RIDE_HEIGHT, car.z);
+  targetQuat.current.set(car.qx, car.qy, car.qz, car.qw);
+
+  useFrame((_, delta) => {
+    const group = groupRef.current;
+    if (!group) return;
+    // Critically-damped follow toward the latest snapshot — smooths the gap
+    // between low-rate network updates without adding visible lag.
+    const k = 1 - Math.exp(-12 * delta);
+    group.position.lerp(targetPos.current, k);
+    group.quaternion.slerp(targetQuat.current, k);
+  });
+
   return (
     <group
+      ref={groupRef}
       position={[car.x, car.y + CAR_MODEL_RIDE_HEIGHT, car.z]}
       quaternion={[car.qx, car.qy, car.qz, car.qw]}
     >
