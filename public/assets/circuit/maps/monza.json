@@ -1,0 +1,4129 @@
+{
+  "terrainBaseHeight": -1,
+  "trackCurves": [
+    {
+      "uuid": "",
+      "name": "Main Route",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 1,
+        "z": 10
+      },
+      "closed": true,
+      "offset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "tension": 0.5,
+      "curveType": "catmullrom",
+      "points": [
+        {
+          "x": 120,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -30,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -150,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -240,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -320,
+          "y": 0,
+          "z": 200
+        },
+        {
+          "x": -320,
+          "y": 0,
+          "z": 150
+        },
+        {
+          "x": -380,
+          "y": 0,
+          "z": 150
+        },
+        {
+          "x": -540,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -810,
+          "y": 0,
+          "z": 170
+        },
+        {
+          "x": -920,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": -1070,
+          "y": 0,
+          "z": -460
+        },
+        {
+          "x": -1180,
+          "y": 0,
+          "z": -480
+        },
+        {
+          "x": -1250,
+          "y": 0,
+          "z": -670
+        },
+        {
+          "x": -1280,
+          "y": 0,
+          "z": -840
+        },
+        {
+          "x": -1140,
+          "y": 0,
+          "z": -890
+        },
+        {
+          "x": -960,
+          "y": 0,
+          "z": -920
+        },
+        {
+          "x": -890,
+          "y": 0,
+          "z": -800
+        },
+        {
+          "x": -830,
+          "y": -10,
+          "z": -630
+        },
+        {
+          "x": -780,
+          "y": -10,
+          "z": -470
+        },
+        {
+          "x": -730,
+          "y": 0,
+          "z": -310
+        },
+        {
+          "x": -670,
+          "y": 0,
+          "z": -150
+        },
+        {
+          "x": -560,
+          "y": 0,
+          "z": -150
+        },
+        {
+          "x": -480,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": -360,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": -160,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": 50,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": 220,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": 390,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": 480,
+          "y": 0,
+          "z": -40
+        },
+        {
+          "x": 470,
+          "y": 0,
+          "z": 60
+        },
+        {
+          "x": 370,
+          "y": 0,
+          "z": 150
+        },
+        {
+          "x": 240,
+          "y": 0,
+          "z": 200
+        }
+      ],
+      "data": [
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.85,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.85,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.89,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      ]
+    },
+    {
+      "uuid": "af5158c1-4a56-4b9c-9898-86116b6620bb",
+      "name": "guard-rail-left",
+      "tag": "",
+      "snap": {
+        "x": 2,
+        "y": 1,
+        "z": 2
+      },
+      "closed": true,
+      "offset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "tension": 0.5,
+      "curveType": "catmullrom",
+      "points": [
+        {
+          "x": 120,
+          "y": 0,
+          "z": 240
+        },
+        {
+          "x": -30,
+          "y": 0,
+          "z": 240
+        },
+        {
+          "x": -150,
+          "y": 0,
+          "z": 240
+        },
+        {
+          "x": -310,
+          "y": 0,
+          "z": 234
+        },
+        {
+          "x": -348,
+          "y": 0,
+          "z": 214
+        },
+        {
+          "x": -370,
+          "y": 0,
+          "z": 170
+        },
+        {
+          "x": -510,
+          "y": 0,
+          "z": 240
+        },
+        {
+          "x": -810,
+          "y": 0,
+          "z": 200
+        },
+        {
+          "x": -930,
+          "y": 0,
+          "z": -10
+        },
+        {
+          "x": -1090,
+          "y": 0,
+          "z": -408
+        },
+        {
+          "x": -1204,
+          "y": 0,
+          "z": -432
+        },
+        {
+          "x": -1278,
+          "y": 0,
+          "z": -640
+        },
+        {
+          "x": -1330,
+          "y": 0,
+          "z": -830
+        },
+        {
+          "x": -1310,
+          "y": 0,
+          "z": -950
+        },
+        {
+          "x": -1140,
+          "y": 0,
+          "z": -940
+        },
+        {
+          "x": -940,
+          "y": 0,
+          "z": -940
+        },
+        {
+          "x": -860,
+          "y": 0,
+          "z": -800
+        },
+        {
+          "x": -800,
+          "y": -10,
+          "z": -630
+        },
+        {
+          "x": -750,
+          "y": -9,
+          "z": -480
+        },
+        {
+          "x": -720,
+          "y": -3,
+          "z": -380
+        },
+        {
+          "x": -700,
+          "y": 0,
+          "z": -310
+        },
+        {
+          "x": -660,
+          "y": 0,
+          "z": -180
+        },
+        {
+          "x": -540,
+          "y": 0,
+          "z": -180
+        },
+        {
+          "x": -460,
+          "y": 0,
+          "z": -100
+        },
+        {
+          "x": -360,
+          "y": 0,
+          "z": -100
+        },
+        {
+          "x": -160,
+          "y": 0,
+          "z": -100
+        },
+        {
+          "x": 50,
+          "y": 0,
+          "z": -100
+        },
+        {
+          "x": 220,
+          "y": 0,
+          "z": -100
+        },
+        {
+          "x": 390,
+          "y": 0,
+          "z": -100
+        },
+        {
+          "x": 512,
+          "y": 0,
+          "z": -50
+        },
+        {
+          "x": 482,
+          "y": 0,
+          "z": 90
+        },
+        {
+          "x": 420,
+          "y": 0,
+          "z": 158
+        },
+        {
+          "x": 240,
+          "y": 0,
+          "z": 228
+        }
+      ],
+      "data": [
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      ]
+    },
+    {
+      "uuid": "4a7ba3a7-5ffc-4f89-9ae2-a8438fc4de8d",
+      "name": "guard-rail-right",
+      "tag": "",
+      "snap": {
+        "x": 2,
+        "y": 1,
+        "z": 2
+      },
+      "closed": true,
+      "offset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "tension": 0.5,
+      "curveType": "catmullrom",
+      "points": [
+        {
+          "x": 120,
+          "y": 0,
+          "z": 184
+        },
+        {
+          "x": -30,
+          "y": 0,
+          "z": 186
+        },
+        {
+          "x": -150,
+          "y": 0,
+          "z": 190
+        },
+        {
+          "x": -290,
+          "y": 0,
+          "z": 180
+        },
+        {
+          "x": -304,
+          "y": 0,
+          "z": 130
+        },
+        {
+          "x": -380,
+          "y": 0,
+          "z": 120
+        },
+        {
+          "x": -540,
+          "y": 0,
+          "z": 190
+        },
+        {
+          "x": -790,
+          "y": 0,
+          "z": 150
+        },
+        {
+          "x": -890,
+          "y": 0,
+          "z": -90
+        },
+        {
+          "x": -1040,
+          "y": 0,
+          "z": -480
+        },
+        {
+          "x": -1160,
+          "y": 0,
+          "z": -530
+        },
+        {
+          "x": -1230,
+          "y": 0,
+          "z": -690
+        },
+        {
+          "x": -1250,
+          "y": 0,
+          "z": -820
+        },
+        {
+          "x": -1140,
+          "y": 0,
+          "z": -860
+        },
+        {
+          "x": -980,
+          "y": 0,
+          "z": -900
+        },
+        {
+          "x": -910,
+          "y": 0,
+          "z": -790
+        },
+        {
+          "x": -850,
+          "y": -10,
+          "z": -620
+        },
+        {
+          "x": -820,
+          "y": -11,
+          "z": -520
+        },
+        {
+          "x": -800,
+          "y": -9,
+          "z": -450
+        },
+        {
+          "x": -750,
+          "y": 0,
+          "z": -300
+        },
+        {
+          "x": -690,
+          "y": 0,
+          "z": -120
+        },
+        {
+          "x": -570,
+          "y": 0,
+          "z": -120
+        },
+        {
+          "x": -480,
+          "y": 0,
+          "z": -40
+        },
+        {
+          "x": -360,
+          "y": 0,
+          "z": -40
+        },
+        {
+          "x": -160,
+          "y": 0,
+          "z": -40
+        },
+        {
+          "x": 50,
+          "y": 0,
+          "z": -40
+        },
+        {
+          "x": 220,
+          "y": 0,
+          "z": -40
+        },
+        {
+          "x": 390,
+          "y": 0,
+          "z": -40
+        },
+        {
+          "x": 460,
+          "y": 0,
+          "z": -30
+        },
+        {
+          "x": 442,
+          "y": 0,
+          "z": 50
+        },
+        {
+          "x": 374,
+          "y": 0,
+          "z": 114
+        },
+        {
+          "x": 240,
+          "y": 0,
+          "z": 168
+        }
+      ],
+      "data": [
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      ]
+    },
+    {
+      "uuid": "4fb79c63-b406-41e7-a57e-5bd7775e0b0b",
+      "name": "First Chicane",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 1,
+        "z": 10
+      },
+      "closed": true,
+      "offset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "tension": 0.5,
+      "curveType": "catmullrom",
+      "points": [
+        {
+          "x": 120,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -30,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -150,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -240,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -300,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -370,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -450,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -540,
+          "y": 0,
+          "z": 210
+        },
+        {
+          "x": -810,
+          "y": 0,
+          "z": 170
+        },
+        {
+          "x": -920,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": -1070,
+          "y": 0,
+          "z": -460
+        },
+        {
+          "x": -1180,
+          "y": 0,
+          "z": -480
+        },
+        {
+          "x": -1250,
+          "y": 0,
+          "z": -670
+        },
+        {
+          "x": -1280,
+          "y": 0,
+          "z": -840
+        },
+        {
+          "x": -1140,
+          "y": 0,
+          "z": -890
+        },
+        {
+          "x": -960,
+          "y": 0,
+          "z": -920
+        },
+        {
+          "x": -890,
+          "y": 0,
+          "z": -800
+        },
+        {
+          "x": -830,
+          "y": -10,
+          "z": -630
+        },
+        {
+          "x": -780,
+          "y": -10,
+          "z": -470
+        },
+        {
+          "x": -730,
+          "y": 0,
+          "z": -310
+        },
+        {
+          "x": -670,
+          "y": 0,
+          "z": -150
+        },
+        {
+          "x": -560,
+          "y": 0,
+          "z": -150
+        },
+        {
+          "x": -480,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": -360,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": -160,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": 50,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": 220,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": 390,
+          "y": 0,
+          "z": -70
+        },
+        {
+          "x": 480,
+          "y": 0,
+          "z": -40
+        },
+        {
+          "x": 470,
+          "y": 0,
+          "z": 60
+        },
+        {
+          "x": 370,
+          "y": 0,
+          "z": 150
+        },
+        {
+          "x": 240,
+          "y": 0,
+          "z": 200
+        }
+      ],
+      "data": [
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.85,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.85,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.89,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      ]
+    }
+  ],
+  "meshes2D": [
+    {
+      "uuid": "9eeea828-f075-4644-a14c-5a5c025b8b99",
+      "name": "Ground 1",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 0,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.8
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 11,
+            "y": 0.2
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0.124
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": true,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "road1.png",
+      "tiling": 1,
+      "ringStartCurv": 1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "sinWave",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": true,
+      "stitchPolyColor": 9079434
+    },
+    {
+      "uuid": "9eeea829-f075-4644-a14c-5a5c025b8b99",
+      "name": "Ground - Side grass",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 12,
+            "y": 0.1
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 4565553,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 0.2
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 1147667,
+          "u": 2
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": true,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/white.png",
+      "tiling": 1,
+      "ringStartCurv": 1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "sinWaveRandom,0.8",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "grass",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": true,
+      "stitchPolyColor": 1475861
+    },
+    {
+      "uuid": "3c4b0f0d-78d7-4433-8ddb-a6f89b1b7a06",
+      "name": "Guard Rail Right",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 0,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 0,
+            "y": -0.2
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": -0.2
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 2,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": 1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0.01,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "8887479d-cb45-499c-ae33-d8d607569c4e",
+      "name": "Lap Start",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 2
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 330,
+      "ringStart": 0,
+      "ringEnd": 1,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "checker.png",
+      "tiling": 1.4,
+      "ringStartCurv": 1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "f086cc5f-7c77-4834-8674-59087569ef87",
+      "name": "Checkpoint 1",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 80,
+      "ringEnd": 81,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/white.png",
+      "tiling": 0.1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "f48dd997-6017-4cd0-ab9f-ccf13602793a",
+      "name": "Stand Start",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 70,
+            "y": 13
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 0
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 12,
+            "y": 1
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 78,
+      "ringStart": 0,
+      "ringEnd": 9,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/stands.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "4cd33778-11e4-41a7-b413-d665af45e415",
+      "name": "Stand end",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 70,
+            "y": 13
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 0
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 12,
+            "y": 1
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 88,
+      "ringStart": 82,
+      "ringEnd": 87,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/stands.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "6a8c354a-e10c-4e6f-843b-6c87f0060490",
+      "name": "Building grey windows",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -10,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -10,
+            "y": 30
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1.03
+        },
+        {
+          "point": {
+            "x": -10,
+            "y": 30
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -11,
+            "y": 30
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -11,
+            "y": 30
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -11,
+            "y": 32
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 10,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 1,
+      "curveTag": "building-grey-win",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": true,
+      "boundsContent": true,
+      "boundsMargin": 20,
+      "texture": "textures/build-grey-win.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "building",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "1ec66f6b-bcb5-4075-88dc-fb3acddc5529",
+      "name": "Checkpoint 2",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 140,
+      "ringEnd": 141,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/white.png",
+      "tiling": 0.1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "aefb2682-c7df-4977-9a73-9618fd4b9a91",
+      "name": "Guard Rail Left",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 0,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 0,
+            "y": -0.8
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 0,
+            "y": -0.8
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 0,
+            "y": 4
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          2,
+          3
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 1,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": 1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0.01,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "1e08732e-14eb-40f2-be82-3583f487878b",
+      "name": "Checkpoint 3",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 285,
+      "ringEnd": 286,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/white.png",
+      "tiling": 0.1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "266242e0-3def-4adb-856c-20343992b2f8",
+      "name": "Curbs",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 0,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.5
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.8
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 12,
+            "y": 0.1
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0.124
+        }
+      ],
+      "lineIndices": [
+        [
+          2,
+          3
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": true,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "road1.png",
+      "tiling": 0.2,
+      "ringStartCurv": 1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "sinWave",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "curb",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 9079434
+    },
+    {
+      "uuid": "ca4f286e-d743-449d-b890-e08fd9c34dff",
+      "name": "Sand Left",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 30,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 13876068,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 120,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 13876068,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 203,
+      "ringStart": 62,
+      "ringEnd": 101,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/white.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "sand",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "68f90ccc-5d9a-457d-b3ae-5388fd11200b",
+      "name": "Stand Start (Copy)",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -70,
+            "y": 13
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": -40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -40,
+            "y": 0
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 12,
+            "y": 1
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 78,
+      "ringStart": 12,
+      "ringEnd": 16,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/stands.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "46919c48-c942-4fb8-9949-b25d30c7d77d",
+      "name": "Stand sector 2 (Copy)",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 70,
+            "y": 13
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 0
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 12,
+            "y": 1
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 88,
+      "ringStart": 21,
+      "ringEnd": 24,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/stands.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "546e99c8-fecf-4575-9120-52f55b7fc82d",
+      "name": "Stand sector 2 (Copy)",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 70,
+            "y": 13
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 0
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 12,
+            "y": 1
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 88,
+      "ringStart": 31,
+      "ringEnd": 38,
+      "curveIndex": 1,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/stands.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "23dbbd85-6330-4d67-9a1e-0ecfbee2edf7",
+      "name": "Guard Rail Right Collision",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -2,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 0,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": -0.2
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 200,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 2,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": 1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "wall",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0.01,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "43304c51-a2cf-40a2-bd85-b10d9aa5ae62",
+      "name": "Guard Rail Left Collision",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 0,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 2,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": -0.2
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 200,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 1,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": 1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "wall",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0.01,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    }
+  ],
+  "graphs": [
+    {
+      "uuid": "c9ec07cd-de64-4d63-9e28-7de17d802fbc",
+      "name": "Overhang",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "points": [
+        {
+          "x": -610,
+          "y": -380
+        },
+        {
+          "x": -860,
+          "y": -280
+        }
+      ],
+      "segments": [
+        {
+          "p1": 0,
+          "p2": 1
+        }
+      ]
+    },
+    {
+      "uuid": "6c55132d-51c8-4182-978d-154423e2fbd4",
+      "name": "Buildings 1",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "points": [
+        {
+          "x": -220,
+          "y": 420
+        },
+        {
+          "x": -340,
+          "y": 420
+        },
+        {
+          "x": -440,
+          "y": 460
+        },
+        {
+          "x": -590,
+          "y": 460
+        },
+        {
+          "x": 390,
+          "y": 510
+        },
+        {
+          "x": 500,
+          "y": 510
+        },
+        {
+          "x": 240,
+          "y": 510
+        },
+        {
+          "x": 240,
+          "y": 640
+        },
+        {
+          "x": 170,
+          "y": 510
+        },
+        {
+          "x": 170,
+          "y": 640
+        },
+        {
+          "x": -1190,
+          "y": -20
+        },
+        {
+          "x": -1200,
+          "y": 180
+        },
+        {
+          "x": -1260,
+          "y": -70
+        },
+        {
+          "x": -1240,
+          "y": -240
+        }
+      ],
+      "segments": [
+        {
+          "p1": 0,
+          "p2": 1
+        },
+        {
+          "p1": 2,
+          "p2": 3
+        },
+        {
+          "p1": 4,
+          "p2": 5
+        },
+        {
+          "p1": 6,
+          "p2": 7
+        },
+        {
+          "p1": 8,
+          "p2": 9
+        },
+        {
+          "p1": 10,
+          "p2": 11
+        },
+        {
+          "p1": 12,
+          "p2": 13
+        }
+      ]
+    },
+    {
+      "uuid": "69cad03f-9306-482f-8c6b-36d60dc5897e",
+      "name": "Pits",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "points": [
+        {
+          "x": 310,
+          "y": 100
+        },
+        {
+          "x": 30,
+          "y": 100
+        },
+        {
+          "x": -30,
+          "y": 100
+        },
+        {
+          "x": -220,
+          "y": 100
+        }
+      ],
+      "segments": [
+        {
+          "p1": 0,
+          "p2": 1
+        },
+        {
+          "p1": 2,
+          "p2": 3
+        }
+      ]
+    },
+    {
+      "uuid": "73579656-c956-4348-a33a-7f6c59e82b08",
+      "name": "Distant Buildings",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "points": [
+        {
+          "x": 780,
+          "y": 0
+        },
+        {
+          "x": 1010,
+          "y": -100
+        },
+        {
+          "x": 1060,
+          "y": 140
+        },
+        {
+          "x": 800,
+          "y": -180
+        },
+        {
+          "x": 780,
+          "y": -330
+        },
+        {
+          "x": 790,
+          "y": 380
+        }
+      ],
+      "segments": []
+    }
+  ],
+  "graphMeshes": [
+    {
+      "uuid": "2a29dc67-10da-4bcb-b0e6-0cd4583a4333",
+      "name": "Overhang Mesh",
+      "tag": "",
+      "graphIndex": 0,
+      "graphTag": "",
+      "content": "building",
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "width": 32,
+      "roundness": 4,
+      "floorHeight": 39,
+      "ceilHeight": 80,
+      "floorTex": "",
+      "ceilTex": "",
+      "sideTex": "textures/build-grey-win.png",
+      "floorTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "ceilTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "sideTexScale": {
+        "x": 0.16,
+        "y": 0.55
+      },
+      "floorColor": 9537926,
+      "ceilColor": 9537926,
+      "sideColor": 16777215,
+      "kind": "Segments",
+      "flipCeil": false,
+      "flipFloor": false,
+      "flipSide": false,
+      "genFloor": true,
+      "genCeil": true,
+      "genSide": true,
+      "solid": false
+    },
+    {
+      "uuid": "09b0a648-265b-455c-a49d-80a6e7dd6709",
+      "name": "Overhang Pillar Mesh",
+      "tag": "",
+      "graphIndex": 0,
+      "graphTag": "",
+      "content": "",
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "width": 10,
+      "roundness": 8,
+      "floorHeight": 0,
+      "ceilHeight": 42,
+      "floorTex": "",
+      "ceilTex": "",
+      "sideTex": "",
+      "floorTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "ceilTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "sideTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "floorColor": 16777215,
+      "ceilColor": 16777215,
+      "sideColor": 8484982,
+      "kind": "Points",
+      "flipCeil": false,
+      "flipFloor": false,
+      "flipSide": false,
+      "genFloor": true,
+      "genCeil": true,
+      "genSide": true,
+      "solid": false
+    },
+    {
+      "uuid": "55117a9d-77c4-445e-b133-ee7b6cbfdb93",
+      "name": "Buildings 1 Mesh",
+      "tag": "",
+      "graphIndex": 1,
+      "graphTag": "",
+      "content": "",
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "width": 32,
+      "roundness": 1,
+      "floorHeight": 0,
+      "ceilHeight": 40,
+      "floorTex": "",
+      "ceilTex": "",
+      "sideTex": "textures/buildhighrise01.png",
+      "floorTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "ceilTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "sideTexScale": {
+        "x": 0.2,
+        "y": 1
+      },
+      "floorColor": 9537926,
+      "ceilColor": 9537926,
+      "sideColor": 16777215,
+      "kind": "Segments",
+      "flipCeil": false,
+      "flipFloor": false,
+      "flipSide": false,
+      "genFloor": true,
+      "genCeil": true,
+      "genSide": true,
+      "solid": false
+    },
+    {
+      "uuid": "0504846e-0073-4d24-a595-77d8b16427a5",
+      "name": "Buildings 1 Top Mesh",
+      "tag": "",
+      "graphIndex": 1,
+      "graphTag": "",
+      "content": "",
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "width": 34,
+      "roundness": 1,
+      "floorHeight": 40,
+      "ceilHeight": 42,
+      "floorTex": "",
+      "ceilTex": "",
+      "sideTex": "",
+      "floorTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "ceilTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "sideTexScale": {
+        "x": 0.2,
+        "y": 1
+      },
+      "floorColor": 9537926,
+      "ceilColor": 9537926,
+      "sideColor": 13353911,
+      "kind": "Segments",
+      "flipCeil": false,
+      "flipFloor": false,
+      "flipSide": false,
+      "genFloor": true,
+      "genCeil": true,
+      "genSide": true,
+      "solid": false
+    },
+    {
+      "uuid": "dec6c906-01a7-4eab-be7c-8092dac23154",
+      "name": "Pits Mesh",
+      "tag": "",
+      "graphIndex": 2,
+      "graphTag": "",
+      "content": "",
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "width": 32,
+      "roundness": 1,
+      "floorHeight": 0,
+      "ceilHeight": 40,
+      "floorTex": "",
+      "ceilTex": "",
+      "sideTex": "textures/build-grey-win.png",
+      "floorTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "ceilTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "sideTexScale": {
+        "x": 0.16,
+        "y": 0.55
+      },
+      "floorColor": 9537926,
+      "ceilColor": 9537926,
+      "sideColor": 16777215,
+      "kind": "Segments",
+      "flipCeil": false,
+      "flipFloor": false,
+      "flipSide": false,
+      "genFloor": true,
+      "genCeil": true,
+      "genSide": true,
+      "solid": false
+    },
+    {
+      "uuid": "aa8aa9fd-95c1-48b6-9816-8d67c4531d33",
+      "name": "Distant Buildings Mesh",
+      "tag": "",
+      "graphIndex": 3,
+      "graphTag": "",
+      "content": "",
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "width": 64,
+      "roundness": 4,
+      "floorHeight": 0,
+      "ceilHeight": 60,
+      "floorTex": "",
+      "ceilTex": "",
+      "sideTex": "textures/build-grey-win.png",
+      "floorTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "ceilTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "sideTexScale": {
+        "x": 0.2,
+        "y": 1
+      },
+      "floorColor": 9537926,
+      "ceilColor": 9537926,
+      "sideColor": 16777215,
+      "kind": "Points",
+      "flipCeil": false,
+      "flipFloor": false,
+      "flipSide": false,
+      "genFloor": true,
+      "genCeil": true,
+      "genSide": true,
+      "solid": false
+    }
+  ],
+  "extruders": [],
+  "objectInstancers": [
+    {
+      "uuid": "49b63fd2-1ea4-4aec-ab2f-d3c80eff44a3",
+      "name": "Trees Right",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 350,
+      "objectFunction": "",
+      "spawnFunction": "random,0.999",
+      "positionFunction": "between,-40,-120",
+      "scaleFunction": "between,0.9,1.3",
+      "spatialFlags": 3,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "aa06849d-0b71-4da1-9cd1-cef2652e2860",
+      "name": "Trees Left",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 350,
+      "objectFunction": "",
+      "spawnFunction": "random,0.999,191",
+      "positionFunction": "between,40,200",
+      "scaleFunction": "between,0.9,1.3",
+      "spatialFlags": 3,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "1eff0806-3d2b-4c14-9fd8-e462d537ff9c",
+      "name": "Start Banner",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 36,
+      "objectFunction": "eq,1",
+      "spawnFunction": "ringEq,0",
+      "positionFunction": "",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "a4c397e8-aa1a-428a-8bad-86e4cb7c5e0b",
+      "name": "Checkpoint",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 400,
+      "objectFunction": "eq,2",
+      "spawnFunction": "ringEq,80,140,285",
+      "positionFunction": "",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "0d171a15-6ff1-4562-95cd-34dc7abf7003",
+      "name": "Start points",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 310,
+      "objectFunction": "eq,3",
+      "spawnFunction": "ringEq,295",
+      "positionFunction": "",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "b03b40ab-2a15-4b05-a734-2cfa379b5d63",
+      "name": "Arrow Signs Left 1",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 90,
+      "objectFunction": "eq,4",
+      "spawnFunction": "ringBetween,6,12",
+      "positionFunction": "eq,15",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "8e59260b-7c79-4b26-9955-66c1dd723f89",
+      "name": "Arrow Signs Left 2",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 129,
+      "objectFunction": "eq,4",
+      "spawnFunction": "ringBetween,50,55",
+      "positionFunction": "eq,14",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "48096731-448e-4f06-92ca-a53e96904573",
+      "name": "Arrow Signs Left 3",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 129,
+      "objectFunction": "eq,4",
+      "spawnFunction": "ringBetween,58,62",
+      "positionFunction": "eq,15",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "a5826418-0e93-4b42-9b40-883790e8ef3d",
+      "name": "Trees Left (Copy)",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 350,
+      "objectFunction": "",
+      "spawnFunction": "random,0.9,9734",
+      "positionFunction": "between,40,200",
+      "scaleFunction": "between,0.9,1.3",
+      "spatialFlags": 3,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "170034a6-14d8-4481-be9e-f038a13207e8",
+      "name": "Trees Left (Copy) (Copy)",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 350,
+      "objectFunction": "",
+      "spawnFunction": "random,0.9,73459",
+      "positionFunction": "between,40,200",
+      "scaleFunction": "between,0.9,1.3",
+      "spatialFlags": 3,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "95c61f6d-5eb9-4577-9706-ec764220b520",
+      "name": "Arrow Signs Right 3",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 132,
+      "objectFunction": "eq,5",
+      "spawnFunction": "ringBetween,79,83",
+      "positionFunction": "eq,-14",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "5f82f0af-2404-4a9e-987e-f25dba311b1e",
+      "name": "Arrow Signs Left 3 (Copy)",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 73,
+      "objectFunction": "eq,4",
+      "spawnFunction": "ringBetween,60,65",
+      "positionFunction": "eq,17",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "4b446b6a-3e64-4f0b-921e-fb48499ab667",
+      "name": "Arrow Signs Right 3 (Copy)",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 132,
+      "objectFunction": "eq,5",
+      "spawnFunction": "ringBetween,40,43",
+      "positionFunction": "eq,-14",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    }
+  ],
+  "objectPlacers": [],
+  "objects": [
+    {
+      "uuid": "62fe8320-7938-40a9-a18d-9d79ea22dca5",
+      "name": "Low Poly Tree",
+      "className": "StaticModel",
+      "prefab": "",
+      "model": "models/low-poly-tree1.glb",
+      "modelScale": {
+        "x": 0.2,
+        "y": 0.2,
+        "z": 0.2
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}"
+    },
+    {
+      "uuid": "16e2532a-9dff-4f11-9d8d-ffd4309441dd",
+      "name": "New Object",
+      "className": "StartBanner",
+      "prefab": "",
+      "model": "models/start-banner.glb",
+      "modelScale": {
+        "x": 3,
+        "y": 2,
+        "z": 2
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{\"width\": 40}"
+    },
+    {
+      "uuid": "aea59809-c716-4153-a78c-0849945cc650",
+      "name": "New Object",
+      "className": "Checkpoint",
+      "prefab": "",
+      "model": "models/cp-banner.glb",
+      "modelScale": {
+        "x": 2,
+        "y": 2,
+        "z": 2
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{\"width\": 40}"
+    },
+    {
+      "uuid": "31da1624-aace-4df3-bb1a-2ba91e55a1d5",
+      "name": "New Object",
+      "className": "StartPoint",
+      "prefab": "",
+      "model": "",
+      "modelScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}"
+    },
+    {
+      "uuid": "592f2b73-0032-4805-8a66-e5733e1561e9",
+      "name": "Arrow Sign R",
+      "className": "StaticModel",
+      "prefab": "",
+      "model": "models/arrow-sign.glb",
+      "modelScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}"
+    },
+    {
+      "uuid": "4fa715c0-53a3-4fee-9478-3581efefbee6",
+      "name": "Arrow Sign L",
+      "className": "StaticModel",
+      "prefab": "",
+      "model": "models/arrow-sign-left.glb",
+      "modelScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}"
+    }
+  ],
+  "terrainBrushes": [
+    {
+      "uuid": "23493e29-9e5f-46d4-a5b9-504ebdddeb44",
+      "name": "New Terrain Brush",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "postMesh": false,
+      "patches": [
+        {
+          "position": {
+            "x": -650,
+            "y": 50,
+            "z": -300
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": 360,
+            "y": 30,
+            "z": -290
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -320,
+            "y": 70,
+            "z": -720
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -130,
+            "y": 70,
+            "z": -620
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1230,
+            "y": 70,
+            "z": -1530
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1520,
+            "y": 70,
+            "z": -1520
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1510,
+            "y": 130,
+            "z": -1620
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 2,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1360,
+            "y": 160,
+            "z": -1800
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 2,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -300,
+            "y": 130,
+            "z": -1380
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 2,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -290,
+            "y": 130,
+            "z": -1860
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -820,
+            "y": 40,
+            "z": -220
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": 280,
+            "y": 10,
+            "z": -490
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": 100,
+            "y": 40,
+            "z": -770
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1050,
+            "y": 40,
+            "z": -700
+          },
+          "radius": 300,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        }
+      ]
+    },
+    {
+      "uuid": "fbb4ea6b-53f6-4e0b-af54-3437b1af66e5",
+      "name": "PostMesh Terrain Brush",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "postMesh": true,
+      "patches": [
+        {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 160
+          },
+          "radius": 30,
+          "heightScale": 1,
+          "falloff": 0,
+          "additive": false
+        },
+        {
+          "position": {
+            "x": -760,
+            "y": -20,
+            "z": -410
+          },
+          "radius": 30,
+          "heightScale": 1,
+          "falloff": 0,
+          "additive": false
+        },
+        {
+          "position": {
+            "x": -740,
+            "y": -15,
+            "z": -360
+          },
+          "radius": 30,
+          "heightScale": 1,
+          "falloff": 0,
+          "additive": false
+        },
+        {
+          "position": {
+            "x": -730,
+            "y": -10,
+            "z": -320
+          },
+          "radius": 30,
+          "heightScale": 1,
+          "falloff": 0,
+          "additive": false
+        },
+        {
+          "position": {
+            "x": -780,
+            "y": -20,
+            "z": -460
+          },
+          "radius": 30,
+          "heightScale": 1,
+          "falloff": 0,
+          "additive": false
+        }
+      ]
+    }
+  ],
+  "extraData": "{\"numLaps\": 3, \"displayName\": \"Brands Hatch\"}",
+  "_editor": {
+    "cameraPosition": {
+      "x": -1277.2412230483624,
+      "y": 24.338023645260893,
+      "z": -864.6076501264596
+    },
+    "cameraQuaternion": [
+      -0.027246091353810613,
+      -0.6471625103950593,
+      -0.023154754669439545,
+      0.76151309442537
+    ]
+  },
+  "hash": "e73007c26f2f56f70441ca474272dfb7042da568",
+  "thumbnail": "data:image/png;base64,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PXr0yEvZFIIAAgj4IkACUKynH330UZs3b16xyJqnd91115on/MyLgG4OtHz58oyyNC/DnnvumRFjAQEEEIiXQLJqQwIQ6q+oowAaB3D88ceHtqzYYsOGDW3vvfe2Jk2aWL169Sr2Yg+3njx5stNqLgd0SAgggAAClRYgAQjRDRs2zN5///1Q1Oyaa66xLbbYwomXFNhss83s9NNPN01us2TJEvvoo49s1qxZ9u6779rixYuDyw7vuOMO22ijjUrahdfxSZMmOe3v37+/EyOAAAIIxEUgafUgAYjosXPOOceJ1qxZ06644gonHg4cc8wxNmPGDPv888/t+uuvt969e5tuMBTeTssnnHCCffDBB3bsscdqkUcxgaibAzVu3JibAxUz4ikCCCBQFQESgAi9MWPGmB7hVUcccUSJSYA+zBctWmT33HOP7bvvvuGXlri88cYb2913323Tp083rnX/g0lHTV544YU/Ar89U0L121N+IYAAAjESSF5VSABK6DNNBbx06VJn7bnnnmsTJkww3TDopJNOsoceesj0YaXD+Rqo5rygnIEDDjggMuko58tTuVnU1QAkAKnsahqFAAIFECABKAH9iy++MH3AR63WNenDhw+3W2+91XTr4JIO8Ue9trRYp06dbPTo0aVt4tU6jZ8IN1g3B9pyyy3DYZYRQACBggoksXASgFJ67ZFHHrFTTz21lC1KX6XBhMcdd5xtv/32VlRU9PtDgwlvv/32yBcfdNBBdt9990Wu8y2omwPNmTPHaTZzAjgkBBBAAIEKC5AAlEF28803l3gkoKSXfvjhh3b44YcHH/waE6BEoPi2GiugowvNmze377//vviq4PnRRx9tShyCBc9/RN0ciATA8zcFzUcgdgLJrBAJQDn6Td/WNQBQH+ylba6R6/369bNtt93WdDlhadtq3dy5c0u84+CVV15ptWvX1mZePyZOnOi0v0uXLlajRg0nTgABBBBAoPwCJADltNJgP32wazKf//znP6YPe8V0EyFNElSnTh3r1q1bhc/ha8KbqG/7ujogalKiclY3NZu9+uqrwSDLcIM0XiIcYxkBBBAohEBSyyQBqGDPvfTSS/a3v/0t+LDXUYEzzjjDNFVw1BUD5d21ThMoqQhvrysRdtlll3DYu+Wo0wB9+vTxzoEGI4AAAtkUIAHIpmYV9qXLC7/66itnD0ounKBngairAXr27GnrrruuZxI0FwEE4ieQ3BqRAMSk75YtW2Y6mhCuzh577GGDBg0Kh71a1rTAK1euzGhzrVq1rH379hkxFhBAAAEEyi9AAlB+q5xvqTEFUbPfXXzxxTkvO+4FaPKlcB11FCAcYxkBBBDIp0CSyyIBiFnvaUBhuEqaA18TDoXjPi1HjQPQoEufDGgrAgggkE0BEoBsamZhX7pboK4MCO/qoosusnXW8be7ZPLLL79ksGyzzTbcHChDhAUEEMivQLJL8/cTJcb9FnX5ny5B7Nu3b4xrnduqffvttzZz5kynkK5duzoxAggggAACZQuQAJRtlPct9EE3a9Ysp9whQ4YE0wk7KzwJaO6FcFO5HDAswjICCORLIOnlkADEtAcvvfRSp2Y77rij+TzwLWog4D777GObbrqpY0UAAQQQQKB0ARKA0n0KtlbnvN966y2nfI0FcIKeBN555x2bP3++09pevXo5MQIIIIBAbgWSv3cSgBj3YdTlfy1btrT9998/xrXObdVGjx7tFEAC4JAQQAABBMoUIAEok6hwG4wZM8bCdxJUbTQVsX77+Ii6HLBjx4623nrr+chBmxFAoEACaSiWBCDGvfjrr7+aBv6FqzhgwABvz3troqSvv/46g0Qf/h06dMiIsYAAAgggULoACUDpPgVfO3LkSFu8eLFTj8GDBzsxXwJRVwP06NHDl+bTTgQQKLhAOipAAhDzfvy///s/u/vuu51a+nwa4IknnnA8SAAcEgIIIIBAqQIkAKXyxGPl7bffbjodULw2DRo0sC5duhQPefNcV0iEZwXcYostrFWrVt4Y0FAEECicQFpKXictDUlzO3QKYNy4cU4TTzjhBCfmQ0CzAj7//PNOU3v37u3ECCCAAAIIRAuQAES7xC6qowDhSnXv3t0222yzcNiL5aiEiATAi66nkQgUWCA9xZMAJKQvn332WZs3b15GbXVzIF/HAugSyQyM1Qs777yzNWzYcPUz/kcAAQQQKEuABKAsoRitv+2225za+HoaYMGCBfb66687Hj5PlexgEEAAgawLpGmHJAAJ6s3777/ffvzxx4waax58X++IF3UaQKdFMoBYQAABBBCIFCABiGSJZ3DlypUWdejb1zkBoi4HbNu2rVWvXj2eHUitEEAg4QLpqj4JQML685577nFq3LdvX9t4442deNoDOgWw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cMABGY/999/fWrRoYQ0bNrQ6deqU+HbfZJNNbLvttgve7+F9dO3a1TTzqe7HccUVV9iYMWPs7bffNiUTX375pekmX7px2g033BD8u9p7772tWrVqJZaVlBUkAEnpqTzW89tvvw2y7XCR+kAJx1jOr8DChQtN38RLu83wRhttZOeff77dddddtnLlyuCPmP6QRT3mz58ffCPSGIMLL7zQevfuHdwOeZtttrENNtggv42jNARyJlD5HWusTdOmTU3J92mnnRb8u9JpNx2VU2KsL0xnnnlmkJRUvpTCvJIEoDDusS/1nnvuceqoIwA6EuCsIJBXgc8//zxIAnToM68FUxgCCGQINGvWzHSfjn//+9+mUwk6+vbAAw+YTtdlbBjTBRKAmHZMoav1wgsvWNQkNBqMVui6Ub6ZkoA2bdqYDotq6mBMEECgZIF8rdHRN93Qa+LEiaYjqTotkq+yK1MOCUBl1Dx5jQbehJt6zDHHhEMsF1BAkzfpPL7OYWogYHjsRjaqtmzZsmDcga5C0HTRKufWW28Nxhlo3ACPiw2D3BmcffbZ9re//S240qV79+7Wtm3bjIcS4d122822335701UxRUVFVlTkPjSYVYfydf6++D7atWtn/fr1s+OPPz4YAKijnzNnzjS976vy76dWrVo2ZMiQYOCupvCuyr5y9VoSgFzJpmC/uv483IxGjRqZ/sGE4ywXVkAfzBrEVLt2bTvwwAPtmmuusRkzZpgG833//fclVk4TDWngnz7ATjrpJDv44INNf1B32mkn0+meoqIi0z633XZb0x9OJRoq55RTTjGNGdAfOB5DbMjqP/Q8huTEQYfXNT+JzrVrtP706dNterGHToXNnj07OGIZc6TaAAAQAElEQVSpkf7um31NZPHixab3uxLZ6cVeP23aNNMVNBozc9VVVwWD/DT3id73+hBv3Lhx8N7XN3v9u3r66adNZer+KWv2XPpPJSY6oqorC0rfMv9rSQDyb56YEr/44otgVHi4whqRG46xHA8BHQHQH6izzjorGCeghE1XAhQVud+IioqKTN+IdPXAkNUfYLfffrs99thjwR83jYBW/8ejVdQCgcII6EoYXV6opEFfiPTvSgl2mzZtbKuttrIGDRoEA2d11GD58uUlVrJ69erBlQU6glHiRgVYQQJQAPQkFRk1J4BuEKTMOEntoK4IIOCnQC5b/dlnn9n48eODowYbbrhhcJniU089VWKRutpGAwdL3CDPK0gA8gyetOJ0yC1qkFnfvn2T1hTqiwACCORUQFNzd+7c2fbcc89g7oxwYToad/XVV4fDBVsmASgYfXIKHjp0qFPZgQMHOjECCCCAQLwEClMbzTa4zz772NSpU50K6BLBli1bOvFCBEgACqGesDJHjhzp1LhDhw6mUbXOCgIIIIAAAsFMmj179gymKA5z6IqDcKwQyyQAhVBPWJma7erdd991aq2xAE6QAAIIIBATgUJX47vvvjMNsA3XQwNvw7FCLJMAFEI9gWVq8Eq42oMGDQqHWEYAAQQQKCagmwxpSu5iIdN9CVq0aFE8VJDnJAAFYU9eoSNGjHAqrcktmjRp4sQJIIAAAoUXiE8NNA9AuDaaHyAcy/cyCUC+xRNa3rx582zOnDlO7XUXOSdIAAEEEEDgdwFNQPT7wm9PNLnWb08L9osEoGD0ySt42LBhTqXjci7LqRgBBBDwWiBOjf/ggw+c6tSvX9+J5TtAApBv8QSXpzngw9Vv3ry5aS76cJxlBBBAAIE1AuExAIpusMEG+lXQBwlAQfmTVbjuQKcpMcO11vzx4RjLCCCAQOEE4lWyrgYI16hatWrhUN6XSQDyTp7sAseNG+c0gNMADgkBBBBA4HcBzQD4+8JvT3799dffnhXuFwlA4ewTWXLU5YB77bUXkwIlsjepNALpFIhbq6LunaIbDRW6niQAhe6BhJX/ySefWNSkQHG81WXCaKkuAgikVEB36Xzvvfes+FiApUuXFry1JAAF74LkVWDs2LFOpUkAHBICCCBQEIH4FdqmTRvTdf/FB/59/PHHBa8oCUDBuyB5FRgzZoxTad0boGbNmk6cAAIIIOC7QNT5/vfff7/gLCQABe+C5FVg9uzZtmDBAqfiHTt2dGIEEEAAgXwKxLGsfv36OdV65513nFi+AyQA+RZPSXkTJ050WqI7XzlBAggggIDHAnvvvbetv/76GQL6ArV48eKMWCEWSAAKoZ6CMh9//HGnFSQADgkBBBDIq0D8Ctthhx2cSr388stOrBABEoBCqKegzEmTJll4covatWubLglMQfNoAgIIIJAVgeOOO87Zz4wZM5xYIQIkAIVQT0mZU6ZMcVrSo0cPJ0YAAQQQyIdA3MrQ9f9NmzZ1qjV+/HgnVogACUAh1FNSZtSbmGmBU9K5NAMBBKoscOSRR5qOjBbf0dy5cy0OlwCqTiQAUuBRKYEJEyY4r9MtLqMyXmdDAggggEBWBeK3swsvvNCp1IgRI5xYoQIkAIWST0G533zzjU2fPt1pCZMCOSQEEEDAMwENiq5bt67T6mHDhjmxQgVIAAoln5Jyo2YF5OZAKelcmoFAggTiVtUhQ4Y4VXr++edN06k7KwoUIAEoEHxaih01apTTlF133dW22morJ04AAQQQ8EFg0KBB1rJlS6ep1113nRMrZIAEoJD6KSh70aJF9uqrrzot4TSAQ0IAAQRyJhCfHW+22WZ2yy23OBXStf9R86c4G+YxQAKQR+y0FhV1FECzX6W1vbQLAQQQKElAH/Lhkf/a9owzztCvWD1IAGLVHcmsTFQCMGDAAGvQoEEyG0StEUAgUQJxqexZZ51lu+++u1Odu+++22bNmuXECx0gASh0D6Sg/I8++sh0eCvclCOOOCIcYhkBBBBIpYBOe1599dVO2z7//HP75z//6cTjECABiEMvpKAOw4cPd1oxePBgJ0YAAQQQyK5A4fe244472oMPPuhUZNWqVTZw4EBbvny5sy4OARKAOPRCCurwyCOPOK1o2LCh7bHHHk6cAAIIIJAWAU189tRTT9kGG2zgNOmiiy6KnCvF2bBAARKAAsGnrdgvv/zSJk+e7DSrc+fOTowAAgggkC2BQu5niy22MN0Ybcstt3Sqofill17qxOMUIAGIU28kvC5RM1yddtppVq1atYS3jOojgAACmQKNGjWyadOm2dZbb525YvXSnDlzrH///qufxft/EoB490+iajdu3DjnXJcuh2EwYKK6kcoikCCBwlRVI/1fe+0122677ZwKfPrpp9apUyf77rvvnHVxC5AAxK1HElwfveEfeOABpwWnn366EyOAAAIIJFHgwAMPDL7568tNuP5LliyxDh062BdffBFeFctlEoBYdktyK3XzzTc7lW/SpIl169bNiRNAAAEEqiKQ79cecsghpiueatSo4RS9dOlSa9u2rb3//vvOurgGSADi2jMJrdeHH35oGhEbrv4VV1wRDrGMAAIIJEbgggsusEcffdQ23nhjp85fffVV8OH/zjvvOOviHCABiHPvJLRuUfNgN2/e3HToLKFNotoIIBA7gfxV6KabbrJLLrkkssB58+YFs/9p4F/kBjEOkgDEuHOSWrUnnnjCNDtguP7XXHNNOMQyAgggEFuBunXr2syZM+3vf/97ZB1ffPFF22uvvWz+/PmR6+MeJAGIew8ltH5RH/Y6CnDUUUcltEVUGwEE4iSQ67ocdthhNnfuXNtnn30iixo/fnywbtmyZZHrkxAkAUhCLyWwjrr5RdT5sMsuu4x5ARLYn1QZAV8E1l13XbvxxhvtoYceMt3aN6rdQ4cOtYMOOihqVaJiJACJ6q7kVPaXX36xE0880amwZs6K640xnMoSQACBmArkplqtW7e2N954w0499dQSC9Ad/3Qk89dffy1xm6SsIAFISk8lsJ7PPfecjR071qm55sfee++9nTgBBBBAoBACf/7zn+3KK680/c3aeeedI6ugy/t0GjPq9GbkCxIQJAFIQCcluYpnnHGGU/0//elPNmrUKNt0002ddQSSIVC9enVr166dXXjhhcE9IKZPnx4Mllq8eHEwG6QGR91zzz3B4CndKS0ZraKWSRHIZj2bNWsWzOd/zjnn2DrrRH8k3nvvvaYPf40JyGbZhd5XdGsLXSvKT43A/Pnz7dxzz3XaU79+fXvsscecOIF4CugDv3v37sG5UV3upFkfn332Wbv44ouDaU8POOCAYEBUvXr1rGbNmsHI6GOOOcZ0+dTbb78d/NY+4tk6auWjQLVq1ezaa6+1t956y9q3b18iwbHHHmt6/PjjjyVuk9QVJABJ7bkE1fuqq66yp59+2qnx/vvvH5kcOBsSKJiA5jy///77g3nNJ0yYEJwb1TehilZIl1G9++67VtKgqoruj+19Fqh62zXCX0ep/vGPf5S4sw8++MBatWpl+vZf4kYJX7FOwutP9RMiMGjQIPv888+d2mqGQA2qcVYQKKiA7mSmm5288sorpgFP2ahMgwYNbOTIkdnYFftAoFICe+yxh+mIlEb4t2jRosR93HrrrcEhfw0ILHGjFKwgAUhBJyahCV9++aUp646q69VXX22lZeJRryGWGwEdttdgJ31Q77rrrlkvZL/99rOoe6dnvSB2mFqByjRMN+iZMWOGvfzyy1bamBSdstS2p5xyiv3www+VKSpRryEBSFR3JbuyU6dOtUsvvTSyEToXRxIQSZOXoI7Q6JCnBu5tu+225S5TfXr++edbx44dg7nQdTMUPXRO9fLLL4/czw477BAZJ4hAtgV0mnHMmDHBKch999231N1rPEvDhg1NY1tK3TBFK0kAUtSZSWiKRo0/8MADkVVVEqDLcHSoOHIDglkX6N27dzDb2bBhw6xx48al7n/ZsmV23XXXBXd23G233ayoqCgYPKUP+meeecamT5/++2NtYhD1x/Snn34qtRxWIlCyQPnWaPY+TeGrvyd9+vQp9UWTJk0K3vtDhgwpdbs0riQBSGOvxrxNRx99dIkDa5Sxa1TuX//615i3ItnV0yxmGs2veRp22mmnUhvz+OOPW69evax27dqmSZyefPJJmz17dqmv0cr1118/SBD0vPjjk08+Kb7IcwSyIlCtWrXgCOOCBQuCS1KVBJS2448//jh4X3ft2jXy3iWlvTYt60gA0tKTCWuHLqvRdMFR1dZlZHfeeWdwfblmDozahljlBLp162b//e9/bfTo0cEgp9L2ops66UYn+vBXElDatlHroiZ7WrRokX366adRmxNDoEyBqA369etnSkp1zl6no8r6m6EP/uOOO84aNWpklXlfR9UhqTESgKT2XArqrW/5d911V4kt6dSpkymb17Xkm2++eYnbsaJsgT333NOef/55mzhxopU005n2omudNShTk6Poun8NmlK8Mo/OnTs7L4u6HNTZiAACZQhonIouL9bEPJpPpEuXLmW8wuzDDz+0I444Ivjg11iXMl/gwQYkAB50cpybePzxxweHlUuro64h1zdH/aMt6zx1afvxcZ0GPuk65pdeesk0Ar80Ax2Rka9mRIu6kVNpr41aF/VHWedbo7YlhkBZAo0aNQrmodDRK12pcvbZZ1tZp6+0TyWxGuuipEGX/ynGY40ACcAaB34WUEADy7beemvTIefSqqFL1DRSffjw4abnG264YWmbe71Oo/p1Hb8ufRo8eHCpFvpWrm/8OiKjRKvUjcu5skaNGpF/nKMGBZZzl2zmoYAGm2omUR290jd43aVP41fKQ6HD+5qhUqexdOve8rzGt21IAHzr8Zi2V+eFdchZ5/OiJgwqXu1DDz3UdDRAo9I12vy0004zJRDFt/Hx+SabbGL69q7JSzSqv6zr+N977z3r2bOnHXjggZaNb/zFzaNOM+gP+FdffVV8M54jkCGw/fbb21FHHWUaka/3y6uvvmqaLExHrzI2LGFh+fLlpvFDTZs2DQb4KXEoYVPCqwVIAFYj8H98BHR4T9eJ65JAzTdfVs3atm1rN9xwg2kCD33waXChriTQvQbKem1a1m+33Xb28MMP25IlS4I7mrVo0aLUpmkUvq7EkLOm9y1140qujLrR07x58yq5N16WZoGTTjopmCFS71+9RzT1tO4YqkF65W33U089ZQMHDjQdFTzhhBPsf//7X3lf6vV2JABed388G79ixQo788wzTR/imhxo4cKF5aqoPvh0HlvX/uo1S5cuNR0h0CkGHQbfYIMNyrWfuG+kb/oazPToo4/a119/bfomrz9+ZdVbh/f1x3abbbaxBx54oKzNq7T+559/dl6v0wy6okCXazkrCaReQP/+dDi+TZs29uCDDwZXg6xatco07a6mntb7umQEd43eRhw+3gAAD79JREFU9+edd14ws2Tnzp3tkUcecTciUqoACUCpPKwspIAO511//fXBP/DDDz88uHytIvXZaKONgtnpzjjjjGDeASUW+oOjbxqaJESHyfVNQ/veeOONK7LrvGyr0xq6GYnOg5544onBaY/p06cH1ywPHTrUDjnkEKtTp06ZddHREQ221OVRt99+e5nbZ2MDjT8I70ftGTdunGn+AR15GDJkiOlIhD4QmPwprJW8ZV32qb7UpabqWz3uu+8+03tWD13RoxvwTJs2zfRvbquttqpwI/V6fei3bNnSdARLpweU7Fd4R7wgECABCBj4EXcBfVjvsssuwQf6jTfeaBoMWNk665uGJgnRQDn9kdK3EZ2bVnKw9qHTD/qDpcuMNHJY20U9Tj75ZGuz+htNSQ9NMqJxDfrGrkOTSkZ0rXLUvm655ZbgRiXffPONqR7z588PJtzRedDbbrstGPioQU36JlWetuu8vspt2LChlXa5ZXn2VdFtdO8HDS6Mep3O82q8h5IvfUDoA0GnJdTmsh7q9+eee870gaL96/WXXHKJRXkqrisgdHhY26f5oZkYR40aZToC9u9//zvSY62RXPRe02mjyZMnB5ZrbV544QXTXRvVf2X1RXj9rFmzTH2pS03Vt3oowdN7Vg8dno96P5QW07X9GsynI3hr/93qQ//NN98s7WWsK6cACUA5odgsHgL6Q3X66aebznvrph46VaA/WtmuXfXq1U3fmHWZkW5ipD9mUQ/9IdUfvZIeurJB1ynrG/sdd9wRTKWr+yFE7UvJhNqkGfcq2x79wdQ5VA2a0iF3JS+V3VdVX3fUUUeZTsNUdT/FX6/LFDXG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"
+}

@@ -1,0 +1,16 @@
+node_modules
+dist
+*.log
+
+.DS_Store
+.env
+.env.*
+!.env.example
+.vite/
+coverage/
+
+spacetime.local.json
+spacetimedb/dist/
+spacetimedb/node_modules/
+
+.cursor/skills/

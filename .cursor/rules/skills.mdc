@@ -1,0 +1,26 @@
+---
+description: "Project skills for SpacetimeDB, Three.js, React Three Fiber, and game systems guidance."
+globs: **/*
+alwaysApply: true
+---
+
+# Project Skills
+
+Skills live in `.cursor/skills/`. Load a skill's `SKILL.md` when its description matches the task.
+
+## How to use
+
+1. When a task matches a skill's description, read that skill's `SKILL.md` first.
+2. Load only the referenced docs needed for the current subtask.
+3. Do not modify skill files.
+
+## Entry points
+
+| Task | Start here |
+|------|------------|
+| SpacetimeDB (any) | `.cursor/skills/spacetimedb/SKILL.md` |
+| TypeScript server module | `.cursor/skills/spacetimedb-client-typescript/SKILL.md` or `.cursor/rules/typescript-server.mdc` |
+| TypeScript/React client | `.cursor/skills/spacetimedb-client-typescript/SKILL.md` or `.cursor/rules/typescript-client.mdc` |
+| CLI commands | `.cursor/skills/spacetimedb-cli/SKILL.md` or `.cursor/rules/cli.mdc` |
+| Three.js / R3F scene work | `.cursor/skills/r3f-fundamentals/SKILL.md` or `.cursor/skills/threejs-fundamentals/SKILL.md` |
+| Game systems / ECS | `.cursor/skills/game-systems/SKILL.md` or `.cursor/skills/ecs/SKILL.md` |

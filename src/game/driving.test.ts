@@ -1,0 +1,76 @@
+import { describe, expect, it } from "vitest";
+import {
+  CAR_MODEL_FORWARD_YAW_OFFSET,
+  CAR_MODEL_RIDE_HEIGHT,
+  CAR_SUSPENSION_LINKS,
+  CAR_WHEEL_SPECS,
+  drivingActionFromKeyboardEvent,
+  inputFromDrivingActions,
+} from "./driving";
+
+describe("driving controls", () => {
+  it("keeps forward throttle active while steering is pressed and released", () => {
+    const actions = new Set(["throttle"]);
+
+    actions.add("steerLeft");
+    expect(inputFromDrivingActions(actions)).toMatchObject({
+      throttle: 1,
+      brake: 0,
+      steer: -1,
+    });
+
+    actions.delete("steerLeft");
+    expect(inputFromDrivingActions(actions)).toMatchObject({
+      throttle: 1,
+      brake: 0,
+      steer: 0,
+    });
+  });
+
+  it("steers left negative (A) and right positive (D)", () => {
+    expect(inputFromDrivingActions(new Set(["steerLeft"])).steer).toBe(-1);
+    expect(inputFromDrivingActions(new Set(["steerRight"])).steer).toBe(1);
+  });
+
+  it("maps WASD and arrow keys to the same driving actions", () => {
+    expect(drivingActionFromKeyboardEvent({ key: "w", code: "KeyW" })).toBe(
+      "throttle",
+    );
+    expect(
+      drivingActionFromKeyboardEvent({ key: "ArrowUp", code: "ArrowUp" }),
+    ).toBe("throttle");
+    expect(drivingActionFromKeyboardEvent({ key: "a", code: "KeyA" })).toBe(
+      "steerLeft",
+    );
+    expect(
+      drivingActionFromKeyboardEvent({ key: "ArrowLeft", code: "ArrowLeft" }),
+    ).toBe("steerLeft");
+  });
+
+  it("rotates the +Z-authored chassis 180deg so the nose faces travel direction", () => {
+    expect(CAR_MODEL_FORWARD_YAW_OFFSET).toBe(Math.PI);
+  });
+
+  it("lifts the visual car enough for tire bottoms to clear the road", () => {
+    expect(CAR_MODEL_RIDE_HEIGHT).toBeGreaterThanOrEqual(0.22);
+    expect(CAR_MODEL_RIDE_HEIGHT).toBeLessThanOrEqual(0.28);
+  });
+
+  it("defines suspension links that visually connect every tire to the chassis", () => {
+    expect(CAR_SUSPENSION_LINKS).toHaveLength(CAR_WHEEL_SPECS.length * 2);
+
+    for (const wheel of CAR_WHEEL_SPECS) {
+      const links = CAR_SUSPENSION_LINKS.filter(
+        (link) => link.wheelId === wheel.id,
+      );
+
+      expect(links).toHaveLength(2);
+      for (const link of links) {
+        expect(Math.sign(link.end[0])).toBe(Math.sign(wheel.position[0]));
+        expect(Math.abs(link.start[0])).toBeLessThan(Math.abs(link.end[0]));
+        expect(Math.abs(link.end[0] - wheel.position[0])).toBeLessThan(0.25);
+        expect(Math.abs(link.end[2] - wheel.position[2])).toBeLessThan(0.35);
+      }
+    }
+  });
+});

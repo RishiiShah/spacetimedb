@@ -1,0 +1,4992 @@
+{
+  "terrainBaseHeight": -1,
+  "trackCurves": [
+    {
+      "uuid": "",
+      "name": "Main Route",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 2,
+        "z": 10
+      },
+      "closed": true,
+      "offset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "tension": 0.5,
+      "curveType": "catmullrom",
+      "points": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": -50
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": 40
+        },
+        {
+          "x": 0,
+          "y": 4,
+          "z": 150
+        },
+        {
+          "x": -20,
+          "y": 12,
+          "z": 270
+        },
+        {
+          "x": -220,
+          "y": 22,
+          "z": 300
+        },
+        {
+          "x": -310,
+          "y": 26,
+          "z": 300
+        },
+        {
+          "x": -460,
+          "y": 28,
+          "z": 270
+        },
+        {
+          "x": -660,
+          "y": 28,
+          "z": 320
+        },
+        {
+          "x": -840,
+          "y": 28,
+          "z": 350
+        },
+        {
+          "x": -790,
+          "y": 28,
+          "z": 210
+        },
+        {
+          "x": -710,
+          "y": 28,
+          "z": 140
+        },
+        {
+          "x": -630,
+          "y": 28,
+          "z": 20
+        },
+        {
+          "x": -600,
+          "y": 24,
+          "z": -60
+        },
+        {
+          "x": -590,
+          "y": 22,
+          "z": -200
+        },
+        {
+          "x": -510,
+          "y": 20,
+          "z": -190
+        },
+        {
+          "x": -450,
+          "y": 20,
+          "z": -90
+        },
+        {
+          "x": -450,
+          "y": 18,
+          "z": 0
+        },
+        {
+          "x": -480,
+          "y": 16,
+          "z": 110
+        },
+        {
+          "x": -410,
+          "y": 12,
+          "z": 160
+        },
+        {
+          "x": -240,
+          "y": 14,
+          "z": 110
+        },
+        {
+          "x": -160,
+          "y": 12,
+          "z": 40
+        },
+        {
+          "x": -230,
+          "y": 12,
+          "z": -60
+        },
+        {
+          "x": -230,
+          "y": 10,
+          "z": -160
+        },
+        {
+          "x": -200,
+          "y": 8,
+          "z": -310
+        },
+        {
+          "x": -120,
+          "y": 6,
+          "z": -360
+        },
+        {
+          "x": -40,
+          "y": 6,
+          "z": -360
+        },
+        {
+          "x": -10,
+          "y": 2,
+          "z": -230
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": -130
+        }
+      ],
+      "data": [
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0.05,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      ]
+    },
+    {
+      "uuid": "0d535060-cf05-47ab-b723-2b776b741eea",
+      "name": "Guard Rail R",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 2,
+        "z": 10
+      },
+      "closed": true,
+      "offset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "tension": 0.5,
+      "curveType": "catmullrom",
+      "points": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": -50
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": 40
+        },
+        {
+          "x": 0,
+          "y": 4,
+          "z": 150
+        },
+        {
+          "x": -20,
+          "y": 12,
+          "z": 270
+        },
+        {
+          "x": -220,
+          "y": 22,
+          "z": 300
+        },
+        {
+          "x": -310,
+          "y": 26,
+          "z": 300
+        },
+        {
+          "x": -460,
+          "y": 28,
+          "z": 270
+        },
+        {
+          "x": -660,
+          "y": 28,
+          "z": 320
+        },
+        {
+          "x": -810,
+          "y": 28,
+          "z": 320
+        },
+        {
+          "x": -790,
+          "y": 28,
+          "z": 210
+        },
+        {
+          "x": -710,
+          "y": 28,
+          "z": 140
+        },
+        {
+          "x": -630,
+          "y": 28,
+          "z": 20
+        },
+        {
+          "x": -600,
+          "y": 24,
+          "z": -60
+        },
+        {
+          "x": -590,
+          "y": 22,
+          "z": -200
+        },
+        {
+          "x": -510,
+          "y": 20,
+          "z": -190
+        },
+        {
+          "x": -450,
+          "y": 20,
+          "z": -90
+        },
+        {
+          "x": -450,
+          "y": 18,
+          "z": 60
+        },
+        {
+          "x": -410,
+          "y": 16,
+          "z": 130
+        },
+        {
+          "x": -240,
+          "y": 14,
+          "z": 110
+        },
+        {
+          "x": -160,
+          "y": 12,
+          "z": 60
+        },
+        {
+          "x": -160,
+          "y": 12,
+          "z": -50
+        },
+        {
+          "x": -230,
+          "y": 10,
+          "z": -160
+        },
+        {
+          "x": -200,
+          "y": 8,
+          "z": -310
+        },
+        {
+          "x": -120,
+          "y": 6,
+          "z": -360
+        },
+        {
+          "x": -40,
+          "y": 6,
+          "z": -360
+        },
+        {
+          "x": -10,
+          "y": 2,
+          "z": -230
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": -130
+        }
+      ],
+      "data": [
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0.05,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      ]
+    },
+    {
+      "uuid": "5a3de1d8-522d-44b8-a243-24917c72b917",
+      "name": "Guard Rail L",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 2,
+        "z": 10
+      },
+      "closed": true,
+      "offset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "tension": 0.5,
+      "curveType": "catmullrom",
+      "points": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": -50
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": 40
+        },
+        {
+          "x": 0,
+          "y": 4,
+          "z": 150
+        },
+        {
+          "x": -20,
+          "y": 12,
+          "z": 270
+        },
+        {
+          "x": -220,
+          "y": 22,
+          "z": 300
+        },
+        {
+          "x": -310,
+          "y": 26,
+          "z": 300
+        },
+        {
+          "x": -460,
+          "y": 28,
+          "z": 270
+        },
+        {
+          "x": -660,
+          "y": 28,
+          "z": 320
+        },
+        {
+          "x": -880,
+          "y": 28,
+          "z": 400
+        },
+        {
+          "x": -940,
+          "y": 28,
+          "z": 280
+        },
+        {
+          "x": -720,
+          "y": 28,
+          "z": 140
+        },
+        {
+          "x": -630,
+          "y": 28,
+          "z": 20
+        },
+        {
+          "x": -610,
+          "y": 24,
+          "z": -60
+        },
+        {
+          "x": -630,
+          "y": 22,
+          "z": -250
+        },
+        {
+          "x": -510,
+          "y": 20,
+          "z": -260
+        },
+        {
+          "x": -450,
+          "y": 20,
+          "z": -90
+        },
+        {
+          "x": -460,
+          "y": 18,
+          "z": 30
+        },
+        {
+          "x": -490,
+          "y": 16,
+          "z": 110
+        },
+        {
+          "x": -400,
+          "y": 14,
+          "z": 170
+        },
+        {
+          "x": -160,
+          "y": 12,
+          "z": 60
+        },
+        {
+          "x": -160,
+          "y": 12,
+          "z": -50
+        },
+        {
+          "x": -230,
+          "y": 10,
+          "z": -160
+        },
+        {
+          "x": -200,
+          "y": 8,
+          "z": -310
+        },
+        {
+          "x": -120,
+          "y": 6,
+          "z": -360
+        },
+        {
+          "x": -40,
+          "y": 6,
+          "z": -360
+        },
+        {
+          "x": -10,
+          "y": 2,
+          "z": -230
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": -130
+        }
+      ],
+      "data": [
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0.05,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.7,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.8,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.75,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 0.9,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "bank": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      ]
+    }
+  ],
+  "meshes2D": [
+    {
+      "uuid": "9eeea828-f075-4644-a14c-5a5c025b8b99",
+      "name": "Ground",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 0,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.8
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 17,
+            "y": 0.2
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0.124
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": true,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "road1.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "sinWave",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 3,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 2,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "9eeea829-f075-4644-a14c-5a5c025b8b99",
+      "name": "Ground - Side grass",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 17,
+            "y": 0.2
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": true,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "grass.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "sinWaveRandom,0.8",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "grass",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 2,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "3c4b0f0d-78d7-4433-8ddb-a6f89b1b7a06",
+      "name": "Guard Rail R1",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -25,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": 100,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0.01,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "8887479d-cb45-499c-ae33-d8d607569c4e",
+      "name": "Lap Start",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 2
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 350,
+      "ringStart": 0,
+      "ringEnd": 2,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "checker.png",
+      "tiling": 1.4,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "f086cc5f-7c77-4834-8674-59087569ef87",
+      "name": "Checkpoint 1",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 350,
+      "ringStart": 110,
+      "ringEnd": 111,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/white.png",
+      "tiling": 0.1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "e2c86d8a-35a7-4c1b-a92e-a2c45898fdf3",
+      "name": "Guard Rail Collision L1",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 30,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": 100,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "wall",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "f48dd997-6017-4cd0-ab9f-ccf13602793a",
+      "name": "Stand Start",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 70,
+            "y": 13
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 0
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 12,
+            "y": 1
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 72,
+      "ringStart": 0,
+      "ringEnd": 11,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/stands.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "4cd33778-11e4-41a7-b413-d665af45e415",
+      "name": "Stand end",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 70,
+            "y": 13
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 0
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 12,
+            "y": 1
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 88,
+      "ringStart": 76,
+      "ringEnd": 87,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/stands.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "1cc625d0-70b1-4d58-81b3-3c08c49b35b2",
+      "name": "Stand sector 2",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 70,
+            "y": 13
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 0
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 12,
+            "y": 1
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 88,
+      "ringStart": 39,
+      "ringEnd": 47,
+      "curveIndex": 2,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/stands.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "6a8c354a-e10c-4e6f-843b-6c87f0060490",
+      "name": "Building grey windows",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -10,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -10,
+            "y": 30
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1.03
+        },
+        {
+          "point": {
+            "x": -10,
+            "y": 30
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -11,
+            "y": 30
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -11,
+            "y": 30
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -11,
+            "y": 32
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 10,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 1,
+      "curveTag": "building-grey-win",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": true,
+      "boundsContent": true,
+      "boundsMargin": 20,
+      "texture": "textures/build-grey-win.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "building",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "1ec66f6b-bcb5-4075-88dc-fb3acddc5529",
+      "name": "Checkpoint 1 (Copy)",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0.05
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 350,
+      "ringStart": 245,
+      "ringEnd": 246,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/white.png",
+      "tiling": 0.1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "a606b8e7-4d95-4492-9592-a63eb504baf7",
+      "name": "Curbs",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 0,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.2
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0.8
+        },
+        {
+          "point": {
+            "x": 15,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 17,
+            "y": 0.2
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0.124
+        }
+      ],
+      "lineIndices": [
+        [
+          2,
+          3
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": -1,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": true,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "road1.png",
+      "tiling": 0.2,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "sinWave",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "curb",
+      "collisionRingMult": 3,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 2,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "3dd806eb-a233-4b07-9fa2-bcdce623b028",
+      "name": "Stand sector 2 (Copy)",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 70,
+            "y": 13
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 3
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 40,
+            "y": 0
+          },
+          "normal": {
+            "x": 0.25,
+            "y": 0.75
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 12,
+            "y": 1
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 10,
+            "y": 0
+          },
+          "normal": {
+            "x": -0.25,
+            "y": 0.75
+          },
+          "color": 65535,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 88,
+      "ringStart": 24,
+      "ringEnd": 32,
+      "curveIndex": 2,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": true,
+      "boundsMargin": 0,
+      "texture": "textures/stands.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "c43f616f-fc67-48a8-9711-966cc1f74924",
+      "name": "Guard Rail L1",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -25,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          2,
+          3
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": 100,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0.01,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "b1ed1d2f-723d-462b-b414-887ef89b23a9",
+      "name": "Guard Rail R2",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -25,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 141,
+      "ringEnd": 400,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0.01,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "6d6228f6-be3e-45c7-8faf-4e96f199c1a8",
+      "name": "Guard Rail L2",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -25,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          2,
+          3
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 218,
+      "ringEnd": 400,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0.01,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "ed4e0551-2b13-409d-8c10-5e8a6d2147a0",
+      "name": "Guard Rail R2 Curve2",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -25,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 94,
+      "ringEnd": 150,
+      "curveIndex": 1,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0.01,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "ede621e9-2ffe-4b99-aa37-fde54462915e",
+      "name": "Guard Rail L1 Curve2",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -25,
+            "y": 4
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": 1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 0.2
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": -1,
+            "y": 0
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          2,
+          3
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": 234,
+      "curveIndex": 2,
+      "curveTag": "",
+      "solid": false,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "ground",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0.01,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "0ff95450-3d17-41df-a4f0-2cbdf66aa419",
+      "name": "Ground - Sand R1",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -25,
+            "y": 0.19
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 14600887,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -60,
+            "y": 0.19
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 14600887,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          1,
+          0
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 100,
+      "ringEnd": 145,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/white.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "sinWaveRandom,0.8",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "grass",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 2,
+      "tHeightOffset": 2,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "7026a947-6613-4bfb-9538-7897c6dece0f",
+      "name": "Ground - Sand L1",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 25,
+            "y": 0.19
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 14600887,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 180,
+            "y": 0.19
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 14600887,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 100,
+      "ringEnd": 236,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "textures/white.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "sinWaveRandom,0.8",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "grass",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 1,
+      "tHeightOffset": 2,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "d61ad09a-aab1-4d08-96bf-c3197739cdad",
+      "name": "Guard Rail Collision L1 Curve2",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 30,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 88,
+      "ringEnd": 232,
+      "curveIndex": 2,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "wall",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "fedf77b3-c1d3-489e-9692-2d06c2a7a579",
+      "name": "Guard Rail Collision R1",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -25,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -30,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          1,
+          0
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 0,
+      "ringEnd": 100,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "wall",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "a8c684ad-fe0f-4dc3-98ef-e7a2837fe7a0",
+      "name": "Guard Rail Collision R1 Curve2",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -25,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -30,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          1,
+          0
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 88,
+      "ringEnd": 162,
+      "curveIndex": 1,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "wall",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "dd8d8bfb-6425-4b76-968b-1026d533f7bb",
+      "name": "Guard Rail Collision L2",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": 25,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": 30,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          0,
+          1
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 221,
+      "ringEnd": 400,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "wall",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    },
+    {
+      "uuid": "019d297e-3b1e-4442-b845-ef80cc6a08a4",
+      "name": "Guard Rail Collision R2",
+      "tag": "",
+      "vertices": [
+        {
+          "point": {
+            "x": -25,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 0
+        },
+        {
+          "point": {
+            "x": -30,
+            "y": 4
+          },
+          "normal": {
+            "x": 0,
+            "y": 1
+          },
+          "color": 16777215,
+          "u": 1
+        }
+      ],
+      "lineIndices": [
+        [
+          1,
+          0
+        ]
+      ],
+      "ringMod": 1,
+      "ringCount": 400,
+      "ringStart": 155,
+      "ringEnd": 400,
+      "curveIndex": 0,
+      "curveTag": "",
+      "solid": true,
+      "visible": true,
+      "mirrored": false,
+      "swapUV": false,
+      "boundsContent": false,
+      "boundsMargin": 0,
+      "texture": "gpwall.png",
+      "tiling": 1,
+      "ringStartCurv": -1,
+      "ringEndCurv": -1,
+      "curvMin": 0,
+      "curvMax": 0,
+      "colorFunction": "id",
+      "scaleFunctionX": "curveX",
+      "scaleFunctionY": "",
+      "collisionMaterial": "wall",
+      "collisionRingMult": 1,
+      "doubleSidedThickness": 0,
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "content": "track",
+      "stitch": false,
+      "stitchPolyColor": 16777215
+    }
+  ],
+  "graphs": [
+    {
+      "uuid": "e536f579-1e15-41ac-8795-2756d5f9ee10",
+      "name": "building grey win",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "points": [
+        {
+          "x": 120,
+          "y": -130
+        },
+        {
+          "x": 120,
+          "y": 120
+        }
+      ],
+      "segments": [
+        {
+          "p1": 0,
+          "p2": 1
+        }
+      ]
+    },
+    {
+      "uuid": "01bc7025-ff14-4c39-b7d6-314752eb06d7",
+      "name": "buildhighrise02 points",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "points": [
+        {
+          "x": 260,
+          "y": 470
+        },
+        {
+          "x": 130,
+          "y": 460
+        },
+        {
+          "x": -20,
+          "y": 500
+        },
+        {
+          "x": 390,
+          "y": -340
+        },
+        {
+          "x": 380,
+          "y": -210
+        },
+        {
+          "x": 390,
+          "y": -70
+        },
+        {
+          "x": 70,
+          "y": 820
+        },
+        {
+          "x": 280,
+          "y": 780
+        }
+      ],
+      "segments": []
+    }
+  ],
+  "graphMeshes": [
+    {
+      "uuid": "9d57e408-f57a-422d-a45b-0af7d2834333",
+      "name": "buildgreywin mesh",
+      "tag": "",
+      "graphIndex": 0,
+      "graphTag": "",
+      "content": "",
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "width": 40,
+      "roundness": 4,
+      "floorHeight": 0,
+      "ceilHeight": 60,
+      "floorTex": "",
+      "ceilTex": "",
+      "sideTex": "textures/build-grey-win.png",
+      "floorTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "ceilTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "sideTexScale": {
+        "x": 0.3,
+        "y": 2
+      },
+      "floorColor": 16777215,
+      "ceilColor": 16777215,
+      "sideColor": 16777215,
+      "kind": "Segments",
+      "flipCeil": false,
+      "flipFloor": false,
+      "flipSide": false,
+      "genFloor": true,
+      "genCeil": true,
+      "genSide": true,
+      "solid": false
+    },
+    {
+      "uuid": "385a2c05-d04c-40ce-b0c1-cf53016bde1d",
+      "name": "buildhighrise02 points mesh",
+      "tag": "",
+      "graphIndex": 1,
+      "graphTag": "",
+      "content": "",
+      "affectTerrain": 0,
+      "tHeightOffset": 0.25,
+      "width": 40,
+      "roundness": 4,
+      "floorHeight": 0,
+      "ceilHeight": 80,
+      "floorTex": "",
+      "ceilTex": "",
+      "sideTex": "textures/buildhighrise02.png",
+      "floorTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "ceilTexScale": {
+        "x": 1,
+        "y": 1
+      },
+      "sideTexScale": {
+        "x": 0.3,
+        "y": 4
+      },
+      "floorColor": 16777215,
+      "ceilColor": 16777215,
+      "sideColor": 16777215,
+      "kind": "Points",
+      "flipCeil": false,
+      "flipFloor": false,
+      "flipSide": false,
+      "genFloor": true,
+      "genCeil": true,
+      "genSide": true,
+      "solid": false
+    }
+  ],
+  "extruders": [],
+  "objectInstancers": [
+    {
+      "uuid": "49b63fd2-1ea4-4aec-ab2f-d3c80eff44a3",
+      "name": "Trees Right",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 350,
+      "objectFunction": "",
+      "spawnFunction": "random,0.99",
+      "positionFunction": "between,-40,-120",
+      "scaleFunction": "between,0.9,1.3",
+      "spatialFlags": 3,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "aa06849d-0b71-4da1-9cd1-cef2652e2860",
+      "name": "Trees Left",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 350,
+      "objectFunction": "",
+      "spawnFunction": "random,0.99,191",
+      "positionFunction": "between,40,200",
+      "scaleFunction": "between,0.9,1.3",
+      "spatialFlags": 3,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "1eff0806-3d2b-4c14-9fd8-e462d537ff9c",
+      "name": "Start Banner",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 36,
+      "objectFunction": "eq,1",
+      "spawnFunction": "ringEq,0",
+      "positionFunction": "",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "a4c397e8-aa1a-428a-8bad-86e4cb7c5e0b",
+      "name": "Checkpoint",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 350,
+      "objectFunction": "eq,2",
+      "spawnFunction": "ringEq,110,245",
+      "positionFunction": "",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "0d171a15-6ff1-4562-95cd-34dc7abf7003",
+      "name": "Start points",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 350,
+      "objectFunction": "eq,3",
+      "spawnFunction": "ringEq,345",
+      "positionFunction": "",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": false,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "b03b40ab-2a15-4b05-a734-2cfa379b5d63",
+      "name": "Arrow Signs Left 1",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 104,
+      "objectFunction": "eq,4",
+      "spawnFunction": "ringBetween,7,12",
+      "positionFunction": "eq,19",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "8e59260b-7c79-4b26-9955-66c1dd723f89",
+      "name": "Arrow Signs Left 2",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 104,
+      "objectFunction": "eq,4",
+      "spawnFunction": "ringBetween,26,30",
+      "positionFunction": "eq,14",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "48096731-448e-4f06-92ca-a53e96904573",
+      "name": "Arrow Signs Left 3",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 104,
+      "objectFunction": "eq,4",
+      "spawnFunction": "ringBetween,45,50",
+      "positionFunction": "eq,14",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "a5826418-0e93-4b42-9b40-883790e8ef3d",
+      "name": "Trees Left (Copy)",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 350,
+      "objectFunction": "",
+      "spawnFunction": "random,0.9,9734",
+      "positionFunction": "between,40,200",
+      "scaleFunction": "between,0.9,1.3",
+      "spatialFlags": 3,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "170034a6-14d8-4481-be9e-f038a13207e8",
+      "name": "Trees Left (Copy) (Copy)",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 350,
+      "objectFunction": "",
+      "spawnFunction": "random,0.9,73459",
+      "positionFunction": "between,40,200",
+      "scaleFunction": "between,0.9,1.3",
+      "spatialFlags": 3,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "6087f0f4-120e-4420-92eb-c47d544b75f7",
+      "name": "Arrow Signs Left 4",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 104,
+      "objectFunction": "eq,4",
+      "spawnFunction": "ringBetween,83,92",
+      "positionFunction": "eq,15",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "950306dc-d9d6-4af2-a266-c13f3162d0d4",
+      "name": "Arrow Signs Right 1",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 104,
+      "objectFunction": "eq,5",
+      "spawnFunction": "ringBetween,60,65",
+      "positionFunction": "eq,-15",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    },
+    {
+      "uuid": "732c7d39-68d8-4398-b4ed-673b7a7bcd1e",
+      "name": "Arrow Signs Right 2",
+      "tag": "",
+      "curveIndex": 0,
+      "curveTag": "",
+      "ringCount": 104,
+      "objectFunction": "eq,5",
+      "spawnFunction": "ringBetween,70,74",
+      "positionFunction": "eq,-15",
+      "scaleFunction": "",
+      "spatialFlags": 0,
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": false,
+      "heightOffset": 0,
+      "maxTerrainSteep": 0
+    }
+  ],
+  "objectPlacers": [
+    {
+      "uuid": "82aec815-cb8c-4bab-b3d7-9d07532bc705",
+      "name": "Mountain Trees",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -1020,
+        "y": 150,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 1337,
+      "radius": 487,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "57b3ce98-c31f-4468-b4fc-23cac31a46c0",
+      "name": "Mountain Trees 1",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -1060,
+        "y": 150,
+        "z": 280
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 1337,
+      "radius": 487,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "dca8156a-64af-4e9b-a9bf-4d658c19f038",
+      "name": "Mountain Trees 2",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -1060,
+        "y": 150,
+        "z": 520
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 1337,
+      "radius": 487,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "38a32b06-da16-4e7b-a101-75cda5a92264",
+      "name": "Mountain Trees 3",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -800,
+        "y": 150,
+        "z": -500
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 1337,
+      "radius": 487,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "239cda10-ee60-481d-901b-08e5ab4cb9ad",
+      "name": "Mountain Trees 4",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -350,
+        "y": 150,
+        "z": -640
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 1337,
+      "radius": 487,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "bde5fb8b-97a6-45bf-9537-fbdfcad73485",
+      "name": "Mountain Trees 5",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -590,
+        "y": 150,
+        "z": -640
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 1337,
+      "radius": 487,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "93dbd856-f9b5-4862-ae81-0fc33c78dcbf",
+      "name": "Mountain Trees 6",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -1120,
+        "y": 150,
+        "z": 390
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 1337,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "c29bd9bf-9c3a-490e-bcad-a32f3feee83e",
+      "name": "Mountain Trees 7",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -1120,
+        "y": 150,
+        "z": 330
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "f6a42e33-7089-40d5-af66-42bef2079892",
+      "name": "Mountain Trees 8",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -1120,
+        "y": 150,
+        "z": 110
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "dcf47d28-868c-43dc-ab7c-82c3e9989db7",
+      "name": "Mountain Trees 9",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -1010,
+        "y": 150,
+        "z": 30
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "13e42cc3-1253-421b-ab74-38ceba9bea08",
+      "name": "Mountain Trees 10",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -910,
+        "y": 150,
+        "z": -40
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "58a8134d-08ff-478e-bf18-c48341bf5bac",
+      "name": "Mountain Trees 11",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -820,
+        "y": 150,
+        "z": -320
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "41047576-11dc-4bfa-9a60-5dc1d3326652",
+      "name": "Mountain Trees 12",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -560,
+        "y": 150,
+        "z": -390
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "78e262b4-8f61-4646-a215-5c237a8daad8",
+      "name": "Mountain Trees 13",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -100,
+        "y": 150,
+        "z": -500
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "6680d410-3a09-4663-b9a0-d432042de1da",
+      "name": "Mountain Trees 14",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -370,
+        "y": 150,
+        "z": 470
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "70ca1130-1813-46ab-9537-4e1136255121",
+      "name": "Mountain Trees 14 (Copy)",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -960,
+        "y": 150,
+        "z": 640
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "8fe73569-a8e1-448f-9870-988adf4b3cf5",
+      "name": "Mountain Trees 14 (Copy) (Copy)",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -860,
+        "y": 150,
+        "z": 690
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "bd51e76e-dfc5-4cfa-8dcd-7052532e0382",
+      "name": "Mountain Trees 15",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -830,
+        "y": 150,
+        "z": -630
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 212,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "0c48c554-b076-4f08-bc50-d702f32ff3f0",
+      "name": "Mountain Trees 16",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -390,
+        "y": 150,
+        "z": -480
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 212,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "f0d2b5ff-4b1f-4fa8-8599-0eb40e76c01b",
+      "name": "Mountain Trees 17",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -150,
+        "y": 150,
+        "z": -530
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 212,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "97121cc2-5b71-482b-8fbc-b1ced7f6ff89",
+      "name": "Mountain Trees 18",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": 50,
+        "y": 150,
+        "z": -530
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 649560,
+      "radius": 212,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 0,
+      "spatialFlags": 3
+    },
+    {
+      "uuid": "77487562-3816-47dc-93eb-2c17fd2de234",
+      "name": "Mountain Trees 19",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "type": "radius",
+      "object": 6,
+      "position": {
+        "x": -1400,
+        "y": 170,
+        "z": 630
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "scale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "seed": 324780,
+      "radius": 186,
+      "chance": 1,
+      "maxObjects": 200,
+      "minScale": 1,
+      "maxScale": 1,
+      "jitter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}",
+      "compiled": true,
+      "compiledRotationFix": {
+        "x": -90,
+        "y": 0,
+        "z": 0
+      },
+      "useTerrainHeight": true,
+      "heightOffset": -4,
+      "maxTerrainSteep": 20,
+      "spatialFlags": 3
+    }
+  ],
+  "objects": [
+    {
+      "uuid": "a8249972-27ea-41da-93b1-c90281848e99",
+      "name": "Tree",
+      "className": "StaticModel",
+      "prefab": "",
+      "model": "models/low-poly-tree1.glb",
+      "modelScale": {
+        "x": 0.2,
+        "y": 0.2,
+        "z": 0.2
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}"
+    },
+    {
+      "uuid": "871f01e9-3886-4bcf-a460-2e1408fe8bdf",
+      "name": "Start Banner",
+      "className": "StartBanner",
+      "prefab": "",
+      "model": "models/start-banner.glb",
+      "modelScale": {
+        "x": 3,
+        "y": 2,
+        "z": 2
+      },
+      "triggerSize": {
+        "x": 20,
+        "y": 10,
+        "z": 1
+      },
+      "props": "{\"width\": 40}"
+    },
+    {
+      "uuid": "ecff7e98-c86e-4686-8533-94ddc0c900bb",
+      "name": "CP",
+      "className": "Checkpoint",
+      "prefab": "",
+      "model": "models/cp-banner.glb",
+      "modelScale": {
+        "x": 3,
+        "y": 2,
+        "z": 2
+      },
+      "triggerSize": {
+        "x": 20,
+        "y": 10,
+        "z": 1
+      },
+      "props": "{\"width\": 40}"
+    },
+    {
+      "uuid": "9bdcd323-e026-4e4c-a4e6-9c7d1a923b3c",
+      "name": "Start Point",
+      "className": "StartPoint",
+      "prefab": "",
+      "model": "",
+      "modelScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}"
+    },
+    {
+      "uuid": "429733b9-5ee9-44f5-914f-20e560143820",
+      "name": "Arrow Sign Right",
+      "className": "StaticModel",
+      "prefab": "",
+      "model": "models/arrow-sign.glb",
+      "modelScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}"
+    },
+    {
+      "uuid": "1632f704-ad2c-408e-ae66-c79ddf310de3",
+      "name": "Arrow Sign Left",
+      "className": "StaticModel",
+      "prefab": "",
+      "model": "models/arrow-sign.glb",
+      "modelScale": {
+        "x": -1,
+        "y": 1,
+        "z": 1
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}"
+    },
+    {
+      "uuid": "b1e68f15-2a8a-47cd-9dc9-1f77a70b906e",
+      "name": "Tree LOD",
+      "className": "StaticModel",
+      "prefab": "",
+      "model": "models/tree-lod.glb",
+      "modelScale": {
+        "x": 0.2,
+        "y": 0.2,
+        "z": 0.2
+      },
+      "triggerSize": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "props": "{}"
+    }
+  ],
+  "terrainBrushes": [
+    {
+      "uuid": "23493e29-9e5f-46d4-a5b9-504ebdddeb44",
+      "name": "New Terrain Brush",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "postMesh": false,
+      "patches": [
+        {
+          "position": {
+            "x": -840,
+            "y": 50,
+            "z": -500
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1320,
+            "y": 100,
+            "z": 500
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -580,
+            "y": 80,
+            "z": 610
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1280,
+            "y": 120,
+            "z": 40
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1470,
+            "y": 160,
+            "z": 330
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -680,
+            "y": 80,
+            "z": -670
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -540,
+            "y": 30,
+            "z": 190
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -260,
+            "y": 30,
+            "z": 200
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1860,
+            "y": 240,
+            "z": 210
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1580,
+            "y": 210,
+            "z": 730
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 4,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1490,
+            "y": 260,
+            "z": -270
+          },
+          "radius": 400,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1090,
+            "y": 110,
+            "z": -140
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1160,
+            "y": 140,
+            "z": -560
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -900,
+            "y": 170,
+            "z": -780
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1840,
+            "y": 290,
+            "z": -840
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 2,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -470,
+            "y": 80,
+            "z": -810
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 5,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": 40,
+            "y": 110,
+            "z": -900
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 5,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -240,
+            "y": 170,
+            "z": -1190
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1440,
+            "y": 190,
+            "z": -1220
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -830,
+            "y": 260,
+            "z": -1210
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -2080,
+            "y": 190,
+            "z": 610
+          },
+          "radius": 500,
+          "heightScale": 1,
+          "falloff": 5,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1700,
+            "y": 290,
+            "z": 1130
+          },
+          "radius": 700,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": -1150,
+            "y": 220,
+            "z": 1220
+          },
+          "radius": 700,
+          "heightScale": 1,
+          "falloff": 1,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": 850,
+            "y": 50,
+            "z": 510
+          },
+          "radius": 700,
+          "heightScale": 1,
+          "falloff": 5,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": 1270,
+            "y": 100,
+            "z": 160
+          },
+          "radius": 700,
+          "heightScale": 1,
+          "falloff": 5,
+          "additive": true
+        },
+        {
+          "position": {
+            "x": 1280,
+            "y": 150,
+            "z": -750
+          },
+          "radius": 700,
+          "heightScale": 1,
+          "falloff": 5,
+          "additive": true
+        }
+      ]
+    },
+    {
+      "uuid": "3e1cd58c-c41e-45e2-871f-88ea66d8f43b",
+      "name": "Post Terrain Brush",
+      "tag": "",
+      "snap": {
+        "x": 10,
+        "y": 10,
+        "z": 10
+      },
+      "postMesh": true,
+      "patches": [
+        {
+          "position": {
+            "x": -10,
+            "y": 0,
+            "z": 240
+          },
+          "radius": 10,
+          "heightScale": 1,
+          "falloff": 0,
+          "additive": false
+        }
+      ]
+    }
+  ],
+  "extraData": "{\"numLaps\": 4, \"displayName\": \"Brands Hatch\"}",
+  "_editor": {
+    "cameraPosition": {
+      "x": 518.4318435826553,
+      "y": 195.8084504669838,
+      "z": -446.60805670566145
+    },
+    "cameraQuaternion": [
+      -0.15193648693288742,
+      -0.7279816180465458,
+      -0.17114625405663333,
+      0.6462716359606137
+    ]
+  },
+  "hash": "5a4a96b27e2ff4a711b51c50c782cd4dd4c9488f",
+  "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAQAElEQVR4AeydCbxVU/vHn+NFmqNBNGgWaSahcjMlROkfEUplKjIThYpERF6lUDQQhaKSMQ2GV4ZEoVETpVIazfTvt7m5dz/rnHuGfc7Ze69fn869Zz977bXX813nnv2sZz3rWfuIyG6+yICfAX4G+BngZ4CfAbs+AzAA9vQ5/5MACZAACZAACdhDQIQGgE29TV1JgARIgARI4B8CNAD+AcFfJEACJEACJGALAehJAwAU+CIBEiABEiABywjQALCsw6kuCZAACZCA7QT+1p8GwN8c+JMESIAESIAErCJAA8Cq7qayJEACJEACthPI1Z8GQC4J/iYBEiABEiABiwjQALCos6kqCZAACZCA7QT+1Z8GwL8s+I4ESIAESIAErCFAA8CarqaiJEACJEACthPIqz8NgLw0+J4ESIAESIAELCFAA8CSjqaaJEACJEACthPIrz8NgPw8eEQCJEACJEACVhCgAWBFN1NJEiABEiAB2wm49acB4CbCYxIgARIgARKwgAANAAs6mSqSAAmQAAnYTkDrTwNAM6GEBEiABEiABEJPgAZA6LuYCpIACZAACdhOwKQ/DQATFcpIgARIgARIIOQEaACEvIOpHgmQAAmQgO0EzPrTADBzoZQESIAESIAEQk2ABkCou5fKkQAJkAAJ2E4gmv40AKKRoZwESIAESIAEQkyABkCIO5eqkQAJkAAJ2E4guv40AKKz4RkSIAESIAESCC0BGgCh7VoqRgIkQAIkYDuBWPrTAIhFh+dIgARIgARIIKQEaACEtGOpFgmQAAmQgO0EYutPAyA2H54lARIgARIggVASoAEQym6lUiRAAiRAArYTKEh/GgAFEeJ5EiABEiABEgghARoAIexUqkQCJEACJGA7gYL1pwFQMCOWIAESIAESIIHQEaABELoupUIkQAIkQAK2E4hHfxoA8VBiGRIgARIgARIIGQEaACHrUKpDAiRAAiRgO4H49KcBEB8nliIBEiABEiCBUBGgARCq7qQyJEACJEACthOIV38aAPGSYjkSIAESIAESCBEBGgAh6kyqQgIkQAIkYDuB+PWnARA/K5YkARIgARIggdAQoAEQmq6kIiRAAiRAArYTSER/GgCJ0GJZEiABEiABEggJARoAIelIqkECJEACJGA7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jF0EaADY1d8xtT3yyCPl+uuvV2UwN/3+++8rOQWJEzj99NPl0EMPVRc+88wzSkYBCcRDYPTo0apY1apVjatMVEFrBVQcBGgAgAJfDoFhw4Y5v/P+2Llzp9x88815RXyfAgHTyAx7KpjcuCnchpdaRABTR++++67SmOmBFRIKXARoALiA2HrYoUMHadmypVL/jjvuYNIfRSU5ATZVMkX/m0Zwyd2BV9lK4KuvvlKqFy5cWMko+JsAf/5NgAbA3xys/okEIo888ohisHDhQhk6dKiSU5AcgQsvvFBduG7dOkGOd3WCAhJIgIApN0eRIkUSqIFFbSRAA8DGXnfpjOQ+hxxyiEsqxk2AVCEK4iZw2WWXqbJjxoxRMgpIIFEC2DLYfQ09AG4iucf69+7du7XQAgkNAAs6OZaKWJNuWks8ceJEmTt3bqxLeS4BAk2aNJG6deuqK+j+V0goSILAf/7zH3XVAQccoGQUmAn8+eef5hMhl9IACHkHF6Te448/ror8+uuvxtUAqiAFcRO48sorVVkEbiG7ojpBAQkkSAC7AbovMWUJdJex8diks8kDsO+++5qKhkpGAyBU3ZmYMkgWYspId8899xhTjCZWO0vnEihatKiY5v85+s8lxN+pEChUqJDAw+Su45133nGLeByFwF9//aXO7LNP+B+P4ddQdSsFIICMf6Zd/dasWSMwAFCGL28IwNDCl3Te2hC0NWnSpLwivieBpAhg9O8erSK4dMmSJUnVF+6LzNr98ccf6gQNAIWEgrAQGDhwoDHj3zXXXBMWFX2jR7du3VRbkPjn559/VnIKSCBRAti7w33NzJkz3SIexyBg8gBEIpEYV4TjFD0A4ejHhLRo2LChmB70b775pkydOjWhulg4NgEEWTZq1EgVMqVvVYUoIIECCNSvX186deqkStH9r5A4gmg/TB6A/fbbL1rx0Mj3CY0mVCRuAo899pgqi2VEpkA1VZCChAiYMv8hacu8efMSqoeFScBE4L777lPi77//nht3KSqxBb///rsqQANAIaEg6ATgjm7atKlS484775SVK1cqOQWpEbjoootUBRz9KyQUJEGgXr16gr0l3JcOGDBAYNC75TyOTgArn9xn999/f7codMf0AISuS6MrdOCBB4op8G/BggVGefSaeCYeAmeddZaUK1dOFR03bpySUUACiRDA3/L06dPV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"
+}
