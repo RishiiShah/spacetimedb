@@ -76,6 +76,13 @@ export type AssetPlacement = {
   scale: number;
 };
 
+import { stuntShowcaseArena, type StuntArenaDef } from "./stuntArena";
+
+export type RouteLayoutOptions = {
+  curveType?: "centripetal" | "catmullrom";
+  tension?: number;
+};
+
 export type TrackDef = {
   id: bigint;
   slug: string;
@@ -94,6 +101,8 @@ export type TrackDef = {
   railOffset?: number;
   railHeight?: number;
   railColor?: string;
+  routeLayout?: RouteLayoutOptions;
+  stuntArena?: StuntArenaDef;
   circuitMapPath?: string;
   circuitMapScale?: number;
 };
@@ -129,7 +138,7 @@ export const cityAssetPaths = {
   palm: "/assets/city/Palm_03.glb",
 } as const;
 
-const CIRCUIT_MAP_SCALE = 0.08;
+const CIRCUIT_MAP_SCALE = 0.16;
 const CIRCUIT_GATE_HEIGHT = 8;
 const CIRCUIT_GATE_WIDTH = 34;
 const CIRCUIT_GATE_DEPTH = 4;
@@ -174,7 +183,7 @@ function circuitTrack({
     type: "circuit",
     summary,
     origin: "mapped-circuit",
-    environment: "flat",
+    environment: "city",
     spawn,
     checkpoints,
     placements: [],
@@ -189,12 +198,12 @@ export const circuitMonzaTrack = circuitTrack({
   slug: "monza",
   name: "Circuit Monza",
   summary: "High-speed circuit with long straights and sweeping corners.",
-  spawn: { position: { x: 9.6, y: 0, z: 16.8 }, heading: -Math.PI / 2 },
+  spawn: { position: { x: 19.2, y: 0, z: 33.6 }, heading: -Math.PI / 2 },
   checkpoints: [
-    checkpoint(0, 9.6, 4, 16.8, -Math.PI / 2),
-    checkpoint(1, -64.8, 4, 13.6, -Math.PI / 2),
-    checkpoint(2, -71.2, 4, -64),
-    checkpoint(3, -12.8, 4, -5.6, Math.PI / 2),
+    checkpoint(0, 19.2, 4, 33.6, -Math.PI / 2),
+    checkpoint(1, -129.6, 4, 27.2, -Math.PI / 2),
+    checkpoint(2, -142.4, 4, -128),
+    checkpoint(3, -25.6, 4, -11.2, Math.PI / 2),
   ],
 });
 
@@ -203,12 +212,12 @@ export const circuitAustriaTrack = circuitTrack({
   slug: "austria",
   name: "Circuit Austria",
   summary: "Elevated layout with climbs and fast direction changes.",
-  spawn: { position: { x: 0, y: 0, z: -4 }, heading: Math.PI },
+  spawn: { position: { x: 0, y: 0, z: -8 }, heading: Math.PI },
   checkpoints: [
-    checkpoint(0, 0, 4, -4, Math.PI),
-    checkpoint(1, -52.8, 6.24, 25.6, -Math.PI / 2),
-    checkpoint(2, -40.8, 5.6, -15.2),
-    checkpoint(3, -18.4, 4.96, -4.8, Math.PI / 2),
+    checkpoint(0, 0, 4, -8, Math.PI),
+    checkpoint(1, -105.6, 6.24, 51.2, -Math.PI / 2),
+    checkpoint(2, -81.6, 5.6, -30.4),
+    checkpoint(3, -36.8, 4.96, -9.6, Math.PI / 2),
   ],
 });
 
@@ -217,12 +226,12 @@ export const circuitBrandsTrack = circuitTrack({
   slug: "brands",
   name: "Circuit Brands",
   summary: "Compact circuit with flowing bends.",
-  spawn: { position: { x: 0, y: 0.8, z: -2.4 }, heading: -2.976 },
+  spawn: { position: { x: 0, y: 0.8, z: -4.8 }, heading: -2.976 },
   checkpoints: [
-    checkpoint(0, 0, 4.8, -2.4, -2.976),
-    checkpoint(1, -16, 4, 6.4, -Math.PI / 2),
-    checkpoint(2, -40, 5.6, -16),
-    checkpoint(3, -23.2, 4.8, -31.2, Math.PI / 2),
+    checkpoint(0, 0, 4.8, -4.8, -2.976),
+    checkpoint(1, -32, 4, 12.8, -Math.PI / 2),
+    checkpoint(2, -80, 5.6, -32),
+    checkpoint(3, -46.4, 4.8, -62.4, Math.PI / 2),
   ],
 });
 
@@ -231,12 +240,12 @@ export const circuitInterlagosTrack = circuitTrack({
   slug: "interlagos",
   name: "Circuit Interlagos",
   summary: "Circuit with linked bends and a broad final sector.",
-  spawn: { position: { x: 0, y: 0, z: -2.4 }, heading: Math.PI },
+  spawn: { position: { x: 0, y: 0, z: -4.8 }, heading: Math.PI },
   checkpoints: [
-    checkpoint(0, 0, 4, -2.4, Math.PI),
-    checkpoint(1, 8.8, 3.52, 29.6, Math.PI / 2),
-    checkpoint(2, 39.2, 3.68, 20, Math.PI / 2),
-    checkpoint(3, 29.6, 4, 1.6),
+    checkpoint(0, 0, 4, -4.8, Math.PI),
+    checkpoint(1, 17.6, 3.52, 59.2, Math.PI / 2),
+    checkpoint(2, 78.4, 3.68, 40, Math.PI / 2),
+    checkpoint(3, 59.2, 4, 3.2),
   ],
 });
 
@@ -245,12 +254,12 @@ export const circuitIndyTrack = circuitTrack({
   slug: "indy",
   name: "Circuit Indy",
   summary: "Short layout for quick testing and multiplayer sync.",
-  spawn: { position: { x: -2.4, y: 0, z: -10.4 }, heading: Math.PI },
+  spawn: { position: { x: -4.8, y: 0, z: -20.8 }, heading: Math.PI },
   checkpoints: [
-    checkpoint(0, -2.4, 4, -10.4, Math.PI),
-    checkpoint(1, 0, 4, 14.4, Math.PI),
-    checkpoint(2, -20.8, 4, 12.8, -Math.PI / 2),
-    checkpoint(3, -21.6, 4, -18.4),
+    checkpoint(0, -4.8, 4, -20.8, Math.PI),
+    checkpoint(1, 0, 4, 28.8, Math.PI),
+    checkpoint(2, -41.6, 4, 25.6, -Math.PI / 2),
+    checkpoint(3, -43.2, 4, -36.8),
   ],
 });
 
@@ -259,12 +268,12 @@ export const circuitFundaTrack = circuitTrack({
   slug: "funda",
   name: "Circuit Funda",
   summary: "Downtown loop with a balanced technical rhythm.",
-  spawn: { position: { x: 4, y: 0, z: 2.4 }, heading: -Math.PI / 2 },
+  spawn: { position: { x: 8, y: 0, z: 4.8 }, heading: -Math.PI / 2 },
   checkpoints: [
-    checkpoint(0, 4, 4, 2.4, -Math.PI / 2),
-    checkpoint(1, -20.8, 4, 22.4, -Math.PI / 2),
-    checkpoint(2, -24.8, 4, -14.4),
-    checkpoint(3, 23.2, 4, -8.8, Math.PI / 2),
+    checkpoint(0, 8, 4, 4.8, -Math.PI / 2),
+    checkpoint(1, -41.6, 4, 44.8, -Math.PI / 2),
+    checkpoint(2, -49.6, 4, -28.8),
+    checkpoint(3, 46.4, 4, -17.6, Math.PI / 2),
   ],
 });
 
@@ -273,12 +282,12 @@ export const circuitSuburbanTrack = circuitTrack({
   slug: "suburban",
   name: "Circuit Suburban",
   summary: "Map with extra route pieces and city background potential.",
-  spawn: { position: { x: 0, y: 0.8, z: -2.4 }, heading: Math.PI },
+  spawn: { position: { x: 0, y: 0.8, z: -4.8 }, heading: Math.PI },
   checkpoints: [
-    checkpoint(0, 0, 4.8, -2.4, Math.PI),
-    checkpoint(1, 0, 4.8, 44, Math.PI),
-    checkpoint(2, -28.8, 7.2, 6.4, -Math.PI / 2),
-    checkpoint(3, -12, 6.4, 24.8, Math.PI / 2),
+    checkpoint(0, 0, 4.8, -4.8, Math.PI),
+    checkpoint(1, 0, 4.8, 88, Math.PI),
+    checkpoint(2, -57.6, 7.2, 12.8, -Math.PI / 2),
+    checkpoint(3, -24, 6.4, 49.6, Math.PI / 2),
   ],
 });
 
@@ -469,45 +478,23 @@ export const cityLoopV1Track: TrackDef = {
 export const stuntShowcaseTrack: TrackDef = {
   id: 2n,
   slug: "stunt-showcase",
-  name: "Stunt Showcase",
+  name: "Stunt Arena",
   mode: "stunt",
   type: "stunt",
-  summary: "Elevated stunt route with loops and corkscrews.",
+  summary:
+    "Free-roam stunt park with launch ramps, a vertical loop, jump pads, and walled bounds.",
   origin: "stunt-route",
   environment: "flat",
   spawn: { position: { x: 0, y: 1.1, z: 0 }, heading: 0 },
+  stuntArena: stuntShowcaseArena,
   checkpoints: [
     {
       index: 0,
-      position: { x: 0, y: 5, z: -100 },
+      position: { x: 0, y: 4, z: 0 },
       rotationY: 0,
-      width: 40,
-      height: 20,
-      depth: 5,
-    },
-    {
-      index: 1,
-      position: { x: 0, y: 50, z: -250 },
-      rotationY: 0,
-      width: 60,
-      height: 40,
-      depth: 10,
-    },
-    {
-      index: 2,
-      position: { x: 0, y: 5, z: -400 },
-      rotationY: 0,
-      width: 40,
-      height: 20,
-      depth: 5,
-    },
-    {
-      index: 3,
-      position: { x: 0, y: 5, z: 0 },
-      rotationY: 0,
-      width: 40,
-      height: 20,
-      depth: 5,
+      width: 24,
+      height: 8,
+      depth: 2,
     },
   ],
   placements: [],
@@ -522,7 +509,7 @@ export const flatRoadPracticeTrack: TrackDef = {
   summary:
     "Wide flat road-only loop for testing throttle, braking, steering, and camera feel.",
   origin: "local",
-  environment: "flat",
+  environment: "city",
   spawn: { position: { x: -150, y: 0, z: 70 }, heading: Math.PI / 2 },
   routePoints: [
     { x: -150, y: 0, z: 70 },
@@ -536,6 +523,9 @@ export const flatRoadPracticeTrack: TrackDef = {
     { x: -170, y: 0, z: -20 },
   ],
   roadWidth: 39,
+  railOffset: getRouteRailOffset(39),
+  railHeight: ROUTE_WALL_HEIGHT,
+  railColor: "#d8dde4",
   checkpoints: [
     {
       index: 0,
