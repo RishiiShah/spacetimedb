@@ -23,6 +23,7 @@ import {
   getTrackById,
   getTracksByMode,
   type GameMode,
+  type TrackDef,
 } from "./game/track";
 
 const DEFAULT_ROOM = "demo";
@@ -60,6 +61,7 @@ function App() {
   const publishCarState = useReducer(reducers.publishCarState);
   const recordCheckpoint = useReducer(reducers.recordCheckpoint);
   const finishLap = useReducer(reducers.finishLap);
+  const configureRoom = useReducer(reducers.configureRoom);
 
   const [players] = useTable(tables.player);
   const [rooms] = useTable(tables.room);
@@ -193,6 +195,16 @@ function App() {
     }
   };
 
+  const applyRoomConfig = async (trackId: bigint, lapCount: number) => {
+    if (!activeRoom) return;
+    setLastError("");
+    try {
+      await configureRoom({ roomId: activeRoom.roomId, trackId, lapCount });
+    } catch (error) {
+      setLastError(error instanceof Error ? error.message : String(error));
+    }
+  };
+
   const startRace = () => {
     setLastError("");
     setRaceStarted(true);
@@ -278,6 +290,10 @@ function App() {
         lastError={lastError}
         onStart={() => void startMultiplayerRace()}
         onLeave={() => void leaveLobby()}
+        lapCount={activeRoom.lapCount}
+        trackId={activeRoom.trackId}
+        availableTracks={getTracksByMode("circuit")}
+        onConfigure={applyRoomConfig}
       />
     );
   }
@@ -678,6 +694,10 @@ function LobbyScreen({
   lastError,
   onStart,
   onLeave,
+  lapCount,
+  trackId,
+  availableTracks,
+  onConfigure,
 }: {
   roomSlug: string;
   trackName: string;
@@ -689,6 +709,10 @@ function LobbyScreen({
   lastError: string;
   onStart: () => void;
   onLeave: () => void;
+  lapCount: number;
+  trackId: bigint;
+  availableTracks: TrackDef[];
+  onConfigure: (trackId: bigint, lapCount: number) => void;
 }) {
   return (
     <main className="lobby-shell">
@@ -724,6 +748,37 @@ function LobbyScreen({
             ))}
           </div>
         </section>
+
+        {isHost && (
+          <section className="lobby-settings">
+            <label>
+              Map
+              <select
+                value={trackId.toString()}
+                onChange={(e) => onConfigure(BigInt(e.target.value), lapCount)}
+              >
+                {availableTracks.map((t) => (
+                  <option key={t.id.toString()} value={t.id.toString()}>
+                    {t.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Laps
+              <select
+                value={lapCount}
+                onChange={(e) => onConfigure(trackId, Number(e.target.value))}
+              >
+                {[1, 2, 3, 5].map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </section>
+        )}
 
         {isHost ? (
           <button

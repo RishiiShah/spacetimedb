@@ -25,6 +25,7 @@ const reducerMocks = [
   reducerMock,
   reducerMock,
   reducerMock,
+  reducerMock,
 ];
 
 vi.mock("spacetimedb/react", () => ({
@@ -75,7 +76,10 @@ describe("App start flow", () => {
       screen.getByRole("heading", { name: /grid preview/i }),
     ).toBeInTheDocument();
     expect(screen.getByText(/driver briefing/i)).toBeInTheDocument();
-    expect(screen.getByText(/open-wheel setup/i)).toBeInTheDocument();
+    expect(screen.getByText(/veloce lp setup/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/full-body f1 with rear wing/i),
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /circuit/i })).toHaveAttribute(
       "aria-pressed",
       "true",
