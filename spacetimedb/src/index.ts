@@ -437,6 +437,19 @@ function resolveRoomTrackId(ctx: any, trackId: bigint) {
 }
 
 function enterRoom(ctx: any, targetRoom: any) {
+  // A player can only be in one room at a time. Leaving any other room before
+  // entering this one keeps create/join idempotent and prevents ghost cars in
+  // rooms the player has visibly left.
+  for (const membership of [...ctx.db.roomMember.identity.filter(ctx.sender)]) {
+    if (membership.roomId !== targetRoom.roomId) {
+      ctx.db.roomMember.memberId.delete(membership.memberId);
+    }
+  }
+  const priorCar = ctx.db.carState.identity.find(ctx.sender);
+  if (priorCar && priorCar.roomId !== targetRoom.roomId) {
+    ctx.db.carState.identity.delete(ctx.sender);
+  }
+
   const existingMembership = [
     ...ctx.db.roomMember.by_room_identity.filter([
       targetRoom.roomId,
