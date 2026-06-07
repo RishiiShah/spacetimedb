@@ -1,5 +1,9 @@
+import { applyStuntVehiclePhysics } from "./stuntArena";
 import { getRouteFenceInnerOffset, type TrackDef } from "./track";
-import { nearestRouteCurveProjection } from "./routeGeometry";
+import {
+  nearestRouteCurveProjection,
+  resolveRouteSurfaceY,
+} from "./routeGeometry";
 import { getMultiplayerGridSpawn } from "./multiplayerSpawn";
 
 export type VehicleState = {
@@ -8,6 +12,13 @@ export type VehicleState = {
   speed: number;
   // Eased steering position (-1..1) so input changes are smoothed, not instant.
   steer: number;
+  // Seconds the brake has been held at a near standstill. Reverse only engages
+  // once this clears REVERSE_ARM_DELAY, so a quick brake tap stops the car
+  // instead of slipping straight into reverse.
+  reverseArm: number;
+  verticalSpeed?: number;
+  stuntAirborne?: boolean;
+  stuntLastGroundY?: number;
 };
 
 export type VehicleInput = {
@@ -64,6 +75,12 @@ export const VEHICLE_COLLISION_HALF_WIDTH = 1.55;
 // Scraping a barrier sheds a little speed but should not stop the car; the
 // momentum running along the wall is preserved so the car slides instead.
 const WALL_SLIDE_FRICTION = 0.92;
+// You must hold the brake at a near standstill for this long before the car
+// crosses from stopped into reverse, so braking to a halt doesn't roll back.
+const REVERSE_ARM_DELAY = 0.3;
+// Below this speed the car counts as "stopped enough" to arm reverse.
+const REVERSE_ARM_SPEED = 0.5;
+const ROUTE_GROUND_FOLLOW_RATE = 14;
 
 export function createInitialVehicleState(): VehicleState {
   return {
@@ -71,6 +88,7 @@ export function createInitialVehicleState(): VehicleState {
     heading: 0,
     speed: 0,
     steer: 0,
+    reverseArm: 0,
   };
 }
 
@@ -98,10 +116,15 @@ export function createVehicleAtTrackReset(
     ...createInitialVehicleState(),
     position: {
       x: resetPoint.x,
-      y: checkpoint ? track.spawn.position.y : resetPoint.y,
+      y: resolveRouteSurfaceY(resetPoint, track),
       z: resetPoint.z,
     },
     heading: checkpoint?.rotationY ?? gridSpawn?.heading ?? track.spawn.heading,
+    verticalSpeed: track.stuntArena ? 0 : undefined,
+    stuntAirborne: track.stuntArena ? false : undefined,
+    stuntLastGroundY: track.stuntArena
+      ? track.spawn.position.y
+      : undefined,
   };
 }
 
@@ -148,11 +171,19 @@ export function stepVehicle(
     drag -
     handbrakeDrag -
     corneringScrub;
-  const speed = clamp(
-    state.speed + acceleration * dt,
-    MAX_REVERSE_SPEED,
-    MAX_FORWARD_SPEED,
-  );
+  // Reverse arming: the brake only drives the car backwards once it has been
+  // held at a near standstill long enough. Throttle cancels it (you're pulling
+  // away forwards), and lifting the brake disarms it.
+  const armingReverse = brake > 0 && throttle === 0 && state.speed <= REVERSE_ARM_SPEED;
+  const reverseArm = armingReverse
+    ? Math.min(state.reverseArm + dt, REVERSE_ARM_DELAY)
+    : 0;
+  const reverseArmed = reverseArm >= REVERSE_ARM_DELAY;
+  let speed = state.speed + acceleration * dt;
+  // Until reverse is armed, the brake can stop the car but not push it past
+  // zero into a roll-back.
+  if (!reverseArmed && state.speed >= 0 && speed < 0) speed = 0;
+  speed = clamp(speed, MAX_REVERSE_SPEED, MAX_FORWARD_SPEED);
   // Steering authority vs speed: ramps in from a standstill, peaks through
   // low/mid speed, then tapers at high speed so the car stays stable up top.
   const authorityTrim = 1 + STEER_SPEED_TRIM * (2 * speedFraction - 1);
@@ -168,7 +199,11 @@ export function stepVehicle(
         )) *
     authorityTrim;
   const steerRate = STEER_RATE * (handbrake ? HANDBRAKE_STEER_MULTIPLIER : 1);
-  const heading = state.heading + steer * steerRate * steerAuthority * dt;
+  // Reversing flips how the wheels rotate the car: turning the wheel right backs
+  // the tail out to the right, so the heading swings the opposite way.
+  const steerDirection = speed < 0 ? -1 : 1;
+  const heading =
+    state.heading + steer * steerRate * steerAuthority * dt * steerDirection;
 
   // Drift: at high speed the travel direction lags slightly behind the heading,
   // so the nose points into the corner while the car slides a touch wide.
@@ -184,6 +219,7 @@ export function stepVehicle(
     speed,
     heading,
     steer,
+    reverseArm,
     position: {
       x: state.position.x + Math.sin(movementAngle) * speed * dt,
       y: state.position.y,
@@ -191,7 +227,46 @@ export function stepVehicle(
     },
   };
 
-  return constrainToRoute(nextState, track);
+  if (track?.stuntArena) {
+    const stunt = applyStuntVehiclePhysics(
+      nextState,
+      track.stuntArena,
+      {
+        verticalSpeed: state.verticalSpeed ?? 0,
+        lastGroundY: state.stuntLastGroundY ?? state.position.y,
+        airborne: state.stuntAirborne ?? false,
+      },
+      dt,
+    );
+    return {
+      ...stunt.vehicle,
+      verticalSpeed: stunt.extras.verticalSpeed,
+      stuntAirborne: stunt.extras.airborne,
+      stuntLastGroundY: stunt.extras.lastGroundY,
+    };
+  }
+
+  return applyRouteElevation(constrainToRoute(nextState, track), track, dt);
+}
+
+function applyRouteElevation(
+  state: VehicleState,
+  track: TrackDef | undefined,
+  deltaSeconds: number,
+): VehicleState {
+  const points = track?.routePoints;
+  if (!points || points.length < 2) return state;
+
+  const targetY = resolveRouteSurfaceY(state.position, track);
+  const blend = 1 - Math.exp(-ROUTE_GROUND_FOLLOW_RATE * deltaSeconds);
+
+  return {
+    ...state,
+    position: {
+      ...state.position,
+      y: state.position.y + (targetY - state.position.y) * blend,
+    },
+  };
 }
 
 export function resolveVehicleObstacleCollisions(
@@ -232,7 +307,11 @@ function constrainToRoute(state: VehicleState, track?: TrackDef): VehicleState {
   const roadWidth = track?.roadWidth;
   if (!points || points.length < 2 || !roadWidth) return state;
 
-  const closest = nearestRouteCurveProjection(state.position, points);
+  const closest = nearestRouteCurveProjection(
+    state.position,
+    points,
+    track.routeLayout,
+  );
   const maxDistance = Math.max(
     2,
     getRouteFenceInnerOffset(roadWidth, track.railOffset) -

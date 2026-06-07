@@ -64,8 +64,8 @@ export const LIVERY_ACCENT_MATERIAL = "car_color.001";
 // the front of the car with the direction of travel.
 export const CAR_MODEL_FORWARD_YAW_OFFSET = Math.PI;
 export const CAR_MODEL_RIDE_HEIGHT = 0.24;
-// Low-poly tire bottoms sit ~0.26m below the model origin after scale/upright.
-export const LOWPOLY_GROUND_OFFSET = 0.26;
+// Low-poly tire bottoms sit ~0.28m below the model origin after scale/upright.
+export const LOWPOLY_GROUND_OFFSET = 0.282;
 export const CAR_VISUAL_MAX_STEER_YAW = 0.48;
 export const LOWPOLY_VISUAL_MAX_STEER_YAW = 0.16;
 

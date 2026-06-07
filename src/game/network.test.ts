@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { createSnapshot, interpolateSnapshot } from "./network";
-import { RemoteCarSnapshotBuffer } from "./remoteCarBuffer";
+import { createSnapshot, interpolateSnapshot, advanceSnapshot } from "./network";
+import {
+  RemoteCarSnapshotBuffer,
+  REMOTE_INTERPOLATION_DELAY_MS,
+} from "./remoteCarBuffer";
 
 describe("network snapshots", () => {
   it("creates a compact transform snapshot", () => {
@@ -101,10 +104,49 @@ describe("RemoteCarSnapshotBuffer", () => {
     });
     const b = { ...a, x: 10, z: 10 };
 
+    buffer.setClockOffsetMs(0);
     buffer.push(a, 1000);
     buffer.push(b, 1200);
 
-    const mid = buffer.sample(1150);
+    const mid = buffer.sample(1050 + REMOTE_INTERPOLATION_DELAY_MS);
     expect(mid?.x).toBeCloseTo(2.5, 1);
+  });
+
+  it("dead-reckons briefly when the render clock runs ahead", () => {
+    const buffer = new RemoteCarSnapshotBuffer();
+    const snapshot = createSnapshot({
+      identity: "player-a",
+      roomId: 1,
+      trackId: 1,
+      position: { x: 0, y: 0, z: 0 },
+      heading: 0,
+      speed: 20,
+      checkpointIndex: 0,
+      elapsedMs: 0,
+    });
+
+    buffer.setClockOffsetMs(0);
+    buffer.push(snapshot, 1000);
+
+    const ahead = buffer.sample(1300 + REMOTE_INTERPOLATION_DELAY_MS);
+    expect(ahead?.z).toBeLessThan(0);
+  });
+});
+
+describe("advanceSnapshot", () => {
+  it("moves forward using speed and heading", () => {
+    const snapshot = createSnapshot({
+      identity: "player-a",
+      roomId: 1,
+      trackId: 1,
+      position: { x: 0, y: 0, z: 0 },
+      heading: 0,
+      speed: 10,
+      checkpointIndex: 0,
+      elapsedMs: 0,
+    });
+
+    const next = advanceSnapshot(snapshot, 1);
+    expect(next.z).toBeCloseTo(-10, 5);
   });
 });

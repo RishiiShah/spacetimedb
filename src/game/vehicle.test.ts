@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { cityLoopV1Track, getRouteFenceInnerOffset } from "./track";
+import { readFileSync } from "node:fs";
+import {
+  buildCircuitCollisionTrack,
+  parseCircuitMapData,
+} from "./circuitTrackData";
+import { circuitAustriaTrack, cityLoopV1Track, getRouteFenceInnerOffset } from "./track";
 import { nearestRouteCurveProjection } from "./routeGeometry";
 import {
   VEHICLE_COLLISION_HALF_WIDTH,
@@ -199,10 +204,50 @@ describe("vehicle movement", () => {
 
     expect(reset.position).toEqual({
       x: checkpoint.position.x,
-      y: cityLoopV1Track.spawn.position.y,
+      y: 0,
       z: checkpoint.position.z,
     });
     expect(reset.heading).toBe(checkpoint.rotationY);
+  });
+
+  it("respawns mapped circuits on the resolved route surface", () => {
+    const map = JSON.parse(
+      readFileSync("public/assets/circuit/maps/austria.json", "utf8"),
+    );
+    const parsed = parseCircuitMapData(map, circuitAustriaTrack);
+    const track = buildCircuitCollisionTrack(circuitAustriaTrack, parsed);
+    const checkpoint = track.checkpoints[1];
+
+    const reset = createVehicleAtTrackReset(track, checkpoint.index);
+
+    expect(reset.position.y).toBeCloseTo(checkpoint.position.y, 1);
+    expect(reset.position.y).toBeGreaterThan(2);
+  });
+
+  it("follows elevated route height while driving", () => {
+    const elevatedTrack = {
+      ...cityLoopV1Track,
+      routePoints: [
+        { x: 0, y: 0, z: 0 },
+        { x: 0, y: 10, z: 100 },
+      ],
+    };
+    const state = {
+      ...createInitialVehicleState(),
+      position: { x: 0, y: 0, z: 50 },
+      speed: 24,
+      heading: Math.PI,
+    };
+
+    const next = stepVehicle(
+      state,
+      { throttle: 1, brake: 0, steer: 0 },
+      0.12,
+      elevatedTrack,
+    );
+
+    expect(next.position.y).toBeGreaterThan(3);
+    expect(next.position.y).toBeLessThan(6);
   });
 
   it("clamps route-based tracks at the rendered wall edge", () => {
@@ -340,5 +385,55 @@ describe("vehicle movement", () => {
     const next = resolveVehicleObstacleCollisions(state, [{ x: 0, z: 0 }]);
 
     expect(next).toEqual(state);
+  });
+});
+
+describe("vehicle reverse", () => {
+  it("holds at a standstill on a brief brake instead of slipping into reverse", () => {
+    const state = createInitialVehicleState();
+
+    const next = stepVehicle(state, { throttle: 0, brake: 1, steer: 0 }, 0.1);
+
+    expect(next.speed).toBe(0);
+  });
+
+  it("engages reverse after holding the brake at a standstill", () => {
+    let state = createInitialVehicleState();
+
+    // Hold the brake across enough time to clear the reverse-arm dwell.
+    for (let i = 0; i < 8; i += 1) {
+      state = stepVehicle(state, { throttle: 0, brake: 1, steer: 0 }, 0.1);
+    }
+
+    expect(state.speed).toBeLessThan(0);
+    expect(state.position.z).toBeGreaterThan(0);
+  });
+
+  it("inverts steering direction while reversing", () => {
+    const forward = { ...createInitialVehicleState(), speed: 20, steer: 1 };
+    const reverse = { ...createInitialVehicleState(), speed: -20, steer: 1 };
+
+    const turnedForward = stepVehicle(
+      forward,
+      { throttle: 0, brake: 0, steer: 1 },
+      0.05,
+    );
+    const turnedReverse = stepVehicle(
+      reverse,
+      { throttle: 0, brake: 0, steer: 1 },
+      0.05,
+    );
+
+    expect(turnedForward.heading).toBeGreaterThan(0);
+    expect(turnedReverse.heading).toBeLessThan(0);
+  });
+
+  it("slows a reverse back toward zero under throttle", () => {
+    const state = { ...createInitialVehicleState(), speed: -15 };
+
+    const next = stepVehicle(state, { throttle: 1, brake: 0, steer: 0 }, 0.2);
+
+    expect(next.speed).toBeGreaterThan(state.speed);
+    expect(next.speed).toBeLessThanOrEqual(0);
   });
 });

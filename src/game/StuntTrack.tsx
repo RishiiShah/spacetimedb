@@ -1,68 +1,87 @@
 import { useMemo } from "react";
-import * as THREE from "three";
+import {
+  stuntShowcaseArena,
+  type StuntArenaDef,
+  type StuntSurface,
+} from "./stuntArena";
+import { createStuntSurfaceGeometry } from "./stuntSurfaceGeometry";
+import type { TrackDef } from "./track";
 
-export function StuntTrackAssets() {
-  const geometry = useMemo(() => {
-    const points: THREE.Vector3[] = [];
+const ASPHALT = "#2f3740";
+const CURB = "#d43f32";
+const RAIL = "#f8fafc";
+const GRASS = "#6b8f5a";
 
-    for (let index = 0; index <= 18; index++) {
-      points.push(new THREE.Vector3(0, 0, -index * 6));
-    }
-
-    const loopRadius = 24;
-    const loopCenterZ = -132;
-    for (let index = 0; index <= 48; index++) {
-      const angle = (index / 48) * Math.PI * 2;
-      points.push(
-        new THREE.Vector3(
-          Math.sin(angle) * 2,
-          loopRadius - Math.cos(angle) * loopRadius,
-          loopCenterZ + Math.sin(angle) * loopRadius,
-        ),
-      );
-    }
-
-    for (let index = 0; index <= 22; index++) {
-      points.push(
-        new THREE.Vector3(Math.sin(index * 0.35) * 18, 0, -170 - index * 10),
-      );
-    }
-
-    points.push(new THREE.Vector3(80, 0, -430));
-    points.push(new THREE.Vector3(100, 0, -300));
-    points.push(new THREE.Vector3(70, 0, -120));
-    points.push(new THREE.Vector3(0, 0, 0));
-
-    const curve = new THREE.CatmullRomCurve3(points, true);
-    const shape = new THREE.Shape();
-    shape.moveTo(-10, -0.45);
-    shape.lineTo(10, -0.45);
-    shape.lineTo(10, 0.45);
-    shape.lineTo(-10, 0.45);
-
-    return new THREE.ExtrudeGeometry(shape, {
-      steps: 520,
-      bevelEnabled: false,
-      extrudePath: curve,
-    });
-  }, []);
+function arenaWalls(bounds: StuntArenaDef["bounds"]) {
+  const height = bounds.wallHeight ?? 6;
+  const widthX = bounds.maxX - bounds.minX;
+  const widthZ = bounds.maxZ - bounds.minZ;
+  const centerY = height / 2;
+  const thickness = 1.4;
 
   return (
     <>
-      <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, -0.12, -230]}>
-        <planeGeometry args={[320, 560]} />
-        <meshStandardMaterial color="#5c8058" roughness={0.96} />
+      <mesh position={[0, centerY, bounds.minZ - thickness / 2]} castShadow receiveShadow>
+        <boxGeometry args={[widthX + thickness * 2, height, thickness]} />
+        <meshStandardMaterial color={RAIL} roughness={0.7} />
       </mesh>
-      <mesh geometry={geometry} receiveShadow castShadow>
-        <meshStandardMaterial color="#30343a" roughness={0.8} />
+      <mesh position={[0, centerY, bounds.maxZ + thickness / 2]} castShadow receiveShadow>
+        <boxGeometry args={[widthX + thickness * 2, height, thickness]} />
+        <meshStandardMaterial color={CURB} roughness={0.7} />
       </mesh>
-      <mesh geometry={geometry}>
-        <meshStandardMaterial
-          color="#facc15"
-          wireframe
-          transparent
-          opacity={0.08}
-        />
+      <mesh
+        position={[bounds.minX - thickness / 2, centerY, 0]}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[thickness, height, widthZ + thickness * 2]} />
+        <meshStandardMaterial color={RAIL} roughness={0.7} />
+      </mesh>
+      <mesh
+        position={[bounds.maxX + thickness / 2, centerY, 0]}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[thickness, height, widthZ + thickness * 2]} />
+        <meshStandardMaterial color={CURB} roughness={0.7} />
+      </mesh>
+    </>
+  );
+}
+
+function StuntSurfaceMesh({ surface }: { surface: StuntSurface }) {
+  const geometry = useMemo(
+    () => createStuntSurfaceGeometry(surface),
+    [surface],
+  );
+
+  return (
+    <mesh geometry={geometry} receiveShadow castShadow>
+      <meshStandardMaterial color={ASPHALT} roughness={0.82} metalness={0.02} />
+    </mesh>
+  );
+}
+
+export function StuntTrackAssets({ track }: { track: TrackDef }) {
+  const arena = track.stuntArena ?? stuntShowcaseArena;
+  const groundSize = arena.bounds.maxX - arena.bounds.minX + 60;
+
+  return (
+    <>
+      <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, arena.baseY - 0.02, 0]}>
+        <planeGeometry args={[groundSize, groundSize]} />
+        <meshStandardMaterial color={GRASS} roughness={0.96} />
+      </mesh>
+
+      {arena.surfaces.map((surface, index) => (
+        <StuntSurfaceMesh key={`${surface.type}-${index}`} surface={surface} />
+      ))}
+
+      {arenaWalls(arena.bounds)}
+
+      <mesh position={[0, arena.baseY + 0.02, 0]} rotation-x={-Math.PI / 2}>
+        <ringGeometry args={[26, 30, 64]} />
+        <meshStandardMaterial color="#facc15" roughness={0.6} />
       </mesh>
     </>
   );
