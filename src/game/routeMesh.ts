@@ -190,7 +190,7 @@ export function createRouteShoulderGeometry(
     const nextIndex = (index + 1) % samples.length;
     const base = index * 2;
     const next = nextIndex * 2;
-    if (!shouldConnectRibbonVertices(positions, base, next, nextIndex === 0)) {
+    if (!shouldConnectRibbonVertices(positions, base, next)) {
       continue;
     }
     if (side === 1) {
