@@ -27,6 +27,7 @@ const room = table(
     roomId: t.u64().primaryKey().autoInc(),
     slug: t.string().unique(),
     trackId: t.u64().index("btree"),
+    lapCount: t.u32(),
     createdBy: t.identity(),
     createdAt: t.timestamp(),
   },
@@ -236,6 +237,7 @@ export const joinOrCreateRoom = spacetimedb.reducer(
         roomId: 0n,
         slug: roomSlug,
         trackId: roomTrackId,
+        lapCount: 3,
         createdBy: ctx.sender,
         createdAt: ctx.timestamp,
       });
@@ -264,6 +266,7 @@ export const createRoom = spacetimedb.reducer(
       roomId: 0n,
       slug: roomSlug,
       trackId: resolveRoomTrackId(ctx, trackId),
+      lapCount: 3,
       createdBy: ctx.sender,
       createdAt: ctx.timestamp,
     });
@@ -324,6 +327,26 @@ export const startRoomRace = spacetimedb.reducer(
       roomId,
       startedBy: ctx.sender,
       startedAtMs: ctx.timestamp.toMillis(),
+    });
+  },
+);
+
+export const configureRoom = spacetimedb.reducer(
+  { roomId: t.u64(), trackId: t.u64(), lapCount: t.u32() },
+  (ctx, { roomId, trackId, lapCount }) => {
+    const targetRoom = ctx.db.room.roomId.find(roomId);
+    if (!targetRoom) throw new SenderError("Room does not exist");
+    if (!targetRoom.createdBy.equals(ctx.sender)) {
+      throw new SenderError("Only the host can configure the room");
+    }
+    if (ctx.db.roomRaceStart.roomId.find(roomId)) {
+      throw new SenderError("Cannot reconfigure after the race has started");
+    }
+    const laps = Math.max(1, Math.min(10, lapCount));
+    ctx.db.room.roomId.update({
+      ...targetRoom,
+      trackId: resolveRoomTrackId(ctx, trackId),
+      lapCount: laps,
     });
   },
 );

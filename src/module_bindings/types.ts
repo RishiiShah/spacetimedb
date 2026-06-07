@@ -77,6 +77,7 @@ export const Room = __t.object("Room", {
   roomId: __t.u64(),
   slug: __t.string(),
   trackId: __t.u64(),
+  lapCount: __t.u32(),
   createdBy: __t.identity(),
   createdAt: __t.timestamp(),
 });

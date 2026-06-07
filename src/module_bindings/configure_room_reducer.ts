@@ -10,11 +10,8 @@ import {
   type Infer as __Infer,
 } from "spacetimedb";
 
-export default __t.row({
-  roomId: __t.u64().primaryKey().name("room_id"),
-  slug: __t.string(),
-  trackId: __t.u64().name("track_id"),
-  lapCount: __t.u32().name("lap_count"),
-  createdBy: __t.identity().name("created_by"),
-  createdAt: __t.timestamp().name("created_at"),
-});
+export default {
+  roomId: __t.u64(),
+  trackId: __t.u64(),
+  lapCount: __t.u32(),
+};
