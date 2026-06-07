@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import * as THREE from 'three';
 import type { TrackDef, Vec3 } from './track';
+import { GROUND_PLANE_Y } from './track';
 
 type CircuitPoint = { x: number; y: number; z: number };
 
@@ -76,7 +77,7 @@ export function CircuitTrackAssets({ track }: { track: TrackDef }) {
 
   return (
     <>
-      <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, -0.08, 0]}>
+      <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, GROUND_PLANE_Y, 0]}>
         <planeGeometry args={[260, 260]} />
         <meshStandardMaterial color="#5d7d57" roughness={0.96} />
       </mesh>

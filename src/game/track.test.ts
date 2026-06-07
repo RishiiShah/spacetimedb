@@ -4,6 +4,7 @@ import {
   TRACK_REGISTRY,
   type Vec3,
   getDefaultTrackForMode,
+  getRouteRailOffset,
   getTrackById,
   getTracksByMode,
 } from "./track";
@@ -252,7 +253,7 @@ describe("track registry", () => {
     expect(bounds.height).toBeGreaterThanOrEqual(480);
     expect(nonAdjacentSegmentsDoNotCross(points)).toBe(true);
     expect(track.roadWidth).toBeCloseTo(40.5);
-    expect(track.railOffset).toBeCloseTo((track.roadWidth ?? 0) / 2 + 3.4);
+    expect(track.railOffset).toBeCloseTo(getRouteRailOffset(track.roadWidth ?? 0));
     expect(closestNonAdjacentSegmentDistance(points)).toBeGreaterThanOrEqual(
       (track.roadWidth ?? 0) * 2,
     );

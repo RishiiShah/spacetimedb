@@ -13,6 +13,7 @@ import {
   LOWPOLY_VISUAL_MAX_STEER_YAW,
   drivingActionFromKeyboardEvent,
   getCarById,
+  getCarVisualGroundOffset,
   getLiveryById,
   inputFromDrivingActions,
   isLowPolyWheelNodeName,
@@ -66,6 +67,11 @@ describe("driving controls", () => {
   it("lifts the visual car enough for tire bottoms to clear the road", () => {
     expect(CAR_MODEL_RIDE_HEIGHT).toBeGreaterThanOrEqual(0.22);
     expect(CAR_MODEL_RIDE_HEIGHT).toBeLessThanOrEqual(0.28);
+  });
+
+  it("places low-poly tire contact on the road surface", () => {
+    expect(getCarVisualGroundOffset("lowpoly")).toBe(0.26);
+    expect(getCarVisualGroundOffset("open-wheel")).toBe(0.24);
   });
 
   it("defines suspension links that visually connect every tire to the chassis", () => {
