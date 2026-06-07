@@ -25,8 +25,26 @@ export const assets = {
   audio: {
     engine: '/assets/audio/engine4.wav',
     brake: '/assets/audio/car-brake1.mp3',
+    screech: '/assets/audio/car-screeching.wav',
     checkpoint: '/assets/audio/checkpoint_reached.wav',
     lap: '/assets/audio/lap_completed.wav',
+    countdownBeeps: '/assets/audio/countdown.ogg',
+    countdownRally: '/assets/audio/countdown-go.wav',
+    impact: '/assets/audio/car-metal-impact.ogg',
+    ui: {
+      countdown5: '/assets/audio/ui/5.wav',
+      countdown4: '/assets/audio/ui/4.wav',
+      countdown3: '/assets/audio/ui/3.wav',
+      countdown2: '/assets/audio/ui/2.wav',
+      countdown1: '/assets/audio/ui/1.wav',
+      go: '/assets/audio/ui/GO.wav',
+      full: '/assets/audio/ui/54321GO.wav',
+    },
+    // CC0 alternates from Kenney Starter Kit Racing (github.com/KenneyNL/Starter-Kit-Racing)
+    kenney: {
+      engine: '/assets/audio/kenney-engine.ogg',
+      skid: '/assets/audio/kenney-skid.ogg',
+    },
   },
   skybox: {
     night: [

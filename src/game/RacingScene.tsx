@@ -1,6 +1,13 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Html, Text, useGLTF } from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MutableRefObject,
+} from "react";
 import * as THREE from "three";
 import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { assets } from "./assets";
@@ -11,14 +18,14 @@ import {
   CAR_WHEEL_SPECS,
   LIVERY_ACCENT_MATERIAL,
   LIVERY_BODY_MATERIAL,
-  LOWPOLY_WHEEL_NODE_NAMES,
-  LOWPOLY_FRONT_WHEEL_NODE_NAMES,
   type CarId,
   type CarSuspensionLink,
   type CarWheelSpec,
+  CAR_VISUAL_MAX_STEER_YAW,
   drivingActionFromKeyboardEvent,
   getLiveryById,
   inputFromDrivingActions,
+  visualWheelSteerYaw,
 } from "./driving";
 import { createSnapshot, type CarSnapshot } from "./network";
 import { RaceAudioController } from "./raceAudio";
@@ -135,13 +142,14 @@ function SceneContent({
     createVehicleAtTrackReset(currentTrack),
   );
   const localCarRef = useRef<THREE.Group>(null);
+  const localSteerRef = useRef(0);
   const cameraTargetRef = useRef(new THREE.Vector3());
   const lastPublishRef = useRef(0);
   const startMsRef = useRef(performance.now());
   const nextCheckpointRef = useRef(0);
   const awaitingFinishRef = useRef(false);
   const audioRef = useRef<RaceAudioController | null>(null);
-  const [cameraMode, setCameraMode] = useState<"chase" | "driver">("driver");
+  const [cameraMode, setCameraMode] = useState<"chase" | "driver">("chase");
   const onLoadedRef = useRef(onLoaded);
   onLoadedRef.current = onLoaded;
   useEffect(() => {
@@ -225,6 +233,7 @@ function SceneContent({
       })),
     );
     vehicleRef.current = vehicle;
+    localSteerRef.current = vehicle.steer;
 
     if (localCarRef.current) {
       localCarRef.current.position.set(
@@ -235,7 +244,7 @@ function SceneContent({
       localCarRef.current.rotation.y = -vehicle.heading;
     }
 
-    updateCamera(camera, cameraTargetRef.current, vehicle, cameraMode, carId);
+    updateCamera(camera, cameraTargetRef.current, vehicle, cameraMode);
 
     if (!racing) startMsRef.current = performance.now();
     const elapsedMs = Math.max(
@@ -327,6 +336,7 @@ function SceneContent({
           carId={carId}
           body={livery.body}
           accent={livery.accent}
+          steerRef={localSteerRef}
           view={cameraMode}
         />
       </group>
@@ -348,17 +358,24 @@ function CarModel({
   carId,
   body,
   accent,
+  steerRef,
   view = "chase",
 }: {
   carId?: CarId;
   body: string;
   accent: string;
+  steerRef?: MutableRefObject<number>;
   view?: "chase" | "driver";
 }) {
-  if (carId === "lowpoly") {
-    return <LowPolyCar body={body} view={view} />;
-  }
-  return <CircuitCar body={body} accent={accent} view={view} />;
+  if (carId === "lowpoly") return <LowPolyCar body={body} />;
+  return (
+    <CircuitCar
+      body={body}
+      accent={accent}
+      steerRef={steerRef}
+      view={view}
+    />
+  );
 }
 
 // Clone the meshes' materials for this instance and recolor by material name, so
@@ -391,27 +408,8 @@ function useLiveriedScene(
 const LOWPOLY_SCALE = 0.008;
 const LOWPOLY_Y = 0.04;
 const LOWPOLY_UPRIGHT_X = -Math.PI / 2;
-const LOWPOLY_DRIVER_VISIBLE_NODE_NAMES = new Set<string>([
-  "SteeringWheel_02",
-  "Main_body.COmmiting",
-  "FrontWheels_bar",
-  "Front_Wing3",
-  "Front_Wing2.001",
-  "Front_Spoiler",
-  "Wheel_Holder",
-  "Wheel_Holder.002",
-  "intake",
-  "intake2",
-  ...LOWPOLY_FRONT_WHEEL_NODE_NAMES,
-]);
 
-function LowPolyCar({
-  body,
-  view = "chase",
-}: {
-  body: string;
-  view?: "chase" | "driver";
-}) {
+function LowPolyCar({ body }: { body: string }) {
   const scene = usePreparedModel(assets.cars.lowPoly, true, true, true);
   // The LowPoly has a baked texture; tint its material so the livery color reads
   // through the stripes.
@@ -423,17 +421,6 @@ function LowPolyCar({
     [body],
   );
   const tinted = useLiveriedScene(scene, recolor);
-
-  useMemo(() => {
-    tinted.traverse((object) => {
-      if (object instanceof THREE.Mesh) {
-        object.visible =
-          view === "chase" ||
-          LOWPOLY_DRIVER_VISIBLE_NODE_NAMES.has(object.name);
-      }
-    });
-  }, [tinted, view]);
-
   return (
     <group
       position={[0, LOWPOLY_Y, 0]}
@@ -448,10 +435,12 @@ function LowPolyCar({
 function CircuitCar({
   body,
   accent,
+  steerRef,
   view = "chase",
 }: {
   body: string;
   accent: string;
+  steerRef?: MutableRefObject<number>;
   view?: "chase" | "driver";
 }) {
   const rawChassis = usePreparedModel(assets.cars.chassis, true, true, true);
@@ -480,27 +469,51 @@ function CircuitCar({
     true,
     true,
   );
-  const visibleWheels =
-    view === "driver" ? CAR_WHEEL_SPECS.filter(isFrontWheel) : CAR_WHEEL_SPECS;
+  const wheelGroupsRef = useRef(new Map<CarWheelSpec["id"], THREE.Group>());
+  const steeringWheelRef = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    // Negated so the visible wheels and steering wheel deflect toward the turn
+    // direction (the chassis is mounted with a 180deg yaw offset).
+    const steerYaw = visualWheelSteerYaw(-(steerRef?.current ?? 0));
+    for (const wheel of CAR_WHEEL_SPECS) {
+      const group = wheelGroupsRef.current.get(wheel.id);
+      if (group) group.rotation.y = isFrontWheel(wheel) ? steerYaw : 0;
+    }
+    if (steeringWheelRef.current) {
+      steeringWheelRef.current.rotation.z =
+        -(steerYaw / CAR_VISUAL_MAX_STEER_YAW) * 0.85;
+    }
+  });
 
   return (
     <group scale={0.9} rotation-y={CAR_MODEL_FORWARD_YAW_OFFSET}>
-      {view === "chase" && <primitive object={chassisScene} scale={0.85} />}
+      <primitive object={chassisScene} scale={0.85} />
       {/* You don't see yourself from the cockpit; passengers only show in chase. */}
       {view === "chase" && <DriverFigure />}
-      <group
-        position={[0, 0.82, 0.36]}
-        rotation={[Math.PI * 0.08, 0, 0]}
-        scale={0.42}
-      >
-        <primitive object={steeringWheelScene} />
-      </group>
-      {view === "chase" &&
-        CAR_SUSPENSION_LINKS.map((link) => (
-          <SuspensionLink key={link.id} link={link} />
-        ))}
-      {visibleWheels.map((wheel) => (
-        <group key={wheel.id} position={wheel.position}>
+      {/* The steering wheel only reads from inside the car. */}
+      {view === "driver" && (
+        <group
+          ref={steeringWheelRef}
+          position={[0, 0.82, 0.36]}
+          rotation={[Math.PI * 0.08, 0, 0]}
+          scale={0.42}
+        >
+          <primitive object={steeringWheelScene} />
+        </group>
+      )}
+      {CAR_SUSPENSION_LINKS.map((link) => (
+        <SuspensionLink key={link.id} link={link} />
+      ))}
+      {CAR_WHEEL_SPECS.map((wheel) => (
+        <group
+          key={wheel.id}
+          ref={(group) => {
+            if (group) wheelGroupsRef.current.set(wheel.id, group);
+            else wheelGroupsRef.current.delete(wheel.id);
+          }}
+          position={wheel.position}
+        >
           <mesh castShadow position={[wheel.position[0] * -0.14, 0.02, 0]}>
             <sphereGeometry args={[0.12, 10, 8]} />
             <meshStandardMaterial color="#050505" roughness={0.75} />
@@ -508,12 +521,10 @@ function CircuitCar({
           <primitive object={wheelScene.clone()} scale={0.85} />
         </group>
       ))}
-      {view === "chase" && (
-        <mesh castShadow position={[0, 0.6, 0]}>
-          <boxGeometry args={[1.8, 0.28, 3.2]} />
-          <meshStandardMaterial color={body} transparent opacity={0.18} />
-        </mesh>
-      )}
+      <mesh castShadow position={[0, 0.6, 0]}>
+        <boxGeometry args={[1.8, 0.28, 3.2]} />
+        <meshStandardMaterial color={body} transparent opacity={0.18} />
+      </mesh>
     </group>
   );
 }
@@ -795,8 +806,11 @@ function RouteContinuousWalls({
   );
   const wallMaterial = useMemo(
     () =>
-      new THREE.MeshLambertMaterial({
+      new THREE.MeshStandardMaterial({
         vertexColors: true,
+        flatShading: true,
+        roughness: 0.42,
+        metalness: 0.02,
         side: THREE.FrontSide,
       }),
     [],
@@ -810,6 +824,7 @@ function RouteContinuousWalls({
           key={`wall-${index}`}
           geometry={geometry}
           material={wallMaterial}
+          castShadow
           receiveShadow
         />
       ))}
@@ -1040,147 +1055,6 @@ function createRouteRibbonGeometry(
   return geometry;
 }
 
-const BARRIER_PANEL_LENGTH = 9;
-const BARRIER_BAND_HEIGHT_RATIO = 0.36;
-const BARRIER_PANEL_RED = new THREE.Color("#d43f32");
-const BARRIER_PANEL_WHITE = new THREE.Color("#f1f3f5");
-const BARRIER_SHADE_COLOR = new THREE.Color("#47515a");
-
-export function createRouteBarrierGeometry(
-  points: Vec3[],
-  railOffset: number,
-  railWidth: number,
-  height: number,
-  side: -1 | 1,
-  railColor = "#d8dde4",
-  panelLength = BARRIER_PANEL_LENGTH,
-) {
-  const frames = createRouteFrames(points);
-  const innerOffset = railOffset - railWidth / 2;
-  const outerOffset = railOffset + railWidth / 2;
-  const bodyTopY = height * (1 - BARRIER_BAND_HEIGHT_RATIO);
-  const bodyBase = new THREE.Color(railColor);
-  const bodyShadow = bodyBase.clone().lerp(BARRIER_SHADE_COLOR, 0.38);
-  const capColor = bodyBase.clone();
-
-  const positions: number[] = [];
-  const colors: number[] = [];
-  const indices: number[] = [];
-  let distance = 0;
-  let previousX = frames[0]?.point.x ?? 0;
-  let previousZ = frames[0]?.point.z ?? 0;
-
-  for (let index = 0; index < frames.length; index += 1) {
-    const frame = frames[index];
-    distance += Math.hypot(
-      frame.point.x - previousX,
-      frame.point.z - previousZ,
-    );
-    previousX = frame.point.x;
-    previousZ = frame.point.z;
-
-    const inner = frame.point
-      .clone()
-      .addScaledVector(frame.right, side * innerOffset);
-    const outer = frame.point
-      .clone()
-      .addScaledVector(frame.right, side * outerOffset);
-    const panelColor =
-      Math.floor(distance / panelLength) % 2 === 0
-        ? BARRIER_PANEL_RED
-        : BARRIER_PANEL_WHITE;
-
-    positions.push(
-      inner.x,
-      inner.y,
-      inner.z,
-      inner.x,
-      inner.y + bodyTopY,
-      inner.z,
-      inner.x,
-      inner.y + bodyTopY,
-      inner.z,
-      inner.x,
-      inner.y + height,
-      inner.z,
-      outer.x,
-      outer.y + height,
-      outer.z,
-    );
-    colors.push(
-      bodyShadow.r,
-      bodyShadow.g,
-      bodyShadow.b,
-      bodyBase.r,
-      bodyBase.g,
-      bodyBase.b,
-      panelColor.r,
-      panelColor.g,
-      panelColor.b,
-      panelColor.r,
-      panelColor.g,
-      panelColor.b,
-      capColor.r,
-      capColor.g,
-      capColor.b,
-    );
-
-    const nextIndex = (index + 1) % frames.length;
-    const baseIndex = index * 5;
-    const nextBase = nextIndex * 5;
-    pushBarrierQuad(
-      indices,
-      baseIndex,
-      nextBase,
-      baseIndex + 1,
-      nextBase + 1,
-      side,
-    );
-    pushBarrierQuad(
-      indices,
-      baseIndex + 2,
-      nextBase + 2,
-      baseIndex + 3,
-      nextBase + 3,
-      side,
-    );
-    pushBarrierQuad(
-      indices,
-      baseIndex + 3,
-      nextBase + 3,
-      baseIndex + 4,
-      nextBase + 4,
-      side,
-    );
-  }
-
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(positions, 3),
-  );
-  geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-  geometry.setIndex(indices);
-  geometry.computeVertexNormals();
-  geometry.computeBoundingSphere();
-  return geometry;
-}
-
-function pushBarrierQuad(
-  indices: number[],
-  a: number,
-  b: number,
-  c: number,
-  d: number,
-  side: -1 | 1,
-) {
-  if (side === 1) {
-    indices.push(a, b, c, c, b, d);
-    return;
-  }
-  indices.push(a, c, b, c, d, b);
-}
-
 function createDirectionSignPlacements(
   points: Vec3[],
   width: number,
@@ -1214,6 +1088,171 @@ function createDirectionSignPlacements(
     };
   });
 }
+
+const BARRIER_PANEL_LENGTH = 5.8;
+const BARRIER_FRAME_STEP = 0.35;
+const BARRIER_PANEL_RED = new THREE.Color("#d43f32");
+const BARRIER_PANEL_WHITE = new THREE.Color("#f8fafc");
+
+function barrierPanelColor(distance: number, panelLength: number) {
+  return Math.floor(distance / panelLength) % 2 === 0
+    ? BARRIER_PANEL_RED
+    : BARRIER_PANEL_WHITE;
+}
+
+export function collectBarrierDistances(
+  curveLength: number,
+  panelLength = BARRIER_PANEL_LENGTH,
+  frameStep = BARRIER_FRAME_STEP,
+) {
+  const distances = new Set<number>();
+  for (let distance = 0; distance <= curveLength; distance += frameStep) {
+    distances.add(distance);
+  }
+  for (
+    let panelEdge = panelLength;
+    panelEdge < curveLength;
+    panelEdge += panelLength
+  ) {
+    distances.add(panelEdge);
+    distances.add(Math.max(0, panelEdge - 0.0001));
+  }
+  distances.add(curveLength);
+  return [...distances].sort((a, b) => a - b);
+}
+
+export function createRouteBarrierGeometry(
+  points: Vec3[],
+  railOffset: number,
+  railWidth: number,
+  height: number,
+  side: -1 | 1,
+  _railColor = "#d8dde4",
+  panelLength = BARRIER_PANEL_LENGTH,
+) {
+  const curve = new THREE.CatmullRomCurve3(
+    points.map((point) => new THREE.Vector3(point.x, point.y, point.z)),
+    true,
+    "centripetal",
+  );
+  const curveLength = curve.getLength();
+  if (curveLength <= 0) return new THREE.BufferGeometry();
+
+  const innerOffset = railOffset - railWidth / 2;
+  const outerOffset = railOffset + railWidth / 2;
+  const distances = collectBarrierDistances(curveLength, panelLength);
+
+  const positions: number[] = [];
+  const colors: number[] = [];
+  const indices: number[] = [];
+  let previousRight: THREE.Vector3 | undefined;
+
+  for (const distance of distances) {
+    const u = distance / curveLength;
+    const point = curve.getPointAt(u);
+    const tangent = curve.getTangentAt(u);
+    tangent.y = 0;
+    if (tangent.lengthSq() < 0.0001) tangent.set(0, 0, -1);
+    tangent.normalize();
+
+    const right = new THREE.Vector3(tangent.z, 0, -tangent.x).normalize();
+    if (previousRight && right.dot(previousRight) < 0) right.multiplyScalar(-1);
+    previousRight = right.clone();
+
+    const inner = point
+      .clone()
+      .addScaledVector(right, side * innerOffset);
+    const outer = point
+      .clone()
+      .addScaledVector(right, side * outerOffset);
+    const panelColor = barrierPanelColor(distance, panelLength);
+
+    positions.push(
+      inner.x,
+      inner.y,
+      inner.z,
+      outer.x,
+      outer.y,
+      outer.z,
+      inner.x,
+      inner.y + height,
+      inner.z,
+      outer.x,
+      outer.y + height,
+      outer.z,
+    );
+    colors.push(
+      panelColor.r,
+      panelColor.g,
+      panelColor.b,
+      panelColor.r,
+      panelColor.g,
+      panelColor.b,
+      panelColor.r,
+      panelColor.g,
+      panelColor.b,
+      panelColor.r,
+      panelColor.g,
+      panelColor.b,
+    );
+  }
+
+  for (let index = 0; index < distances.length; index += 1) {
+    const baseIndex = index * 4;
+    const nextBase = ((index + 1) % distances.length) * 4;
+    pushBarrierQuad(
+      indices,
+      baseIndex,
+      nextBase,
+      baseIndex + 2,
+      nextBase + 2,
+      side,
+    );
+    pushBarrierQuad(
+      indices,
+      baseIndex + 2,
+      nextBase + 2,
+      baseIndex + 3,
+      nextBase + 3,
+      side,
+    );
+    pushBarrierQuad(
+      indices,
+      baseIndex + 1,
+      baseIndex + 3,
+      nextBase + 3,
+      nextBase + 1,
+      -side,
+    );
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(positions, 3),
+  );
+  geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+  geometry.computeBoundingSphere();
+  return geometry;
+}
+
+function pushBarrierQuad(
+  indices: number[],
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  side: -1 | 1,
+) {
+  if (side === 1) {
+    indices.push(a, b, c, c, b, d);
+    return;
+  }
+  indices.push(a, c, b, c, d, b);
+}
+
 function LoadingLabel() {
   return (
     <Html center>
@@ -1286,49 +1325,28 @@ const CHASE_FOV = 58;
 // Per-frame follow factor. Higher catches up faster, which shrinks the extra
 // gap the camera falls behind by at high speed (steady-state lag ~= speed/factor).
 const CHASE_FOLLOW = 0.2;
-// Driver camera: seated behind the wheel, looking over the nose with front tyres
-// in frame. Values are tuned for the low-poly F1 cockpit reference.
-const DRIVER_BACK = 0.15;
-const DRIVER_HEIGHT = 1.22;
-const DRIVER_LOOK_AHEAD = 24;
-const DRIVER_LOOK_HEIGHT = 1.08;
-const DRIVER_FOV = 70;
-const LOWPOLY_DRIVER_BACK = 0.26;
-const LOWPOLY_DRIVER_HEIGHT = 0.7;
-const LOWPOLY_DRIVER_LOOK_AHEAD = 16;
-const LOWPOLY_DRIVER_LOOK_HEIGHT = 0.5;
-const LOWPOLY_DRIVER_FOV = 74;
+// Driver camera: a cockpit seat near the car's center at head height, looking
+// down the track. A wider FOV adds peripheral view and a sense of speed.
+// DRIVER_BACK > 0 sits behind center (more car visible); negative sits forward.
+const DRIVER_BACK = 0.2;
+const DRIVER_HEIGHT = 1.15;
+const DRIVER_LOOK_AHEAD = 18;
+const DRIVER_LOOK_HEIGHT = 1.0;
+const DRIVER_FOV = 72;
 
 export function updateCamera(
   camera: THREE.Camera,
   target: THREE.Vector3,
   vehicle: VehicleState,
   mode: "chase" | "driver",
-  carId?: CarId,
 ) {
   // Unit forward vector matching the vehicle's travel direction.
   const forwardX = Math.sin(vehicle.heading);
   const forwardZ = -Math.cos(vehicle.heading);
-  const driverProfile =
-    carId === "lowpoly"
-      ? {
-          back: LOWPOLY_DRIVER_BACK,
-          height: LOWPOLY_DRIVER_HEIGHT,
-          lookAhead: LOWPOLY_DRIVER_LOOK_AHEAD,
-          lookHeight: LOWPOLY_DRIVER_LOOK_HEIGHT,
-          fov: LOWPOLY_DRIVER_FOV,
-        }
-      : {
-          back: DRIVER_BACK,
-          height: DRIVER_HEIGHT,
-          lookAhead: DRIVER_LOOK_AHEAD,
-          lookHeight: DRIVER_LOOK_HEIGHT,
-          fov: DRIVER_FOV,
-        };
 
   // Wider field of view in the cockpit for immersion and speed; normal behind.
   if (camera instanceof THREE.PerspectiveCamera) {
-    const desiredFov = mode === "driver" ? driverProfile.fov : CHASE_FOV;
+    const desiredFov = mode === "driver" ? DRIVER_FOV : CHASE_FOV;
     if (camera.fov !== desiredFov) {
       camera.fov = desiredFov;
       camera.updateProjectionMatrix();
@@ -1339,14 +1357,14 @@ export function updateCamera(
     // Rigidly attached to the car so the cockpit view never lags or bobs while
     // accelerating, as if you were sitting in the seat.
     camera.position.set(
-      vehicle.position.x - forwardX * driverProfile.back,
-      vehicle.position.y + driverProfile.height,
-      vehicle.position.z - forwardZ * driverProfile.back,
+      vehicle.position.x - forwardX * DRIVER_BACK,
+      vehicle.position.y + DRIVER_HEIGHT,
+      vehicle.position.z - forwardZ * DRIVER_BACK,
     );
     target.set(
-      vehicle.position.x + forwardX * driverProfile.lookAhead,
-      vehicle.position.y + driverProfile.lookHeight,
-      vehicle.position.z + forwardZ * driverProfile.lookAhead,
+      vehicle.position.x + forwardX * DRIVER_LOOK_AHEAD,
+      vehicle.position.y + DRIVER_LOOK_HEIGHT,
+      vehicle.position.z + forwardZ * DRIVER_LOOK_AHEAD,
     );
     camera.lookAt(target);
     return;
