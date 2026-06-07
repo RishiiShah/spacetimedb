@@ -1,5 +1,7 @@
 # SpaceTimeDB Racer
 
+> **No install. No queue. Drop a room code — they're on your grid in seconds.**
+
 A browser-based multiplayer open-wheel racing game built with React, Three.js, and [SpacetimeDB](https://spacetimedb.com). Drive on real-world-inspired circuits, a city loop, stunt arenas, or a flat practice road — alone or with friends in shared rooms — with live car positions, checkpoint timing, and lap leaderboards.
 
 ## Why SpacetimeDB?

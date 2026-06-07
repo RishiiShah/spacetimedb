@@ -1,5 +1,6 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import "./RetroGridMenu.css";
+import { GAME_HOOK_LINES, GAME_TAGLINE } from "./gameHook";
 import { RetroGridMenuScene } from "./RetroGridMenuScene";
 import {
   CARS,
@@ -64,6 +65,14 @@ export function RetroGridHomeScreen({
   onStartRace,
 }: RetroGridHomeScreenProps) {
   const [panel, setPanel] = useState<Panel>("home");
+  const [hookIndex, setHookIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setHookIndex((index) => (index + 1) % GAME_HOOK_LINES.length);
+    }, 5200);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const joinRoom = (event: FormEvent) => {
     event.preventDefault();
@@ -105,8 +114,9 @@ export function RetroGridHomeScreen({
                 </span>
                 <span className="retro-title-sub">GRAND PRIX</span>
               </div>
+              <p className="retro-tagline">{GAME_TAGLINE}</p>
               <p className="retro-subtitle">
-                Driver briefing · {selectedCar.name} setup
+                {selectedCar.name} · {selectedTrack.name}
               </p>
             </div>
 
@@ -180,6 +190,19 @@ export function RetroGridHomeScreen({
           </aside>
 
           <main className="retro-stage">
+            {panel === "home" && (
+              <section className="retro-hook-panel" aria-label="Race pitch">
+                <p className="retro-hook-eyebrow">Live multiplayer · browser racing</p>
+                <p className="retro-hook-line" key={hookIndex}>
+                  {GAME_HOOK_LINES[hookIndex]}
+                </p>
+                <p className="retro-hook-cta">
+                  Hit <strong>START RACE</strong> solo, or open{" "}
+                  <strong>OPTIONS</strong> to create a room and send the code.
+                </p>
+              </section>
+            )}
+
             {panel === "garage" && (
               <section className="retro-stage-panel" aria-label="Garage">
                 <header className="retro-stage-header">
