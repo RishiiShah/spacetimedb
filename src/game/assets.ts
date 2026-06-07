@@ -2,6 +2,7 @@ export const assets = {
   cars: {
     chassis: '/assets/cars/open-wheel-chassis.glb',
     wheel: '/assets/cars/open-wheel-wheel.glb',
+    steeringWheel: '/assets/cars/sndcar-f1-steering-wheel.glb',
   },
   track: {
     startBanner: '/assets/track/start-banner.glb',

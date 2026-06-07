@@ -1,6 +1,13 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Html, Text, useGLTF } from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MutableRefObject,
+} from "react";
 import * as THREE from "three";
 import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { assets } from "./assets";
@@ -8,10 +15,13 @@ import {
   CAR_MODEL_FORWARD_YAW_OFFSET,
   CAR_MODEL_RIDE_HEIGHT,
   CAR_SUSPENSION_LINKS,
+  CAR_VISUAL_MAX_STEER_YAW,
   CAR_WHEEL_SPECS,
   type CarSuspensionLink,
+  type CarWheelSpec,
   drivingActionFromKeyboardEvent,
   inputFromDrivingActions,
+  visualWheelSteerYaw,
 } from "./driving";
 import { createSnapshot, type CarSnapshot } from "./network";
 import {
@@ -103,6 +113,7 @@ function SceneContent({
     createVehicleAtTrackReset(currentTrack),
   );
   const localCarRef = useRef<THREE.Group>(null);
+  const localSteerRef = useRef(0);
   const cameraTargetRef = useRef(new THREE.Vector3());
   const lastPublishRef = useRef(0);
   const startMsRef = useRef(performance.now());
@@ -145,6 +156,7 @@ function SceneContent({
   useFrame(({ camera, clock }, delta) => {
     const vehicle = stepVehicle(vehicleRef.current, inputRef.current, delta);
     vehicleRef.current = vehicle;
+    localSteerRef.current = vehicle.steer;
 
     if (localCarRef.current) {
       localCarRef.current.position.set(
@@ -219,7 +231,7 @@ function SceneContent({
           currentTrack.spawn.position.z,
         ]}
       >
-        <CircuitCar color="#f1f5f9" />
+        <CircuitCar color="#f1f5f9" steerRef={localSteerRef} view={cameraMode} />
       </group>
       {remoteCars.map((car) => (
         <RemoteCar key={car.identity.toHexString()} car={car} />
@@ -235,42 +247,119 @@ function TrackRenderer({ track }: { track: TrackDef }) {
   return <CityTrackAssets track={track} />;
 }
 
-function CircuitCar({ color }: { color: string }) {
+function CircuitCar({
+  color,
+  steerRef,
+  view = "chase",
+}: {
+  color: string;
+  steerRef?: MutableRefObject<number>;
+  view?: "chase" | "driver";
+}) {
   const chassisScene = usePreparedModel(assets.cars.chassis, true, true, true);
   const wheelScene = usePreparedModel(assets.cars.wheel, true, true, true);
+  const steeringWheelScene = usePreparedModel(
+    assets.cars.steeringWheel,
+    true,
+    true,
+    true,
+  );
+  const wheelGroupsRef = useRef(new Map<CarWheelSpec["id"], THREE.Group>());
+  const steeringWheelRef = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    // Negated so the visible wheels and steering wheel deflect toward the turn
+    // direction (the chassis is mounted with a 180deg yaw offset).
+    const steerYaw = visualWheelSteerYaw(-(steerRef?.current ?? 0));
+    for (const wheel of CAR_WHEEL_SPECS) {
+      const group = wheelGroupsRef.current.get(wheel.id);
+      if (group) group.rotation.y = isFrontWheel(wheel) ? steerYaw : 0;
+    }
+    if (steeringWheelRef.current) {
+      steeringWheelRef.current.rotation.z =
+        -(steerYaw / CAR_VISUAL_MAX_STEER_YAW) * 0.85;
+    }
+  });
 
   return (
     <group scale={0.9} rotation-y={CAR_MODEL_FORWARD_YAW_OFFSET}>
       <primitive object={chassisScene} scale={0.85} />
+      {/* You don't see yourself from the cockpit; passengers only show in chase. */}
+      {view === "chase" && <DriverFigure />}
+      {/* The steering wheel only reads from inside the car. */}
+      {view === "driver" && (
+        <group
+          ref={steeringWheelRef}
+          position={[0, 0.82, 0.36]}
+          rotation={[Math.PI * 0.08, 0, 0]}
+          scale={0.42}
+        >
+          <primitive object={steeringWheelScene} />
+        </group>
+      )}
       {CAR_SUSPENSION_LINKS.map((link) => (
         <SuspensionLink key={link.id} link={link} />
       ))}
       {CAR_WHEEL_SPECS.map((wheel) => (
-        <mesh
-          key={`${wheel.id}-hub`}
-          castShadow
-          position={[
-            wheel.position[0] * 0.86,
-            wheel.position[1] + 0.02,
-            wheel.position[2],
-          ]}
-        >
-          <sphereGeometry args={[0.12, 10, 8]} />
-          <meshStandardMaterial color="#050505" roughness={0.75} />
-        </mesh>
-      ))}
-      {CAR_WHEEL_SPECS.map((wheel) => (
-        <primitive
+        <group
           key={wheel.id}
-          object={wheelScene.clone()}
+          ref={(group) => {
+            if (group) wheelGroupsRef.current.set(wheel.id, group);
+            else wheelGroupsRef.current.delete(wheel.id);
+          }}
           position={wheel.position}
-          scale={0.85}
-        />
+        >
+          <mesh castShadow position={[wheel.position[0] * -0.14, 0.02, 0]}>
+            <sphereGeometry args={[0.12, 10, 8]} />
+            <meshStandardMaterial color="#050505" roughness={0.75} />
+          </mesh>
+          <primitive object={wheelScene.clone()} scale={0.85} />
+        </group>
       ))}
       <mesh castShadow position={[0, 0.6, 0]}>
         <boxGeometry args={[1.8, 0.28, 3.2]} />
         <meshStandardMaterial color={color} transparent opacity={0.18} />
       </mesh>
+    </group>
+  );
+}
+
+function isFrontWheel(wheel: CarWheelSpec) {
+  return wheel.position[2] > 0;
+}
+
+function DriverFigure() {
+  return (
+    // Sunk down into the cockpit so the driver reads as seated, not perched.
+    <group position={[0, 0.02, -0.02]}>
+      <mesh castShadow position={[0, 0.24, -0.08]} scale={[0.34, 0.42, 0.32]}>
+        <capsuleGeometry args={[0.32, 0.38, 4, 8]} />
+        <meshStandardMaterial color="#111827" roughness={0.7} />
+      </mesh>
+      <mesh castShadow position={[0, 0.78, 0.06]}>
+        <sphereGeometry args={[0.22, 12, 10]} />
+        <meshStandardMaterial color="#f8fafc" roughness={0.55} />
+      </mesh>
+      <mesh
+        castShadow
+        position={[0, 0.76, 0.24]}
+        rotation={[0.35, 0, 0]}
+        scale={[0.18, 0.08, 0.08]}
+      >
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="#0ea5e9" roughness={0.35} />
+      </mesh>
+      {[-1, 1].map((side) => (
+        <mesh
+          key={side}
+          castShadow
+          position={[side * 0.24, 0.48, 0.26]}
+          rotation={[0.95, 0, side * 0.38]}
+        >
+          <capsuleGeometry args={[0.045, 0.42, 4, 8]} />
+          <meshStandardMaterial color="#111827" roughness={0.72} />
+        </mesh>
+      ))}
     </group>
   );
 }

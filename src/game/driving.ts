@@ -12,6 +12,7 @@ export type DrivingAction =
 // the front of the car with the direction of travel.
 export const CAR_MODEL_FORWARD_YAW_OFFSET = Math.PI;
 export const CAR_MODEL_RIDE_HEIGHT = 0.24;
+export const CAR_VISUAL_MAX_STEER_YAW = 0.48;
 
 export type CarWheelSpec = {
   id: "frontLeft" | "frontRight" | "rearLeft" | "rearRight";
@@ -113,4 +114,12 @@ export function inputFromDrivingActions(
       (actions.has("steerLeft") ? 1 : 0),
     handbrake: actions.has("handbrake"),
   };
+}
+
+export function visualWheelSteerYaw(steer: number) {
+  return clamp(steer, -1, 1) * CAR_VISUAL_MAX_STEER_YAW;
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, value));
 }

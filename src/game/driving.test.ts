@@ -3,9 +3,11 @@ import {
   CAR_MODEL_FORWARD_YAW_OFFSET,
   CAR_MODEL_RIDE_HEIGHT,
   CAR_SUSPENSION_LINKS,
+  CAR_VISUAL_MAX_STEER_YAW,
   CAR_WHEEL_SPECS,
   drivingActionFromKeyboardEvent,
   inputFromDrivingActions,
+  visualWheelSteerYaw,
 } from "./driving";
 
 describe("driving controls", () => {
@@ -72,5 +74,12 @@ describe("driving controls", () => {
         expect(Math.abs(link.end[2] - wheel.position[2])).toBeLessThan(0.35);
       }
     }
+  });
+
+  it("maps eased steering input to clamped front tire yaw", () => {
+    expect(visualWheelSteerYaw(0)).toBe(0);
+    expect(visualWheelSteerYaw(1)).toBe(CAR_VISUAL_MAX_STEER_YAW);
+    expect(visualWheelSteerYaw(-1)).toBe(-CAR_VISUAL_MAX_STEER_YAW);
+    expect(visualWheelSteerYaw(2)).toBe(CAR_VISUAL_MAX_STEER_YAW);
   });
 });

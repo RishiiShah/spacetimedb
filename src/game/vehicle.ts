@@ -42,7 +42,7 @@ const STEER_HIGH_AUTHORITY = 0.5;
 // Speed trim on top of the authority curve: turns are STEER_SPEED_TRIM quicker
 // at top speed, the same amount slower at a standstill, and unchanged at the
 // mid-speed point.
-const STEER_SPEED_TRIM = 0.1;
+const STEER_SPEED_TRIM = 0.15;
 // Drift: above DRIFT_SPEED_THRESHOLD the travel direction lags behind the
 // heading by up to DRIFT_MAX_SLIP radians, so the car slides slightly through
 // fast corners. Kept small so it is felt but never wild.
