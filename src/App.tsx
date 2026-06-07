@@ -6,6 +6,14 @@ import { RacingScene, type RacingTelemetry } from "./game/RacingScene";
 import type { CarSnapshot } from "./game/network";
 import { RenderErrorBoundary } from "./game/RenderErrorBoundary";
 import {
+  CARS,
+  DEFAULT_CAR_ID,
+  DEFAULT_LIVERY_ID,
+  LIVERIES,
+  getCarById,
+  getLiveryById,
+} from "./game/driving";
+import {
   GAME_MODES,
   getDefaultTrackForMode,
   getModeMeta,
@@ -25,6 +33,8 @@ function App() {
     DEFAULT_TRACK.id.toString(),
   );
   const [roomSlug, setRoomSlug] = useState(DEFAULT_ROOM);
+  const [selectedCarId, setSelectedCarId] = useState(DEFAULT_CAR_ID);
+  const [selectedLiveryId, setSelectedLiveryId] = useState(DEFAULT_LIVERY_ID);
   const [displayName, setDisplayName] = useState("");
   const [telemetry, setTelemetry] = useState<RacingTelemetry>({
     speed: 0,
@@ -57,6 +67,8 @@ function App() {
       : getDefaultTrackForMode(selectedMode);
   }, [selectedMode, selectedTrackId]);
   const selectedModeMeta = getModeMeta(selectedMode);
+  const selectedCar = getCarById(selectedCarId);
+  const selectedLivery = getLiveryById(selectedLiveryId);
 
   const me = useMemo(() => {
     if (!identity) return undefined;
@@ -342,10 +354,69 @@ function App() {
               </select>
             </label>
 
+            <label className="home-select">
+              Car
+              <select
+                value={selectedCarId}
+                onChange={(event) =>
+                  setSelectedCarId(getCarById(event.target.value).id)
+                }
+              >
+                {CARS.map((car) => (
+                  <option key={car.id} value={car.id}>
+                    {car.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
             <div className="selected-track">
               <span>{selectedModeMeta.label}</span>
               <strong>{selectedTrack.name}</strong>
               <p>{selectedTrack.summary}</p>
+            </div>
+
+            <label className="home-select">
+              Livery
+              <select
+                value={selectedLiveryId}
+                onChange={(event) =>
+                  setSelectedLiveryId(getLiveryById(event.target.value).id)
+                }
+              >
+                {LIVERIES.map((livery) => (
+                  <option key={livery.id} value={livery.id}>
+                    {livery.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <div className="selected-track">
+              <span>Car</span>
+              <strong>{selectedCar.name}</strong>
+              <p>{selectedCar.summary}</p>
+              <span
+                className="livery-swatch"
+                aria-label={`Livery: ${selectedLivery.name}`}
+                style={{
+                  display: "inline-flex",
+                  gap: 6,
+                  marginTop: 6,
+                  alignItems: "center",
+                }}
+              >
+                <span
+                  style={{
+                    width: 18,
+                    height: 18,
+                    borderRadius: 4,
+                    background: selectedLivery.body,
+                    border: `2px solid ${selectedLivery.accent}`,
+                  }}
+                />
+                {selectedLivery.name}
+              </span>
             </div>
 
             <form
@@ -394,6 +465,8 @@ function App() {
             localIdentity={identity?.toHexString() || "offline-preview"}
             roomId={activeRoom?.roomId}
             trackId={selectedTrack.id}
+            carId={selectedCarId}
+            liveryId={selectedLiveryId}
             remoteCars={roomCars}
             onSnapshot={onSnapshot}
             onCheckpoint={onCheckpoint}
@@ -426,6 +499,8 @@ function App() {
             label="Checkpoint"
             value={`${telemetry.checkpointIndex + 1}/${selectedTrack.checkpoints.length}`}
           />
+          <Metric label="Car" value={selectedCar.name} />
+          <Metric label="Livery" value={selectedLivery.name} />
           <Metric
             label="Network"
             value={connected ? activeRoom?.slug || "online" : "offline"}

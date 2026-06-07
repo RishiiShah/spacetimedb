@@ -7,6 +7,62 @@ export type DrivingAction =
   | "steerRight"
   | "handbrake";
 
+export type CarId = "open-wheel" | "lowpoly";
+
+export type CarOption = {
+  id: CarId;
+  name: string;
+  summary: string;
+};
+
+// Selectable cars. Handling is shared; only the model differs for now.
+export const CARS: CarOption[] = [
+  {
+    id: "open-wheel",
+    name: "Apex OW-1",
+    summary: "Lean open-wheel prototype with exposed suspension.",
+  },
+  {
+    id: "lowpoly",
+    name: "Veloce LP",
+    summary: "Full-body F1 with rear wing, halo and cockpit detail.",
+  },
+];
+
+export const DEFAULT_CAR_ID: CarId = "open-wheel";
+
+export function getCarById(id: string | undefined): CarOption {
+  return CARS.find((car) => car.id === id) ?? CARS[0];
+}
+
+// Liveries recolor the car. `body` paints the main shell material, `accent`
+// the secondary panels. They are plain colors (no UVs needed), so they apply to
+// any car and cost nothing beyond a per-instance material clone.
+export type Livery = {
+  id: string;
+  name: string;
+  body: string;
+  accent: string;
+};
+
+export const LIVERIES: Livery[] = [
+  { id: "ghost", name: "Ghost White", body: "#e9eef4", accent: "#161a22" },
+  { id: "scuderia", name: "Scuderia Red", body: "#d11f26", accent: "#15151a" },
+  { id: "aqua", name: "Aqua Sting", body: "#16c4b0", accent: "#0d1f27" },
+  { id: "sunburst", name: "Sunburst", body: "#f5b011", accent: "#23232a" },
+  { id: "midnight", name: "Midnight Blue", body: "#274d99", accent: "#0c1530" },
+];
+
+export const DEFAULT_LIVERY_ID = "ghost";
+
+export function getLiveryById(id: string | undefined): Livery {
+  return LIVERIES.find((livery) => livery.id === id) ?? LIVERIES[0];
+}
+
+// Material names inside the open-wheel chassis GLB that liveries recolor.
+export const LIVERY_BODY_MATERIAL = "car_color";
+export const LIVERY_ACCENT_MATERIAL = "car_color.001";
+
 // The chassis GLB is authored with its nose pointing +Z, but the vehicle's
 // zero-heading travel direction is -Z, so the model is rotated 180deg to align
 // the front of the car with the direction of travel.

@@ -12,4 +12,8 @@ describe('game asset manifest', () => {
       '/assets/cars/sndcar-f1-steering-wheel.glb',
     );
   });
+
+  it('includes the low-poly F1 as a second selectable car', () => {
+    expect(assets.cars.lowPoly).toBe('/assets/cars/lowpoly-f1.glb');
+  });
 });

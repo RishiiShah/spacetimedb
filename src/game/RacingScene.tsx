@@ -17,9 +17,13 @@ import {
   CAR_SUSPENSION_LINKS,
   CAR_VISUAL_MAX_STEER_YAW,
   CAR_WHEEL_SPECS,
+  LIVERY_ACCENT_MATERIAL,
+  LIVERY_BODY_MATERIAL,
+  type CarId,
   type CarSuspensionLink,
   type CarWheelSpec,
   drivingActionFromKeyboardEvent,
+  getLiveryById,
   inputFromDrivingActions,
   visualWheelSteerYaw,
 } from "./driving";
@@ -52,6 +56,8 @@ type RacingSceneProps = {
   localIdentity: string;
   roomId?: bigint;
   trackId?: bigint;
+  carId?: CarId;
+  liveryId?: string;
   remoteCars: CarState[];
   onSnapshot: (snapshot: CarSnapshot) => void;
   onCheckpoint: (checkpointIndex: number, elapsedMs: number) => void;
@@ -96,12 +102,15 @@ function SceneContent({
   localIdentity,
   roomId,
   trackId,
+  carId,
+  liveryId,
   remoteCars,
   onSnapshot,
   onCheckpoint,
   onFinishLap,
   onTelemetry,
 }: RacingSceneProps) {
+  const livery = getLiveryById(liveryId);
   const currentTrack = useMemo(() => getTrackById(trackId), [trackId]);
   const inputRef = useRef<VehicleInput>({
     throttle: 0,
@@ -231,7 +240,13 @@ function SceneContent({
           currentTrack.spawn.position.z,
         ]}
       >
-        <CircuitCar color="#f1f5f9" steerRef={localSteerRef} view={cameraMode} />
+        <CarModel
+          carId={carId}
+          body={livery.body}
+          accent={livery.accent}
+          steerRef={localSteerRef}
+          view={cameraMode}
+        />
       </group>
       {remoteCars.map((car) => (
         <RemoteCar key={car.identity.toHexString()} car={car} />
@@ -247,16 +262,109 @@ function TrackRenderer({ track }: { track: TrackDef }) {
   return <CityTrackAssets track={track} />;
 }
 
-function CircuitCar({
-  color,
+function CarModel({
+  carId,
+  body,
+  accent,
   steerRef,
   view = "chase",
 }: {
-  color: string;
+  carId?: CarId;
+  body: string;
+  accent: string;
   steerRef?: MutableRefObject<number>;
   view?: "chase" | "driver";
 }) {
-  const chassisScene = usePreparedModel(assets.cars.chassis, true, true, true);
+  if (carId === "lowpoly") return <LowPolyCar body={body} />;
+  return (
+    <CircuitCar body={body} accent={accent} steerRef={steerRef} view={view} />
+  );
+}
+
+// Clone the meshes' materials for this instance and recolor by material name, so
+// liveries are per-car (never mutate the shared cached materials).
+function useLiveriedScene(
+  scene: THREE.Object3D,
+  recolor: (material: THREE.MeshStandardMaterial) => boolean,
+) {
+  return useMemo(() => {
+    scene.traverse((object) => {
+      if (object instanceof THREE.Mesh && object.material) {
+        const apply = (material: THREE.Material) => {
+          const cloned = material.clone() as THREE.MeshStandardMaterial;
+          recolor(cloned);
+          return cloned;
+        };
+        object.material = Array.isArray(object.material)
+          ? object.material.map(apply)
+          : apply(object.material);
+      }
+    });
+    return scene;
+    // recolor is recreated per body/accent change by the caller's useMemo deps
+  }, [scene, recolor]);
+}
+
+// The low-poly F1 is a single authored model (Z-up, Y-forward, cm scale), so it
+// is uprighted into our Y-up world, scaled down, and lifted so the tires sit on
+// the road. Tune LOWPOLY_Y if it floats or sinks.
+const LOWPOLY_SCALE = 0.008;
+const LOWPOLY_Y = 0.04;
+const LOWPOLY_UPRIGHT_X = -Math.PI / 2;
+
+function LowPolyCar({ body }: { body: string }) {
+  const scene = usePreparedModel(assets.cars.lowPoly, true, true, true);
+  // The LowPoly has a baked texture; tint its material so the livery color reads
+  // through the stripes.
+  const recolor = useMemo(
+    () => (material: THREE.MeshStandardMaterial) => {
+      material.color = new THREE.Color(body);
+      return true;
+    },
+    [body],
+  );
+  const tinted = useLiveriedScene(scene, recolor);
+  return (
+    <group
+      position={[0, LOWPOLY_Y, 0]}
+      rotation-x={LOWPOLY_UPRIGHT_X}
+      scale={LOWPOLY_SCALE}
+    >
+      <primitive object={tinted} />
+    </group>
+  );
+}
+
+function CircuitCar({
+  body,
+  accent,
+  steerRef,
+  view = "chase",
+}: {
+  body: string;
+  accent: string;
+  steerRef?: MutableRefObject<number>;
+  view?: "chase" | "driver";
+}) {
+  const rawChassis = usePreparedModel(assets.cars.chassis, true, true, true);
+  // Paint the body + accent materials, with a glossier finish so it reads as
+  // racecar paint instead of matte plastic.
+  const recolor = useMemo(
+    () => (material: THREE.MeshStandardMaterial) => {
+      if (material.name === LIVERY_BODY_MATERIAL) {
+        material.color = new THREE.Color(body);
+        material.metalness = 0.35;
+        material.roughness = 0.42;
+      } else if (material.name === LIVERY_ACCENT_MATERIAL) {
+        material.color = new THREE.Color(accent);
+        material.metalness = 0.3;
+        material.roughness = 0.5;
+      }
+      return true;
+    },
+    [body, accent],
+  );
+  const chassisScene = useLiveriedScene(rawChassis, recolor);
   const wheelScene = usePreparedModel(assets.cars.wheel, true, true, true);
   const steeringWheelScene = usePreparedModel(
     assets.cars.steeringWheel,
@@ -318,7 +426,7 @@ function CircuitCar({
       ))}
       <mesh castShadow position={[0, 0.6, 0]}>
         <boxGeometry args={[1.8, 0.28, 3.2]} />
-        <meshStandardMaterial color={color} transparent opacity={0.18} />
+        <meshStandardMaterial color={body} transparent opacity={0.18} />
       </mesh>
     </group>
   );
@@ -402,7 +510,7 @@ function RemoteCar({ car }: { car: CarState }) {
       position={[car.x, car.y + CAR_MODEL_RIDE_HEIGHT, car.z]}
       quaternion={[car.qx, car.qy, car.qz, car.qw]}
     >
-      <CircuitCar color="#38bdf8" />
+      <CircuitCar body="#38bdf8" accent="#10212a" />
     </group>
   );
 }
@@ -1099,3 +1207,5 @@ function distance2D(a: { x: number; z: number }, b: { x: number; z: number }) {
 
 useGLTF.preload(assets.cars.chassis);
 useGLTF.preload(assets.cars.wheel);
+useGLTF.preload(assets.cars.steeringWheel);
+useGLTF.preload(assets.cars.lowPoly);
