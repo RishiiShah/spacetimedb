@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { cityLoopV1Track } from "./track";
+import { cityLoopV1Track, getRouteFenceInnerOffset } from "./track";
+import { nearestRouteCurveProjection } from "./routeGeometry";
 import {
+  VEHICLE_COLLISION_HALF_WIDTH,
+  VEHICLE_OBSTACLE_COLLISION_RADIUS,
   createInitialVehicleState,
   createVehicleAtTrackReset,
+  resolveVehicleObstacleCollisions,
   stepVehicle,
 } from "./vehicle";
 
@@ -36,8 +40,16 @@ describe("vehicle movement", () => {
   it("scrubs speed while cornering at speed", () => {
     const state = { ...createInitialVehicleState(), speed: 60 };
 
-    const straight = stepVehicle(state, { throttle: 0, brake: 0, steer: 0 }, 0.2);
-    const cornering = stepVehicle(state, { throttle: 0, brake: 0, steer: 1 }, 0.2);
+    const straight = stepVehicle(
+      state,
+      { throttle: 0, brake: 0, steer: 0 },
+      0.2,
+    );
+    const cornering = stepVehicle(
+      state,
+      { throttle: 0, brake: 0, steer: 1 },
+      0.2,
+    );
 
     expect(cornering.speed).toBeLessThan(straight.speed);
   });
@@ -47,7 +59,11 @@ describe("vehicle movement", () => {
     // rather than the eased turn-in transient.
     const state = { ...createInitialVehicleState(), speed: 70, steer: 1 };
 
-    const cornering = stepVehicle(state, { throttle: 1, brake: 0, steer: 1 }, 0.2);
+    const cornering = stepVehicle(
+      state,
+      { throttle: 1, brake: 0, steer: 1 },
+      0.2,
+    );
 
     expect(cornering.speed).toBeLessThan(state.speed);
   });
@@ -55,8 +71,16 @@ describe("vehicle movement", () => {
   it("builds speed back up once the wheel is straightened", () => {
     const state = { ...createInitialVehicleState(), speed: 40 };
 
-    const cornering = stepVehicle(state, { throttle: 1, brake: 0, steer: 1 }, 0.2);
-    const straightening = stepVehicle(state, { throttle: 1, brake: 0, steer: 0 }, 0.2);
+    const cornering = stepVehicle(
+      state,
+      { throttle: 1, brake: 0, steer: 1 },
+      0.2,
+    );
+    const straightening = stepVehicle(
+      state,
+      { throttle: 1, brake: 0, steer: 0 },
+      0.2,
+    );
 
     expect(straightening.speed).toBeGreaterThan(cornering.speed);
     expect(straightening.speed).toBeGreaterThan(state.speed);
@@ -65,7 +89,11 @@ describe("vehicle movement", () => {
   it("stops faster on the handbrake than on the foot brake", () => {
     const state = { ...createInitialVehicleState(), speed: 40 };
 
-    const braking = stepVehicle(state, { throttle: 0, brake: 1, steer: 0 }, 0.2);
+    const braking = stepVehicle(
+      state,
+      { throttle: 0, brake: 1, steer: 0 },
+      0.2,
+    );
     const handbraking = stepVehicle(
       state,
       { throttle: 0, brake: 0, steer: 0, handbrake: true },
@@ -132,7 +160,11 @@ describe("vehicle movement", () => {
       { throttle: 0, brake: 0, steer: 1 },
       0.05,
     );
-    const turnedFast = stepVehicle(fast, { throttle: 0, brake: 0, steer: 1 }, 0.05);
+    const turnedFast = stepVehicle(
+      fast,
+      { throttle: 0, brake: 0, steer: 1 },
+      0.05,
+    );
 
     expect(turnedFast.heading).toBeLessThan(turnedModerate.heading);
   });
@@ -171,5 +203,142 @@ describe("vehicle movement", () => {
       z: checkpoint.position.z,
     });
     expect(reset.heading).toBe(checkpoint.rotationY);
+  });
+
+  it("clamps route-based tracks at the rendered wall edge", () => {
+    const state = {
+      ...createInitialVehicleState(),
+      position: { x: -250, y: 0, z: 260 },
+      speed: 20,
+    };
+
+    const next = stepVehicle(
+      state,
+      { throttle: 0, brake: 0, steer: 0 },
+      0.016,
+      cityLoopV1Track,
+    );
+
+    const distance = nearestRouteCurveProjection(
+      next.position,
+      cityLoopV1Track.routePoints ?? [],
+    ).distance;
+
+    expect(distance).toBeCloseTo(
+      getRouteFenceInnerOffset(
+        cityLoopV1Track.roadWidth ?? 0,
+        cityLoopV1Track.railOffset,
+      ) - VEHICLE_COLLISION_HALF_WIDTH,
+    );
+  });
+
+  it("slides along the barrier on a glancing hit instead of stopping", () => {
+    const state = {
+      ...createInitialVehicleState(),
+      position: { x: -250, y: 0, z: 260 },
+      speed: 20,
+    };
+
+    const next = stepVehicle(
+      state,
+      { throttle: 0, brake: 0, steer: 0 },
+      0.016,
+      cityLoopV1Track,
+    );
+
+    // Glancing contact keeps most of the momentum running along the wall.
+    expect(next.speed).toBeGreaterThan(15);
+  });
+
+  it("scrubs to a stop on a head-on barrier hit", () => {
+    const position = { x: -250, y: 0, z: 260 };
+    const closest = nearestRouteCurveProjection(
+      position,
+      cityLoopV1Track.routePoints ?? [],
+    );
+    // Aim the car straight along the outward wall normal (fully head-on).
+    const normalX = (position.x - closest.x) / closest.distance;
+    const normalZ = (position.z - closest.z) / closest.distance;
+    const state = {
+      ...createInitialVehicleState(),
+      position,
+      heading: Math.atan2(normalX, -normalZ),
+      speed: 20,
+    };
+
+    const next = stepVehicle(
+      state,
+      { throttle: 0, brake: 0, steer: 0 },
+      0.016,
+      cityLoopV1Track,
+    );
+
+    expect(next.speed).toBeCloseTo(0, 1);
+  });
+
+  it("does not collide early on smoothed route curves", () => {
+    const state = {
+      ...createInitialVehicleState(),
+      position: {
+        x: -468.47192385202237,
+        y: 0,
+        z: 158.69492531669277,
+      },
+      speed: 20,
+    };
+
+    const next = stepVehicle(
+      state,
+      { throttle: 0, brake: 0, steer: 0 },
+      0,
+      cityLoopV1Track,
+    );
+
+    expect(next.position.x).toBeCloseTo(state.position.x);
+    expect(next.position.z).toBeCloseTo(state.position.z);
+    expect(next.speed).toBe(state.speed);
+  });
+
+  it("uses a tight collision radius near half a car width", () => {
+    expect(VEHICLE_OBSTACLE_COLLISION_RADIUS).toBeLessThanOrEqual(2.6);
+    expect(VEHICLE_OBSTACLE_COLLISION_RADIUS).toBeGreaterThan(2);
+  });
+
+  it("pushes the car out of overlapping remote car obstacles", () => {
+    const state = {
+      ...createInitialVehicleState(),
+      position: { x: 1, y: 0, z: 0 },
+      speed: 20,
+    };
+
+    const next = resolveVehicleObstacleCollisions(state, [{ x: 0, z: 0 }]);
+    const distance = Math.hypot(next.position.x, next.position.z);
+
+    expect(distance).toBeCloseTo(VEHICLE_OBSTACLE_COLLISION_RADIUS);
+    expect(next.speed).toBeLessThan(state.speed);
+  });
+
+  it("ignores obstacles flagged inactive", () => {
+    const state = {
+      ...createInitialVehicleState(),
+      position: { x: 1, y: 0, z: 0 },
+      speed: 20,
+    };
+    const next = resolveVehicleObstacleCollisions(state, [
+      { x: 0, z: 0, active: false },
+    ]);
+    expect(next).toEqual(state);
+  });
+
+  it("leaves the car unchanged when remote cars are not overlapping", () => {
+    const state = {
+      ...createInitialVehicleState(),
+      position: { x: 20, y: 0, z: 0 },
+      speed: 20,
+    };
+
+    const next = resolveVehicleObstacleCollisions(state, [{ x: 0, z: 0 }]);
+
+    expect(next).toEqual(state);
   });
 });

@@ -12,15 +12,15 @@ Browser racing MVP built with React 18, Vite, React Three Fiber, and SpaceTimeDB
 
 ## Controls
 
-| Input | Action |
-| --- | --- |
-| W / ↑ | Throttle |
-| S / ↓ | Brake |
-| A / ← | Steer left |
-| D / → | Steer right |
-| Space | Handbrake |
-| R | Reset to checkpoint |
-| C | Toggle camera |
+| Input | Action              |
+| ----- | ------------------- |
+| W / ↑ | Throttle            |
+| S / ↓ | Brake               |
+| A / ← | Steer left          |
+| D / → | Steer right         |
+| Space | Handbrake           |
+| R     | Reset to checkpoint |
+| C     | Toggle camera       |
 
 ## Local Development
 

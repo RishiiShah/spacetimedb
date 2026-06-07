@@ -25,4 +25,6 @@ export default __t.row({
   checkpointIndex: __t.u32().name("checkpoint_index"),
   runStartedAtMs: __t.u64().name("run_started_at_ms"),
   updatedAt: __t.timestamp().name("updated_at"),
+  carId: __t.string().name("car_id"),
+  liveryId: __t.string().name("livery_id"),
 });

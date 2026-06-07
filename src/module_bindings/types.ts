@@ -25,6 +25,8 @@ export const CarState = __t.object("CarState", {
   checkpointIndex: __t.u32(),
   runStartedAtMs: __t.u64(),
   updatedAt: __t.timestamp(),
+  carId: __t.string(),
+  liveryId: __t.string(),
 });
 export type CarState = __Infer<typeof CarState>;
 
@@ -77,10 +79,18 @@ export const Room = __t.object("Room", {
   roomId: __t.u64(),
   slug: __t.string(),
   trackId: __t.u64(),
+  lapCount: __t.u32(),
   createdBy: __t.identity(),
   createdAt: __t.timestamp(),
 });
 export type Room = __Infer<typeof Room>;
+
+export const RoomCountdown = __t.object("RoomCountdown", {
+  roomId: __t.u64(),
+  startedAtMs: __t.u64(),
+  startsAtMs: __t.u64(),
+});
+export type RoomCountdown = __Infer<typeof RoomCountdown>;
 
 export const RoomMember = __t.object("RoomMember", {
   memberId: __t.u64(),
@@ -90,6 +100,13 @@ export const RoomMember = __t.object("RoomMember", {
   ready: __t.bool(),
 });
 export type RoomMember = __Infer<typeof RoomMember>;
+
+export const RoomRaceStart = __t.object("RoomRaceStart", {
+  roomId: __t.u64(),
+  startedBy: __t.identity(),
+  startedAtMs: __t.u64(),
+});
+export type RoomRaceStart = __Infer<typeof RoomRaceStart>;
 
 export const Track = __t.object("Track", {
   trackId: __t.u64(),

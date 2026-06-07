@@ -230,6 +230,98 @@
   cursor: pointer;
 }
 
+.start-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  background: #101923;
+  color: #f8fafc;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.lobby-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background:
+    linear-gradient(180deg, rgba(16, 21, 28, 0.78), rgba(16, 21, 28, 0.94)),
+    url("/assets/skybox/night/front.png") center / cover;
+  color: #f8fafc;
+}
+
+.lobby-panel {
+  width: min(760px, 100%);
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: rgba(10, 16, 23, 0.9);
+  box-shadow: 0 22px 80px rgba(0, 0, 0, 0.34);
+}
+
+.lobby-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.driver-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.lobby-driver-list {
+  display: grid;
+  gap: 8px;
+}
+
+.lobby-driver {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: #101923;
+}
+
+.lobby-driver span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #f8fafc;
+  font-weight: 800;
+}
+
+.lobby-driver strong {
+  flex: 0 0 auto;
+  color: #93c5fd;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.lobby-waiting {
+  min-height: 54px;
+  display: grid;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 8px;
+  background: #101923;
+  color: #cbd5e1;
+  font-weight: 800;
+}
+
 .stage {
   position: relative;
   min-width: 0;
@@ -366,6 +458,12 @@ h2 {
   cursor: not-allowed;
 }
 
+.room-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
 .panel {
   display: grid;
   gap: 10px;
@@ -444,6 +542,10 @@ h2 {
     border-left: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
+
+  .lobby-header {
+    display: grid;
+  }
 }
 
 @media (max-width: 720px) {
@@ -470,4 +572,240 @@ h2 {
   h2 {
     font-size: 20px;
   }
+}
+
+.hud-corner {
+  position: absolute;
+  z-index: 5;
+  color: #f8fafc;
+  pointer-events: none;
+}
+.hud-top-left {
+  top: 16px;
+  left: 16px;
+}
+.hud-top-right {
+  top: 16px;
+  right: 16px;
+  pointer-events: auto;
+}
+.hud-bottom-left {
+  bottom: 16px;
+  left: 16px;
+}
+.hud-bottom-right {
+  bottom: 16px;
+  right: 16px;
+  text-align: right;
+}
+.hud-corner h3 {
+  margin: 0 0 4px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+.hud-standings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  min-width: 180px;
+}
+.hud-standings li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0;
+}
+.hud-speed {
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1;
+  display: block;
+}
+.hud-unit {
+  font-size: 13px;
+  opacity: 0.8;
+}
+.hud-gear {
+  display: block;
+  font-size: 13px;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+.hud-bottom-left .hud-label {
+  font-size: 13px;
+  opacity: 0.8;
+  display: block;
+}
+.hud-bottom-left .hud-time {
+  font-size: 28px;
+  font-weight: 700;
+  display: block;
+}
+.hud-bottom-left .hud-sub {
+  font-size: 12px;
+  opacity: 0.7;
+}
+.minimap {
+  background: rgba(8, 12, 18, 0.55);
+  border-radius: 10px;
+}
+.minimap-track {
+  stroke: rgba(248, 250, 252, 0.8);
+  stroke-width: 2;
+}
+.hud-help-tab {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  background: rgba(8, 12, 18, 0.6);
+  color: #e2e8f0;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.hud-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: rgba(2, 6, 12, 0.55);
+}
+.hud-modal {
+  background: #0f1720;
+  color: #f8fafc;
+  border-radius: 14px;
+  padding: 20px 24px;
+  min-width: 280px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.hud-modal header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hud-modal header button {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 18px;
+  cursor: pointer;
+}
+.pause-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+.pause-menu button {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #1e293b;
+  color: #f8fafc;
+  cursor: pointer;
+}
+.pause-menu button.danger {
+  background: #b91c1c;
+}
+.sound-options {
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+}
+.sound-options label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  margin: 6px 0;
+}
+.instructions-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  line-height: 1.9;
+}
+.instructions-list kbd {
+  background: #1e293b;
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+.race-shell {
+  position: relative;
+}
+.stage-full {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.lobby-settings {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0;
+}
+.lobby-settings label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+.countdown-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  color: #f8fafc;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+.countdown-number {
+  font-size: 140px;
+  font-weight: 900;
+}
+.countdown-controls {
+  background: rgba(8, 12, 18, 0.7);
+  padding: 24px 32px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.results-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+.results-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 0;
+}
+.hud-modal.results button {
+  margin-top: 8px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
 }

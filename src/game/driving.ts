@@ -1,4 +1,5 @@
 import type { VehicleInput } from "./vehicle";
+import { ROAD_SURFACE_Y } from "./track";
 
 export type DrivingAction =
   | "throttle"
@@ -18,18 +19,13 @@ export type CarOption = {
 // Selectable cars. Handling is shared; only the model differs for now.
 export const CARS: CarOption[] = [
   {
-    id: "open-wheel",
-    name: "Apex OW-1",
-    summary: "Lean open-wheel prototype with exposed suspension.",
-  },
-  {
     id: "lowpoly",
     name: "Veloce LP",
     summary: "Full-body F1 with rear wing, halo and cockpit detail.",
   },
 ];
 
-export const DEFAULT_CAR_ID: CarId = "open-wheel";
+export const DEFAULT_CAR_ID: CarId = "lowpoly";
 
 export function getCarById(id: string | undefined): CarOption {
   return CARS.find((car) => car.id === id) ?? CARS[0];
@@ -68,7 +64,10 @@ export const LIVERY_ACCENT_MATERIAL = "car_color.001";
 // the front of the car with the direction of travel.
 export const CAR_MODEL_FORWARD_YAW_OFFSET = Math.PI;
 export const CAR_MODEL_RIDE_HEIGHT = 0.24;
+// Low-poly tire bottoms sit ~0.26m below the model origin after scale/upright.
+export const LOWPOLY_GROUND_OFFSET = 0.26;
 export const CAR_VISUAL_MAX_STEER_YAW = 0.48;
+export const LOWPOLY_VISUAL_MAX_STEER_YAW = 0.16;
 
 export type CarWheelSpec = {
   id: "frontLeft" | "frontRight" | "rearLeft" | "rearRight";
@@ -88,6 +87,30 @@ export const CAR_WHEEL_SPECS: CarWheelSpec[] = [
   { id: "rearLeft", position: [-1.2, 0.12, -1.15] },
   { id: "rearRight", position: [1.2, 0.12, -1.15] },
 ];
+
+export const LOWPOLY_WHEEL_NODE_NAMES = [
+  "Wheel",
+  "Wheel.001",
+  "Wheel.002",
+  "Wheel.003",
+] as const;
+
+export const LOWPOLY_FRONT_WHEEL_NODE_NAMES = ["Wheel", "Wheel.001"] as const;
+
+const LOWPOLY_WHEEL_NODE_NAME_SET = new Set<string>(LOWPOLY_WHEEL_NODE_NAMES);
+const LOWPOLY_FRONT_WHEEL_NODE_NAME_SET = new Set<string>(
+  LOWPOLY_FRONT_WHEEL_NODE_NAMES,
+);
+
+export function isLowPolyWheelNodeName(name: string) {
+  return LOWPOLY_WHEEL_NODE_NAME_SET.has(name);
+}
+
+export function lowPolyWheelSteerYaw(name: string, steer: number) {
+  return LOWPOLY_FRONT_WHEEL_NODE_NAME_SET.has(name)
+    ? clamp(steer, -1, 1) * LOWPOLY_VISUAL_MAX_STEER_YAW
+    : 0;
+}
 
 export const CAR_SUSPENSION_LINKS: CarSuspensionLink[] =
   CAR_WHEEL_SPECS.flatMap((wheel) => {
@@ -166,10 +189,14 @@ export function inputFromDrivingActions(
     // Positive steer turns the car right (increasing heading), so steerRight is
     // positive and steerLeft is negative. A = left, D = right.
     steer:
-      (actions.has("steerRight") ? 1 : 0) -
-      (actions.has("steerLeft") ? 1 : 0),
+      (actions.has("steerRight") ? 1 : 0) - (actions.has("steerLeft") ? 1 : 0),
     handbrake: actions.has("handbrake"),
   };
+}
+
+export function getCarVisualGroundOffset(carId?: CarId) {
+  if (carId === "lowpoly") return ROAD_SURFACE_Y + LOWPOLY_GROUND_OFFSET;
+  return ROAD_SURFACE_Y + CAR_MODEL_RIDE_HEIGHT;
 }
 
 export function visualWheelSteerYaw(steer: number) {

@@ -9,10 +9,15 @@ import {
   DEFAULT_CAR_ID,
   DEFAULT_LIVERY_ID,
   LIVERIES,
+  LOWPOLY_WHEEL_NODE_NAMES,
+  LOWPOLY_VISUAL_MAX_STEER_YAW,
   drivingActionFromKeyboardEvent,
   getCarById,
+  getCarVisualGroundOffset,
   getLiveryById,
   inputFromDrivingActions,
+  isLowPolyWheelNodeName,
+  lowPolyWheelSteerYaw,
   visualWheelSteerYaw,
 } from "./driving";
 
@@ -64,6 +69,11 @@ describe("driving controls", () => {
     expect(CAR_MODEL_RIDE_HEIGHT).toBeLessThanOrEqual(0.28);
   });
 
+  it("places low-poly tire contact on the road surface", () => {
+    expect(getCarVisualGroundOffset("lowpoly")).toBe(0.26);
+    expect(getCarVisualGroundOffset("open-wheel")).toBe(0.24);
+  });
+
   it("defines suspension links that visually connect every tire to the chassis", () => {
     expect(CAR_SUSPENSION_LINKS).toHaveLength(CAR_WHEEL_SPECS.length * 2);
 
@@ -89,17 +99,41 @@ describe("driving controls", () => {
     expect(visualWheelSteerYaw(2)).toBe(CAR_VISUAL_MAX_STEER_YAW);
   });
 
-  it("offers the two selectable cars with a valid default", () => {
-    expect(CARS.map((car) => car.id)).toEqual(["open-wheel", "lowpoly"]);
+  it("targets all baked low-poly wheel nodes for tyre animation", () => {
+    expect(LOWPOLY_WHEEL_NODE_NAMES).toEqual([
+      "Wheel",
+      "Wheel.001",
+      "Wheel.002",
+      "Wheel.003",
+    ]);
+    expect(isLowPolyWheelNodeName("Wheel.001")).toBe(true);
+    expect(isLowPolyWheelNodeName("Main_body.COmmiting")).toBe(false);
+  });
+
+  it("yaws only the low-poly front tyres with steering input", () => {
+    expect(LOWPOLY_VISUAL_MAX_STEER_YAW).toBeLessThan(CAR_VISUAL_MAX_STEER_YAW);
+    expect(lowPolyWheelSteerYaw("Wheel", 1)).toBe(LOWPOLY_VISUAL_MAX_STEER_YAW);
+    expect(lowPolyWheelSteerYaw("Wheel.001", -1)).toBe(
+      -LOWPOLY_VISUAL_MAX_STEER_YAW,
+    );
+    expect(lowPolyWheelSteerYaw("Wheel.002", 1)).toBe(0);
+    expect(lowPolyWheelSteerYaw("Wheel.003", -1)).toBe(0);
+  });
+
+  it("offers only the low-poly car with a valid default", () => {
+    expect(CARS.map((car) => car.id)).toEqual(["lowpoly"]);
     expect(CARS.some((car) => car.id === DEFAULT_CAR_ID)).toBe(true);
     expect(getCarById("lowpoly").id).toBe("lowpoly");
     expect(getCarById(undefined).id).toBe(DEFAULT_CAR_ID);
     expect(getCarById("nonexistent").id).toBe(DEFAULT_CAR_ID);
+    expect(CARS.map((car) => car.name).join(" ")).not.toMatch(/apex/i);
   });
 
   it("offers liveries with valid colors and a working default", () => {
     expect(LIVERIES.length).toBeGreaterThanOrEqual(2);
-    expect(LIVERIES.some((livery) => livery.id === DEFAULT_LIVERY_ID)).toBe(true);
+    expect(LIVERIES.some((livery) => livery.id === DEFAULT_LIVERY_ID)).toBe(
+      true,
+    );
     for (const livery of LIVERIES) {
       expect(livery.body).toMatch(/^#[0-9a-f]{6}$/i);
       expect(livery.accent).toMatch(/^#[0-9a-f]{6}$/i);

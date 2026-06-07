@@ -21,27 +21,27 @@ flowchart LR
 
 ## Game Modes
 
-| Mode | Default track | Description |
-| --- | --- | --- |
-| `circuit` | City Loop V1 | Mapped circuits and the city loop with checkpoint gates |
-| `stunt` | Stunt Showcase | Elevated stunt geometry with loops and corkscrews |
-| `practice` | Flat Road Practice | Flat road-only layout for car feel testing |
+| Mode       | Default track      | Description                                             |
+| ---------- | ------------------ | ------------------------------------------------------- |
+| `circuit`  | City Loop V1       | Mapped circuits and the city loop with checkpoint gates |
+| `stunt`    | Stunt Showcase     | Elevated stunt geometry with loops and corkscrews       |
+| `practice` | Flat Road Practice | Flat road-only layout for car feel testing              |
 
 Track definitions live in `src/game/track.ts`. Circuit routes load JSON map data from `public/assets/circuit/maps/`.
 
 ## Client Modules
 
-| Module | Role |
-| --- | --- |
-| `src/App.tsx` | Pre-race menu, SpaceTimeDB subscriptions, session shell |
-| `src/game/driving.ts` | Keyboard event → driving action → `VehicleInput` |
-| `src/game/vehicle.ts` | Kinematic car step, handbrake, checkpoint reset helper |
-| `src/game/track.ts` | Track registry, checkpoints, city asset placements |
-| `src/game/CircuitTrack.tsx` | Parse circuit JSON and build road mesh |
-| `src/game/StuntTrack.tsx` | Procedural stunt route mesh |
-| `src/game/RacingScene.tsx` | Scene graph, camera, audio, multiplayer sync loop |
-| `src/game/network.ts` | Snapshot shaping and remote car interpolation |
-| `src/game/assets.ts` | Runtime asset path manifest |
+| Module                      | Role                                                    |
+| --------------------------- | ------------------------------------------------------- |
+| `src/App.tsx`               | Pre-race menu, SpaceTimeDB subscriptions, session shell |
+| `src/game/driving.ts`       | Keyboard event → driving action → `VehicleInput`        |
+| `src/game/vehicle.ts`       | Kinematic car step, handbrake, checkpoint reset helper  |
+| `src/game/track.ts`         | Track registry, checkpoints, city asset placements      |
+| `src/game/CircuitTrack.tsx` | Parse circuit JSON and build road mesh                  |
+| `src/game/StuntTrack.tsx`   | Procedural stunt route mesh                             |
+| `src/game/RacingScene.tsx`  | Scene graph, camera, audio, multiplayer sync loop       |
+| `src/game/network.ts`       | Snapshot shaping and remote car interpolation           |
+| `src/game/assets.ts`        | Runtime asset path manifest                             |
 
 ## Client Responsibilities
 

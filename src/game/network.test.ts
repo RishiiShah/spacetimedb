@@ -1,10 +1,11 @@
-import { describe, expect, it } from 'vitest';
-import { createSnapshot, interpolateSnapshot } from './network';
+import { describe, expect, it } from "vitest";
+import { createSnapshot, interpolateSnapshot } from "./network";
+import { RemoteCarSnapshotBuffer } from "./remoteCarBuffer";
 
-describe('network snapshots', () => {
-  it('creates a compact transform snapshot', () => {
+describe("network snapshots", () => {
+  it("creates a compact transform snapshot", () => {
     const snapshot = createSnapshot({
-      identity: 'player-a',
+      identity: "player-a",
       roomId: 1,
       trackId: 1,
       position: { x: 1, y: 2, z: 3 },
@@ -19,9 +20,9 @@ describe('network snapshots', () => {
     expect(snapshot.speed).toBe(42);
   });
 
-  it('interpolates positions between snapshots', () => {
+  it("interpolates positions between snapshots", () => {
     const a = createSnapshot({
-      identity: 'player-a',
+      identity: "player-a",
       roomId: 1,
       trackId: 1,
       position: { x: 0, y: 0, z: 0 },
@@ -38,9 +39,9 @@ describe('network snapshots', () => {
     expect(mid.z).toBe(-5);
   });
 
-  it('clamps interpolation alpha', () => {
+  it("clamps interpolation alpha", () => {
     const a = createSnapshot({
-      identity: 'player-a',
+      identity: "player-a",
       roomId: 1,
       trackId: 1,
       position: { x: 0, y: 0, z: 0 },
@@ -53,5 +54,57 @@ describe('network snapshots', () => {
 
     expect(interpolateSnapshot(a, b, -1).x).toBe(0);
     expect(interpolateSnapshot(a, b, 2).x).toBe(10);
+  });
+
+  it("slerps rotation instead of lerping quaternion components", () => {
+    const a = createSnapshot({
+      identity: "player-a",
+      roomId: 1,
+      trackId: 1,
+      position: { x: 0, y: 0, z: 0 },
+      heading: 0,
+      speed: 0,
+      checkpointIndex: 0,
+      elapsedMs: 0,
+    });
+    const b = createSnapshot({
+      identity: "player-a",
+      roomId: 1,
+      trackId: 1,
+      position: { x: 0, y: 0, z: 0 },
+      heading: Math.PI / 2,
+      speed: 0,
+      checkpointIndex: 0,
+      elapsedMs: 50,
+    });
+
+    const mid = interpolateSnapshot(a, b, 0.5);
+    const length = Math.hypot(mid.qx, mid.qy, mid.qz, mid.qw);
+
+    expect(length).toBeCloseTo(1, 5);
+    expect(Math.abs(mid.qy)).toBeGreaterThan(0.3);
+  });
+});
+
+describe("RemoteCarSnapshotBuffer", () => {
+  it("interpolates between buffered snapshots at a render delay", () => {
+    const buffer = new RemoteCarSnapshotBuffer();
+    const a = createSnapshot({
+      identity: "player-a",
+      roomId: 1,
+      trackId: 1,
+      position: { x: 0, y: 0, z: 0 },
+      heading: 0,
+      speed: 0,
+      checkpointIndex: 0,
+      elapsedMs: 0,
+    });
+    const b = { ...a, x: 10, z: 10 };
+
+    buffer.push(a, 1000);
+    buffer.push(b, 1200);
+
+    const mid = buffer.sample(1150);
+    expect(mid?.x).toBeCloseTo(2.5, 1);
   });
 });

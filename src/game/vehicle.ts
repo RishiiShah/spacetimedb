@@ -1,4 +1,5 @@
-import type { TrackDef } from "./track";
+import { getRouteFenceInnerOffset, type TrackDef } from "./track";
+import { nearestRouteCurveProjection } from "./routeGeometry";
 
 export type VehicleState = {
   position: { x: number; y: number; z: number };
@@ -13,6 +14,14 @@ export type VehicleInput = {
   brake: number;
   steer: number;
   handbrake?: boolean;
+};
+
+export type VehicleObstacle = {
+  x: number;
+  z: number;
+  // When false, the obstacle is ignored (e.g. a car still at spawn or with a
+  // stale snapshot). Defaults to active when omitted.
+  active?: boolean;
 };
 
 const MAX_FORWARD_SPEED = 72;
@@ -48,6 +57,12 @@ const STEER_SPEED_TRIM = 0.15;
 // fast corners. Kept small so it is felt but never wild.
 const DRIFT_MAX_SLIP = 0.12;
 const DRIFT_SPEED_THRESHOLD = 38;
+const VEHICLE_OBSTACLE_SPEED_MULTIPLIER = 0.45;
+export const VEHICLE_OBSTACLE_COLLISION_RADIUS = 2.4;
+export const VEHICLE_COLLISION_HALF_WIDTH = 1.55;
+// Scraping a barrier sheds a little speed but should not stop the car; the
+// momentum running along the wall is preserved so the car slides instead.
+const WALL_SLIDE_FRICTION = 0.92;
 
 export function createInitialVehicleState(): VehicleState {
   return {
@@ -83,6 +98,7 @@ export function stepVehicle(
   state: VehicleState,
   input: VehicleInput,
   deltaSeconds: number,
+  track?: TrackDef,
 ): VehicleState {
   const dt = Math.max(0, Math.min(deltaSeconds, 0.1));
   const handbrake = Boolean(input.handbrake && Math.abs(state.speed) > 2);
@@ -153,7 +169,7 @@ export function stepVehicle(
   );
   const movementAngle = heading - DRIFT_MAX_SLIP * steer * driftFactor;
 
-  return {
+  const nextState = {
     speed,
     heading,
     steer,
@@ -161,6 +177,79 @@ export function stepVehicle(
       x: state.position.x + Math.sin(movementAngle) * speed * dt,
       y: state.position.y,
       z: state.position.z - Math.cos(movementAngle) * speed * dt,
+    },
+  };
+
+  return constrainToRoute(nextState, track);
+}
+
+export function resolveVehicleObstacleCollisions(
+  state: VehicleState,
+  obstacles: VehicleObstacle[],
+  radius = VEHICLE_OBSTACLE_COLLISION_RADIUS,
+): VehicleState {
+  let resolved = state;
+
+  for (const obstacle of obstacles) {
+    if (obstacle.active === false) continue;
+    const dx = resolved.position.x - obstacle.x;
+    const dz = resolved.position.z - obstacle.z;
+    const distance = Math.hypot(dx, dz);
+    if (distance >= radius) continue;
+
+    const normalX =
+      distance > 0.001 ? dx / distance : Math.sin(resolved.heading);
+    const normalZ =
+      distance > 0.001 ? dz / distance : -Math.cos(resolved.heading);
+
+    resolved = {
+      ...resolved,
+      speed: resolved.speed * VEHICLE_OBSTACLE_SPEED_MULTIPLIER,
+      position: {
+        ...resolved.position,
+        x: obstacle.x + normalX * radius,
+        z: obstacle.z + normalZ * radius,
+      },
+    };
+  }
+
+  return resolved;
+}
+
+function constrainToRoute(state: VehicleState, track?: TrackDef): VehicleState {
+  const points = track?.routePoints;
+  const roadWidth = track?.roadWidth;
+  if (!points || points.length < 2 || !roadWidth) return state;
+
+  const closest = nearestRouteCurveProjection(state.position, points);
+  const maxDistance = Math.max(
+    2,
+    getRouteFenceInnerOffset(roadWidth, track.railOffset) -
+      VEHICLE_COLLISION_HALF_WIDTH,
+  );
+  if (closest.distance <= maxDistance) return state;
+
+  // Outward wall normal at the contact point (perpendicular to the route).
+  const normalX = (state.position.x - closest.x) / closest.distance;
+  const normalZ = (state.position.z - closest.z) / closest.distance;
+
+  // Travel direction from heading and the sign of speed. Keep the momentum
+  // running along the barrier and shed only the part driving into it, so a
+  // glancing hit slides while a head-on hit still scrubs to a stop.
+  const speedSign = Math.sign(state.speed) || 1;
+  const travelX = Math.sin(state.heading) * speedSign;
+  const travelZ = -Math.cos(state.heading) * speedSign;
+  const intoWall = Math.max(0, travelX * normalX + travelZ * normalZ);
+  const tangentialFraction = Math.sqrt(Math.max(0, 1 - intoWall * intoWall));
+
+  const scale = maxDistance / closest.distance;
+  return {
+    ...state,
+    speed: state.speed * tangentialFraction * WALL_SLIDE_FRICTION,
+    position: {
+      ...state.position,
+      x: closest.x + (state.position.x - closest.x) * scale,
+      z: closest.z + (state.position.z - closest.z) * scale,
     },
   };
 }

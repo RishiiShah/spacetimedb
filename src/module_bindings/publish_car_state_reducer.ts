@@ -23,4 +23,6 @@ export default {
   speed: __t.f64(),
   checkpointIndex: __t.u32(),
   runStartedAtMs: __t.u64(),
+  carId: __t.string(),
+  liveryId: __t.string(),
 };

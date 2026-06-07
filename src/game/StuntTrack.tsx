@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import * as THREE from 'three';
+import { useMemo } from "react";
+import * as THREE from "three";
 
 export function StuntTrackAssets() {
   const geometry = useMemo(() => {
@@ -17,13 +17,15 @@ export function StuntTrackAssets() {
         new THREE.Vector3(
           Math.sin(angle) * 2,
           loopRadius - Math.cos(angle) * loopRadius,
-          loopCenterZ + Math.sin(angle) * loopRadius
-        )
+          loopCenterZ + Math.sin(angle) * loopRadius,
+        ),
       );
     }
 
     for (let index = 0; index <= 22; index++) {
-      points.push(new THREE.Vector3(Math.sin(index * 0.35) * 18, 0, -170 - index * 10));
+      points.push(
+        new THREE.Vector3(Math.sin(index * 0.35) * 18, 0, -170 - index * 10),
+      );
     }
 
     points.push(new THREE.Vector3(80, 0, -430));
@@ -55,7 +57,12 @@ export function StuntTrackAssets() {
         <meshStandardMaterial color="#30343a" roughness={0.8} />
       </mesh>
       <mesh geometry={geometry}>
-        <meshStandardMaterial color="#facc15" wireframe transparent opacity={0.08} />
+        <meshStandardMaterial
+          color="#facc15"
+          wireframe
+          transparent
+          opacity={0.08}
+        />
       </mesh>
     </>
   );
