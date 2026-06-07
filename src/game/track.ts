@@ -3,9 +3,21 @@ export type Vec3 = { x: number; y: number; z: number };
 export const ROUTE_CURB_WIDTH = 2.6;
 export const ROUTE_RAIL_WIDTH = 1.6;
 export const ROUTE_WALL_HEIGHT = 1.4;
+// Shoulder gap between the red curb ribbon and the barrier wall inner face.
+export const ROUTE_CURB_WALL_GAP = 0.8;
+// World Y of the driven road surface. Route points and vehicle physics use y=0;
+// ribbons add this only when a track needs a raised deck (default 0 = flush).
+export const ROAD_SURFACE_Y = 0;
+// Grass shoulder sits slightly below the road edge (not 10cm down).
+export const GROUND_PLANE_Y = -0.015;
 
 export function getRouteRailOffset(roadWidth: number) {
-  return roadWidth / 2 + ROUTE_CURB_WIDTH + ROUTE_RAIL_WIDTH / 2;
+  return (
+    roadWidth / 2 +
+    ROUTE_CURB_WIDTH +
+    ROUTE_CURB_WALL_GAP +
+    ROUTE_RAIL_WIDTH / 2
+  );
 }
 
 export function getRouteFenceInnerOffset(

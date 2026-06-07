@@ -16,13 +16,14 @@ import {
   CAR_MODEL_RIDE_HEIGHT,
   CAR_SUSPENSION_LINKS,
   CAR_WHEEL_SPECS,
+  CAR_VISUAL_MAX_STEER_YAW,
   LIVERY_ACCENT_MATERIAL,
   LIVERY_BODY_MATERIAL,
   type CarId,
   type CarSuspensionLink,
   type CarWheelSpec,
-  CAR_VISUAL_MAX_STEER_YAW,
   drivingActionFromKeyboardEvent,
+  getCarVisualGroundOffset,
   getLiveryById,
   inputFromDrivingActions,
   visualWheelSteerYaw,
@@ -30,6 +31,8 @@ import {
 import { createSnapshot, type CarSnapshot } from "./network";
 import { RaceAudioController } from "./raceAudio";
 import {
+  GROUND_PLANE_Y,
+  ROAD_SURFACE_Y,
   ROUTE_RAIL_WIDTH,
   cityAssetPaths,
   getRouteRailOffset,
@@ -156,6 +159,8 @@ function SceneContent({
     onLoadedRef.current?.();
   }, []);
 
+  const carGroundOffset = getCarVisualGroundOffset(carId);
+
   const resetVehicle = (checkpointIndex?: number) => {
     vehicleRef.current = createVehicleAtTrackReset(
       currentTrack,
@@ -164,7 +169,7 @@ function SceneContent({
     if (localCarRef.current) {
       localCarRef.current.position.set(
         vehicleRef.current.position.x,
-        vehicleRef.current.position.y + CAR_MODEL_RIDE_HEIGHT,
+        vehicleRef.current.position.y + carGroundOffset,
         vehicleRef.current.position.z,
       );
       localCarRef.current.rotation.y = -vehicleRef.current.heading;
@@ -238,7 +243,7 @@ function SceneContent({
     if (localCarRef.current) {
       localCarRef.current.position.set(
         vehicle.position.x,
-        vehicle.position.y + CAR_MODEL_RIDE_HEIGHT,
+        vehicle.position.y + carGroundOffset,
         vehicle.position.z,
       );
       localCarRef.current.rotation.y = -vehicle.heading;
@@ -300,7 +305,7 @@ function SceneContent({
     if (
       roomId &&
       trackId &&
-      clock.elapsedTime - lastPublishRef.current > 0.08
+      clock.elapsedTime - lastPublishRef.current > 0.1
     ) {
       lastPublishRef.current = clock.elapsedTime;
       onSnapshot(
@@ -328,7 +333,7 @@ function SceneContent({
         ref={localCarRef}
         position={[
           currentTrack.spawn.position.x,
-          currentTrack.spawn.position.y + CAR_MODEL_RIDE_HEIGHT,
+          currentTrack.spawn.position.y + carGroundOffset,
           currentTrack.spawn.position.z,
         ]}
       >
@@ -403,10 +408,8 @@ function useLiveriedScene(
 }
 
 // The low-poly F1 is a single authored model (Z-up, Y-forward, cm scale), so it
-// is uprighted into our Y-up world, scaled down, and lifted so the tires sit on
-// the road. Tune LOWPOLY_Y if it floats or sinks.
+// is uprighted into our Y-up world and scaled down. Ground offset is on the car group.
 const LOWPOLY_SCALE = 0.008;
-const LOWPOLY_Y = 0.04;
 const LOWPOLY_UPRIGHT_X = -Math.PI / 2;
 
 function LowPolyCar({ body }: { body: string }) {
@@ -422,11 +425,7 @@ function LowPolyCar({ body }: { body: string }) {
   );
   const tinted = useLiveriedScene(scene, recolor);
   return (
-    <group
-      position={[0, LOWPOLY_Y, 0]}
-      rotation-x={LOWPOLY_UPRIGHT_X}
-      scale={LOWPOLY_SCALE}
-    >
+    <group rotation-x={LOWPOLY_UPRIGHT_X} scale={LOWPOLY_SCALE}>
       <primitive object={tinted} />
     </group>
   );
@@ -640,7 +639,7 @@ function CityTrackAssets({ track }: { track: TrackDef }) {
 
   return (
     <>
-      <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, -0.08, 0]}>
+      <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, GROUND_PLANE_Y, 0]}>
         <planeGeometry args={isPractice ? [720, 520] : [1120, 760]} />
         <meshStandardMaterial
           color={isPractice ? "#778a70" : "#78956c"}
@@ -699,23 +698,27 @@ function RouteRoad({
 }) {
   const resolvedRailOffset = railOffset ?? getRouteRailOffset(width);
   const asphaltGeometry = useMemo(
-    () => createRouteRibbonGeometry(points, width, 0.02, 0),
+    () => createRouteRibbonGeometry(points, width, ROAD_SURFACE_Y, 0),
     [points, width],
   );
   const leftEdgeGeometry = useMemo(
-    () => createRouteRibbonGeometry(points, 1.35, 0.075, -width / 2 + 1.4),
+    () =>
+      createRouteRibbonGeometry(points, 1.35, ROAD_SURFACE_Y, -width / 2 + 1.4),
     [points, width],
   );
   const rightEdgeGeometry = useMemo(
-    () => createRouteRibbonGeometry(points, 1.35, 0.075, width / 2 - 1.4),
+    () =>
+      createRouteRibbonGeometry(points, 1.35, ROAD_SURFACE_Y, width / 2 - 1.4),
     [points, width],
   );
   const leftCurbGeometry = useMemo(
-    () => createRouteRibbonGeometry(points, 2.6, 0.085, -width / 2 - 1.3),
+    () =>
+      createRouteRibbonGeometry(points, 2.6, ROAD_SURFACE_Y, -width / 2 - 1.3),
     [points, width],
   );
   const rightCurbGeometry = useMemo(
-    () => createRouteRibbonGeometry(points, 2.6, 0.085, width / 2 + 1.3),
+    () =>
+      createRouteRibbonGeometry(points, 2.6, ROAD_SURFACE_Y, width / 2 + 1.3),
     [points, width],
   );
 
@@ -734,6 +737,9 @@ function RouteRoad({
           color="#f8fafc"
           roughness={0.55}
           side={THREE.DoubleSide}
+          polygonOffset
+          polygonOffsetFactor={-2}
+          polygonOffsetUnits={-2}
         />
       </mesh>
       <mesh geometry={rightEdgeGeometry}>
@@ -741,6 +747,9 @@ function RouteRoad({
           color="#f8fafc"
           roughness={0.55}
           side={THREE.DoubleSide}
+          polygonOffset
+          polygonOffsetFactor={-2}
+          polygonOffsetUnits={-2}
         />
       </mesh>
       <mesh geometry={leftCurbGeometry}>
@@ -748,6 +757,9 @@ function RouteRoad({
           color="#d43f32"
           roughness={0.72}
           side={THREE.DoubleSide}
+          polygonOffset
+          polygonOffsetFactor={-4}
+          polygonOffsetUnits={-4}
         />
       </mesh>
       <mesh geometry={rightCurbGeometry}>
@@ -755,6 +767,9 @@ function RouteRoad({
           color="#d43f32"
           roughness={0.72}
           side={THREE.DoubleSide}
+          polygonOffset
+          polygonOffsetFactor={-4}
+          polygonOffsetUnits={-4}
         />
       </mesh>
       {railHeight && (
@@ -1129,9 +1144,13 @@ export function createRouteBarrierGeometry(
   side: -1 | 1,
   _railColor = "#d8dde4",
   panelLength = BARRIER_PANEL_LENGTH,
+  roadSurfaceY = ROAD_SURFACE_Y,
 ) {
   const curve = new THREE.CatmullRomCurve3(
-    points.map((point) => new THREE.Vector3(point.x, point.y, point.z)),
+    points.map(
+      (point) =>
+        new THREE.Vector3(point.x, point.y + roadSurfaceY, point.z),
+    ),
     true,
     "centripetal",
   );
@@ -1222,7 +1241,7 @@ export function createRouteBarrierGeometry(
       baseIndex + 3,
       nextBase + 3,
       nextBase + 1,
-      -side,
+      side === 1 ? -1 : 1,
     );
   }
 
