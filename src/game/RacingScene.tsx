@@ -132,6 +132,7 @@ function SceneContent({
   const lastPublishRef = useRef(0);
   const startMsRef = useRef(performance.now());
   const nextCheckpointRef = useRef(0);
+  const awaitingFinishRef = useRef(false);
   const [cameraMode, setCameraMode] = useState<"chase" | "driver">("chase");
 
   const resetVehicle = (checkpointIndex?: number) => {
@@ -152,6 +153,7 @@ function SceneContent({
   useEffect(() => {
     startMsRef.current = performance.now();
     nextCheckpointRef.current = 0;
+    awaitingFinishRef.current = false;
     resetVehicle();
   }, [currentTrack]);
 
@@ -202,18 +204,29 @@ function SceneContent({
     );
     const nextCheckpoint = currentTrack.checkpoints[nextCheckpointRef.current];
     if (
+      !awaitingFinishRef.current &&
       nextCheckpoint &&
       distance2D(vehicle.position, nextCheckpoint.position) <=
         checkpointRadius(nextCheckpoint)
     ) {
       onCheckpoint(nextCheckpoint.index, elapsedMs);
       nextCheckpointRef.current += 1;
-
       if (nextCheckpointRef.current >= currentTrack.checkpoints.length) {
-        onFinishLap(elapsedMs, currentTrack.checkpoints.length);
-        startMsRef.current = performance.now();
-        nextCheckpointRef.current = 0;
+        // All checkpoints hit; the lap only completes once the car returns
+        // across the start/finish line at spawn.
+        awaitingFinishRef.current = true;
       }
+    }
+
+    if (
+      awaitingFinishRef.current &&
+      distance2D(vehicle.position, currentTrack.spawn.position) <=
+        FINISH_LINE_RADIUS
+    ) {
+      onFinishLap(elapsedMs, currentTrack.checkpoints.length);
+      startMsRef.current = performance.now();
+      nextCheckpointRef.current = 0;
+      awaitingFinishRef.current = false;
     }
 
     onTelemetry({
@@ -1270,6 +1283,10 @@ function updateCamera(
   );
   camera.lookAt(target);
 }
+
+// How close to the spawn (start/finish) line counts as crossing it to complete
+// a lap. Roughly half the road width so any line crossing triggers it.
+const FINISH_LINE_RADIUS = 24;
 
 function checkpointRadius(checkpoint: TrackDef["checkpoints"][number]) {
   return Math.max(8, checkpoint.width / 2);
