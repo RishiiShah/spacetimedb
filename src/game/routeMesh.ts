@@ -3,6 +3,7 @@ import { assets } from "./assets";
 import {
   createRouteCurve,
   createRouteFrames,
+  createRouteFramesForRibbon,
   createRouteSamplesAtDistances,
   MAX_ROUTE_QUAD_EDGE,
   type RouteFrame,
@@ -17,12 +18,17 @@ export function createRouteRibbonGeometry(
   lateralOffset: number,
   routeLayout?: RouteFrameOptions,
 ) {
-  const frames = createRouteFrames(points, yOffset, routeLayout);
+  const halfWidth = width / 2;
+  const frames = createRouteFramesForRibbon(
+    points,
+    halfWidth,
+    yOffset,
+    routeLayout,
+  );
 
   const positions: number[] = [];
   const uvs: number[] = [];
   const indices: number[] = [];
-  const halfWidth = width / 2;
 
   for (let index = 0; index < frames.length; index += 1) {
     const frame = frames[index];
@@ -46,9 +52,7 @@ export function createRouteRibbonGeometry(
     const nextIndex = (index + 1) % frames.length;
     const base = index * 2;
     const nextBase = nextIndex * 2;
-    if (
-      !shouldConnectRibbonVertices(positions, base, nextBase, nextIndex === 0)
-    ) {
+    if (!shouldConnectRibbonVertices(positions, base, nextBase)) {
       continue;
     }
     indices.push(base, nextBase, base + 1, base + 1, nextBase, nextBase + 1);
@@ -186,7 +190,7 @@ export function createRouteShoulderGeometry(
     const nextIndex = (index + 1) % samples.length;
     const base = index * 2;
     const next = nextIndex * 2;
-    if (!shouldConnectRibbonVertices(positions, base, next, nextIndex === 0)) {
+    if (!shouldConnectRibbonVertices(positions, base, next)) {
       continue;
     }
     if (side === 1) {
@@ -345,21 +349,12 @@ function shouldConnectRibbonVertices(
   positions: number[],
   base: number,
   nextBase: number,
-  isSeam: boolean,
 ) {
   const leftEdge = vertexDistance(positions, base, nextBase);
   const rightEdge = vertexDistance(positions, base + 1, nextBase + 1);
-  if (leftEdge > MAX_ROUTE_QUAD_EDGE || rightEdge > MAX_ROUTE_QUAD_EDGE) {
-    return false;
-  }
-  if (
-    isSeam &&
-    (leftEdge > BARRIER_FRAME_STEP * 2.5 ||
-      rightEdge > BARRIER_FRAME_STEP * 2.5)
-  ) {
-    return false;
-  }
-  return true;
+  return (
+    leftEdge <= MAX_ROUTE_QUAD_EDGE && rightEdge <= MAX_ROUTE_QUAD_EDGE
+  );
 }
 
 function shouldConnectBarrierFrames(

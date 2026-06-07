@@ -77,13 +77,12 @@ describe("App start flow", () => {
     render(<App />);
 
     expect(
-      screen.getByRole("heading", { name: /spacetime racer/i }),
+      screen.getByRole("heading", { name: /spacetimedb f1/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: /grid preview/i }),
     ).toBeInTheDocument();
     expect(screen.getByText(/driver briefing/i)).toBeInTheDocument();
-    expect(screen.getByText(/veloce lp setup/i)).toBeInTheDocument();
     expect(
       screen.getByText(/full-body f1 with rear wing/i),
     ).toBeInTheDocument();
@@ -99,6 +98,17 @@ describe("App start flow", () => {
       screen.getByRole("button", { name: /start race/i }),
     ).toBeInTheDocument();
     expect(screen.queryByTestId("racing-scene")).not.toBeInTheDocument();
+  });
+
+  it("opens the options panel on the stage", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: /^options$/i }));
+
+    expect(screen.getByLabelText(/race setup/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/driver summary/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^track$/i)).toBeInTheDocument();
   });
 
   it("mounts the selected race after Start", async () => {
@@ -474,7 +484,7 @@ describe("App start flow", () => {
 
     expect(leaveRoomMock).toHaveBeenCalledWith({ roomId: 7n });
     expect(
-      screen.getByRole("heading", { name: /spacetime racer/i }),
+      screen.getByRole("heading", { name: /spacetimedb f1/i }),
     ).toBeInTheDocument();
   });
 

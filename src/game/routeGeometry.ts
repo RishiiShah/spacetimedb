@@ -47,9 +47,14 @@ export function createRouteFrames(
   if (cached) return cached;
 
   const curve = createRouteCurve(points, yOffset, options);
+  const totalLength = curve.getLength();
+  // Ribbon/barrier builders skip quads longer than MAX_ROUTE_QUAD_EDGE — sample
+  // densely enough on large local loops (e.g. City Loop V1) so asphalt renders.
+  const arcLengthSamples = Math.ceil(totalLength / (MAX_ROUTE_QUAD_EDGE * 0.85));
   const sampleCount = Math.max(
     options?.curveType === "catmullrom" ? 420 : 360,
     points.length * 32,
+    arcLengthSamples,
   );
   const frames: RouteFrame[] = [];
   let previousRight: THREE.Vector3 | undefined = initialRouteRight(curve);
@@ -73,8 +78,112 @@ export function createRouteFrames(
   return frames;
 }
 
+/** Dense frames for ribbon meshes — subdivides hairpins where outer edges span too far. */
+export function createRouteFramesForRibbon(
+  points: Vec3[],
+  halfWidth: number,
+  yOffset = 0,
+  options?: RouteFrameOptions,
+) {
+  const curve = createRouteCurve(points, yOffset, options);
+  const totalLength = curve.getLength();
+  if (totalLength <= 0) return [];
+
+  const arcLengthSamples = Math.ceil(totalLength / (MAX_ROUTE_QUAD_EDGE * 0.85));
+  const sampleCount = Math.max(
+    options?.curveType === "catmullrom" ? 420 : 360,
+    points.length * 32,
+    arcLengthSamples,
+  );
+
+  const distances = refineRibbonDistances(
+    points,
+    Array.from({ length: sampleCount }, (_, index) => (index / sampleCount) * totalLength),
+    halfWidth,
+    yOffset,
+    options,
+  );
+
+  return createRouteSamplesAtDistances(points, distances, yOffset, options).samples;
+}
+
 /** Skip ribbon/barrier quads longer than this to avoid overflow triangles. */
 export const MAX_ROUTE_QUAD_EDGE = 2.4;
+
+const RIBBON_REFINE_MIN_GAP = 0.12;
+const RIBBON_REFINE_MAX_PASSES = 16;
+
+function ribbonEdgesTooLong(a: RouteFrame, b: RouteFrame, halfWidth: number) {
+  const leftA = a.point.clone().addScaledVector(a.right, -halfWidth);
+  const leftB = b.point.clone().addScaledVector(b.right, -halfWidth);
+  const rightA = a.point.clone().addScaledVector(a.right, halfWidth);
+  const rightB = b.point.clone().addScaledVector(b.right, halfWidth);
+  return (
+    leftA.distanceTo(leftB) > MAX_ROUTE_QUAD_EDGE ||
+    rightA.distanceTo(rightB) > MAX_ROUTE_QUAD_EDGE
+  );
+}
+
+function dedupeDistances(distances: number[], minGap: number) {
+  const sorted = [...distances].sort((a, b) => a - b);
+  const unique: number[] = [];
+  for (const distance of sorted) {
+    if (
+      unique.length === 0 ||
+      distance - unique[unique.length - 1] >= minGap
+    ) {
+      unique.push(distance);
+    }
+  }
+  return unique;
+}
+
+function refineRibbonDistances(
+  points: Vec3[],
+  distances: number[],
+  halfWidth: number,
+  yOffset: number,
+  options?: RouteFrameOptions,
+) {
+  const curve = createRouteCurve(points, yOffset, options);
+  const totalLength = curve.getLength();
+  if (totalLength <= 0) return distances;
+
+  let current = dedupeDistances(distances, RIBBON_REFINE_MIN_GAP);
+
+  for (let pass = 0; pass < RIBBON_REFINE_MAX_PASSES; pass += 1) {
+    const { samples } = createRouteSamplesAtDistances(
+      points,
+      current,
+      yOffset,
+      options,
+    );
+    if (samples.length < 2) return current;
+
+    const insertions: number[] = [];
+    for (let index = 0; index < current.length; index += 1) {
+      const start = current[index];
+      const end =
+        index + 1 < current.length
+          ? current[index + 1]
+          : current[0] + totalLength;
+      const span = end - start;
+      if (span <= RIBBON_REFINE_MIN_GAP) continue;
+
+      const a = samples[index];
+      const b = samples[(index + 1) % samples.length];
+      if (!ribbonEdgesTooLong(a, b, halfWidth)) continue;
+
+      const mid = start + span / 2;
+      insertions.push(mid >= totalLength ? mid - totalLength : mid);
+    }
+
+    if (insertions.length === 0) break;
+    current = dedupeDistances([...current, ...insertions], RIBBON_REFINE_MIN_GAP);
+  }
+
+  return current;
+}
 
 function stabilizeRight(
   tangent: THREE.Vector3,
