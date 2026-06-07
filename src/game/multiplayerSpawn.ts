@@ -1,3 +1,4 @@
+import { resolveRouteSurfaceY } from "./routeGeometry";
 import type { TrackDef } from "./track";
 
 export type GridSpawn = {
@@ -23,11 +24,22 @@ export function getMultiplayerGridSpawn(
   const laneSpacing = Math.min(track.roadWidth ?? 18, 24) * 0.22;
   const rowSpacing = 4.2;
 
+  const position = {
+    x:
+      base.position.x +
+      rightX * lateralSign * laneSpacing -
+      forwardX * row * rowSpacing,
+    y: base.position.y,
+    z:
+      base.position.z +
+      rightZ * lateralSign * laneSpacing -
+      forwardZ * row * rowSpacing,
+  };
+
   return {
     position: {
-      x: base.position.x + rightX * lateralSign * laneSpacing - forwardX * row * rowSpacing,
-      y: base.position.y,
-      z: base.position.z + rightZ * lateralSign * laneSpacing - forwardZ * row * rowSpacing,
+      ...position,
+      y: resolveRouteSurfaceY(position, track),
     },
     heading: base.heading,
   };

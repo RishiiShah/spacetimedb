@@ -4,7 +4,8 @@ import { reducers, tables } from "./module_bindings";
 import { countdownPhase } from "./game/countdown";
 import { useReducer, useSpacetimeDB, useTable } from "spacetimedb/react";
 import { RetroGridHomeScreen } from "./game/RetroGridHomeScreen";
-import { RacingScene, type RacingTelemetry } from "./game/RacingScene";
+import { RacingScene } from "./game/RacingScene";
+import type { RacingTelemetry } from "./game/racingTelemetry";
 import type { CarSnapshot } from "./game/network";
 import { RenderErrorBoundary } from "./game/RenderErrorBoundary";
 import { RaceHud } from "./game/RaceHud";
@@ -26,6 +27,7 @@ import {
   type TrackDef,
 } from "./game/track";
 import { sortRoomMembersForGrid } from "./game/multiplayerSpawn";
+import { useResolvedTrackRoute } from "./game/resolvedTrackRoute";
 import { screenFromPath, syncAppPath } from "./game/appNavigation";
 
 const DEFAULT_ROOM = "demo";
@@ -154,6 +156,7 @@ function App() {
     () => (activeRoom ? getTrackById(activeRoom.trackId) : selectedTrack),
     [activeRoom, selectedTrack],
   );
+  const resolvedSessionTrack = useResolvedTrackRoute(sessionTrack);
   const roomCars = useMemo(() => {
     if (!activeRoom || !identity) return [];
     return cars.filter(
@@ -581,6 +584,7 @@ function App() {
             onFinishLap={onFinishLap}
             onTelemetry={setTelemetry}
             racing={racing && !finished}
+            goMs={goMs}
             onLoaded={() => {
               if (activeRoom) void markLoaded({ roomId: activeRoom.roomId });
             }}
@@ -596,7 +600,7 @@ function App() {
           totalLaps={lapState.totalLaps}
           currentLapMs={telemetry.elapsedMs}
           bestLapMs={lapState.bestLapMs}
-          routePoints={sessionTrack.routePoints}
+          routePoints={resolvedSessionTrack.routePoints}
           minimapRacers={minimapRacers}
           standings={standings}
           onLeaveRoom={() => void exitRace()}

@@ -1,51 +1,82 @@
 import type { CarSnapshot } from "./network";
-import { interpolateSnapshot } from "./network";
+import {
+  advanceSnapshot,
+  interpolateSnapshot,
+} from "./network";
 
 export type TimestampedSnapshot = {
-  receivedAtMs: number;
+  serverTimeMs: number;
   snapshot: CarSnapshot;
 };
 
-/** Render this far behind the newest snapshot for smooth interpolation. */
-export const REMOTE_INTERPOLATION_DELAY_MS = 100;
-const MAX_BUFFER = 24;
+/** Render this far behind the newest server snapshot for smooth interpolation. */
+export const REMOTE_INTERPOLATION_DELAY_MS = 75;
+const MAX_BUFFER = 32;
+const MAX_EXTRAPOLATION_MS = 120;
 const MAX_EXTRAPOLATION_ALPHA = 1.35;
 
 export class RemoteCarSnapshotBuffer {
   private snapshots: TimestampedSnapshot[] = [];
+  private clockOffsetMs = 0;
+  private clockOffsetFrozen = false;
 
-  push(snapshot: CarSnapshot, receivedAtMs: number) {
-    const last = this.snapshots[this.snapshots.length - 1];
-    if (
-      last &&
-      last.snapshot.x === snapshot.x &&
-      last.snapshot.z === snapshot.z &&
-      last.snapshot.qy === snapshot.qy &&
-      last.snapshot.qw === snapshot.qw &&
-      receivedAtMs - last.receivedAtMs < 8
-    ) {
-      return;
+  push(snapshot: CarSnapshot, serverTimeMs: number) {
+    const localNow = Date.now();
+    if (!this.clockOffsetFrozen) {
+      if (this.clockOffsetMs === 0) {
+        this.clockOffsetMs = localNow - serverTimeMs;
+      } else {
+        this.clockOffsetMs =
+          this.clockOffsetMs * 0.85 + (localNow - serverTimeMs) * 0.15;
+      }
     }
 
-    this.snapshots.push({ receivedAtMs, snapshot });
+    const last = this.snapshots[this.snapshots.length - 1];
+    if (last) {
+      if (serverTimeMs < last.serverTimeMs) {
+        return;
+      }
+      if (
+        serverTimeMs === last.serverTimeMs ||
+        (last.snapshot.x === snapshot.x &&
+          last.snapshot.z === snapshot.z &&
+          last.snapshot.qy === snapshot.qy &&
+          last.snapshot.qw === snapshot.qw &&
+          serverTimeMs - last.serverTimeMs < 12)
+      ) {
+        last.snapshot = snapshot;
+        last.serverTimeMs = serverTimeMs;
+        return;
+      }
+    }
+
+    this.snapshots.push({ serverTimeMs, snapshot });
     if (this.snapshots.length > MAX_BUFFER) {
       this.snapshots.shift();
     }
   }
 
-  sample(nowMs: number): CarSnapshot | null {
+  sample(clientNowMs: number = Date.now()): CarSnapshot | null {
     if (this.snapshots.length === 0) return null;
-    if (this.snapshots.length === 1) {
-      return this.snapshots[0].snapshot;
-    }
 
-    const targetMs = nowMs - REMOTE_INTERPOLATION_DELAY_MS;
+    const serverNow = clientNowMs - this.clockOffsetMs;
+    const targetMs = serverNow - REMOTE_INTERPOLATION_DELAY_MS;
     const snaps = this.snapshots;
+    const latest = snaps[snaps.length - 1];
+
+    if (snaps.length === 1) {
+      const aheadMs = targetMs - latest.serverTimeMs;
+      if (aheadMs <= 0) return latest.snapshot;
+      return advanceSnapshot(
+        latest.snapshot,
+        Math.min(aheadMs, MAX_EXTRAPOLATION_MS) / 1000,
+      );
+    }
 
     let index = 0;
     while (
       index + 1 < snaps.length &&
-      snaps[index + 1].receivedAtMs <= targetMs
+      snaps[index + 1].serverTimeMs <= targetMs
     ) {
       index += 1;
     }
@@ -54,14 +85,18 @@ export class RemoteCarSnapshotBuffer {
     const to = snaps[index + 1];
 
     if (!to) {
-      if (index === 0) return from.snapshot;
-      return extrapolate(snaps[index - 1], from, targetMs);
+      const aheadMs = targetMs - from.serverTimeMs;
+      if (aheadMs <= 0) return from.snapshot;
+      return advanceSnapshot(
+        from.snapshot,
+        Math.min(aheadMs, MAX_EXTRAPOLATION_MS) / 1000,
+      );
     }
 
-    const span = to.receivedAtMs - from.receivedAtMs;
+    const span = to.serverTimeMs - from.serverTimeMs;
     if (span <= 0) return to.snapshot;
 
-    const alpha = (targetMs - from.receivedAtMs) / span;
+    const alpha = (targetMs - from.serverTimeMs) / span;
     if (alpha <= 0) return from.snapshot;
     if (alpha >= 1) {
       return extrapolate(from, to, targetMs);
@@ -72,6 +107,14 @@ export class RemoteCarSnapshotBuffer {
 
   reset() {
     this.snapshots.length = 0;
+    this.clockOffsetMs = 0;
+    this.clockOffsetFrozen = false;
+  }
+
+  /** Test helper — freeze client/server clock mapping. */
+  setClockOffsetMs(offsetMs: number) {
+    this.clockOffsetMs = offsetMs;
+    this.clockOffsetFrozen = true;
   }
 }
 
@@ -80,13 +123,19 @@ function extrapolate(
   to: TimestampedSnapshot,
   targetMs: number,
 ): CarSnapshot {
-  const span = to.receivedAtMs - from.receivedAtMs;
+  const span = to.serverTimeMs - from.serverTimeMs;
   if (span <= 0) return to.snapshot;
   const alpha = Math.min(
     MAX_EXTRAPOLATION_ALPHA,
-    (targetMs - from.receivedAtMs) / span,
+    (targetMs - from.serverTimeMs) / span,
   );
-  return interpolateSnapshot(from.snapshot, to.snapshot, alpha);
+  const blended = interpolateSnapshot(from.snapshot, to.snapshot, alpha);
+  const aheadMs = targetMs - to.serverTimeMs;
+  if (aheadMs <= 0) return blended;
+  return advanceSnapshot(
+    blended,
+    Math.min(aheadMs, MAX_EXTRAPOLATION_MS) / 1000,
+  );
 }
 
 export function carStateToSnapshot(car: {
@@ -126,3 +175,5 @@ export function normalizeCarId(
 ): import("./driving").CarId {
   return value === "open-wheel" ? "open-wheel" : "lowpoly";
 }
+
+export const REMOTE_VISUAL_SMOOTHING = 18;

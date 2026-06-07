@@ -47,6 +47,24 @@ export function createSnapshot(input: SnapshotInput): CarSnapshot {
   };
 }
 
+export function headingFromSnapshot(snapshot: CarSnapshot): number {
+  return -2 * Math.atan2(snapshot.qy, snapshot.qw);
+}
+
+/** Predict motion between network updates using last published speed + heading. */
+export function advanceSnapshot(
+  snapshot: CarSnapshot,
+  dtSeconds: number,
+): CarSnapshot {
+  if (dtSeconds <= 0) return snapshot;
+  const heading = headingFromSnapshot(snapshot);
+  return {
+    ...snapshot,
+    x: snapshot.x + Math.sin(heading) * snapshot.speed * dtSeconds,
+    z: snapshot.z - Math.cos(heading) * snapshot.speed * dtSeconds,
+  };
+}
+
 export function interpolateSnapshot(
   from: CarSnapshot,
   to: CarSnapshot,

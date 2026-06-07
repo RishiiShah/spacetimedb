@@ -1,4 +1,5 @@
 import { assets } from "./assets";
+import { countdownAudioSteps } from "./countdown";
 
 const MAX_SPEED = 72;
 
@@ -123,21 +124,21 @@ export class RaceAudioController {
     return true;
   }
 
-  startCountdown() {
+  startCountdown(goMs: number) {
     if (this.disposed || this.countdownStarted) return;
     this.countdownStarted = true;
     this.clearCountdown();
 
-    const sequence = [
-      { delayMs: 0, url: assets.audio.ui.countdown3 },
-      { delayMs: 1000, url: assets.audio.ui.countdown2 },
-      { delayMs: 2000, url: assets.audio.ui.countdown1 },
-      { delayMs: 3000, url: assets.audio.ui.go },
-    ];
+    const beatUrls = {
+      3: assets.audio.ui.countdown3,
+      2: assets.audio.ui.countdown2,
+      1: assets.audio.ui.countdown1,
+      go: assets.audio.ui.go,
+    } as const;
 
-    for (const step of sequence) {
+    for (const step of countdownAudioSteps(goMs, Date.now())) {
       const timeoutId = window.setTimeout(() => {
-        this.playOneShot(step.url, 0.95);
+        this.playOneShot(beatUrls[step.beat], 0.95);
       }, step.delayMs);
       this.countdownTimeouts.push(timeoutId);
     }
