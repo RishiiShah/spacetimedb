@@ -28,11 +28,17 @@ import {
 } from "./game/track";
 import { sortRoomMembersForGrid } from "./game/multiplayerSpawn";
 import { useResolvedTrackRoute } from "./game/resolvedTrackRoute";
-import { screenFromPath, syncAppPath } from "./game/appNavigation";
+import {
+  redirectHomeFromRaceRefresh,
+  screenFromPath,
+  syncAppPath,
+} from "./game/appNavigation";
 
 const DEFAULT_ROOM = "demo";
 const DEFAULT_MODE: GameMode = "circuit";
 const DEFAULT_TRACK = getDefaultTrackForMode(DEFAULT_MODE);
+
+const redirectedFromRaceRefresh = redirectHomeFromRaceRefresh();
 
 function App() {
   const [raceStarted, setRaceStarted] = useState(false);
@@ -50,14 +56,14 @@ function App() {
     elapsedMs: 0,
   });
   const [lastError, setLastError] = useState("");
-  const [preferHome, setPreferHome] = useState(false);
+  const [preferHome, setPreferHome] = useState(redirectedFromRaceRefresh);
   const [lapState, setLapState] = useState<{
     lap: number;
     totalLaps: number;
     bestLapMs?: number;
   }>({ lap: 1, totalLaps: 3 });
 
-  const userExitedRaceRef = useRef(false);
+  const userExitedRaceRef = useRef(redirectedFromRaceRefresh);
 
   const { identity, isActive: connected } = useSpacetimeDB();
   const setPlayerName = useReducer(reducers.setPlayerName);
