@@ -75,6 +75,8 @@ type RacingSceneProps = {
   carId?: CarId;
   liveryId?: string;
   racing?: boolean;
+  gridSlot?: number;
+  gridSize?: number;
   remoteCars: CarState[];
   onSnapshot: (snapshot: CarSnapshot) => void;
   onCheckpoint: (checkpointIndex: number, elapsedMs: number) => void;
@@ -134,6 +136,8 @@ function SceneContent({
   carId,
   liveryId,
   racing = true,
+  gridSlot,
+  gridSize = 1,
   remoteCars,
   onSnapshot,
   onCheckpoint,
@@ -150,7 +154,13 @@ function SceneContent({
     handbrake: false,
   });
   const vehicleRef = useRef<VehicleState>(
-    createVehicleAtTrackReset(currentTrack),
+    createVehicleAtTrackReset(
+      currentTrack,
+      undefined,
+      roomId !== undefined && gridSlot !== undefined
+        ? { slotIndex: gridSlot, gridSize }
+        : undefined,
+    ),
   );
   const localCarRef = useRef<THREE.Group>(null);
   const localSteerRef = useRef(0);
@@ -168,11 +178,17 @@ function SceneContent({
   }, []);
 
   const carGroundOffset = getCarVisualGroundOffset(carId);
+  const wasRacingRef = useRef(racing);
 
-  const resetVehicle = (checkpointIndex?: number) => {
+  const resetVehicle = (checkpointIndex?: number, useGrid = false) => {
+    const grid =
+      useGrid && roomId !== undefined && gridSlot !== undefined
+        ? { slotIndex: gridSlot, gridSize }
+        : undefined;
     vehicleRef.current = createVehicleAtTrackReset(
       currentTrack,
       checkpointIndex,
+      grid,
     );
     if (localCarRef.current) {
       localCarRef.current.position.set(
@@ -188,8 +204,16 @@ function SceneContent({
     startMsRef.current = performance.now();
     nextCheckpointRef.current = 0;
     awaitingFinishRef.current = false;
-    resetVehicle();
-  }, [currentTrack]);
+    resetVehicle(undefined, roomId !== undefined && gridSlot !== undefined);
+  }, [currentTrack, roomId, gridSlot, gridSize]);
+
+  useEffect(() => {
+    if (racing && !wasRacingRef.current && roomId !== undefined) {
+      resetVehicle(undefined, gridSlot !== undefined);
+      startMsRef.current = performance.now();
+    }
+    wasRacingRef.current = racing;
+  }, [racing, roomId, gridSlot, gridSize]);
 
   useEffect(() => {
     const audio = new RaceAudioController();
@@ -241,6 +265,7 @@ function SceneContent({
         // A car that has not started its run (still at spawn) or whose snapshot
         // is older than 2s is a phantom — do not collide with it.
         active:
+          racing &&
           car.runStartedAtMs !== 0n &&
           now - Number(car.updatedAt.toDate().getTime()) < 2000,
       })),
