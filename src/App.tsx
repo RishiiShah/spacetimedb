@@ -7,6 +7,7 @@ import { RacingScene, type RacingTelemetry } from "./game/RacingScene";
 import type { CarSnapshot } from "./game/network";
 import { RenderErrorBoundary } from "./game/RenderErrorBoundary";
 import { RaceHud } from "./game/RaceHud";
+import { orderResults } from "./game/results";
 import type { MinimapRacer } from "./game/Minimap";
 import { orderByProgress, type RacerProgress } from "./game/raceStats";
 import {
@@ -47,7 +48,7 @@ function App() {
     elapsedMs: 0,
   });
   const [lastError, setLastError] = useState("");
-  const [lapState] = useState<{
+  const [lapState, setLapState] = useState<{
     lap: number;
     totalLaps: number;
     bestLapMs?: number;
@@ -65,13 +66,24 @@ function App() {
   const configureRoom = useReducer(reducers.configureRoom);
   const markLoaded = useReducer(reducers.markLoaded);
   const beginCountdown = useReducer(reducers.beginCountdown);
+  const resetRoomRace = useReducer(reducers.resetRoomRace);
 
   const [players] = useTable(tables.player);
   const [rooms] = useTable(tables.room);
   const [members] = useTable(tables.roomMember);
-  const [cars] = useTable(tables.carState);
+  // car_state / lap_result are the high-volume tables; scope their subscription
+  // to the active room so the roomId btree index is used instead of a full
+  // sequential scan. roomId 0n never matches (autoInc starts at 1), so outside a
+  // room these stay empty.
+  const roomIdForSub =
+    members.find((m) => identity && m.identity.isEqual(identity))?.roomId ?? 0n;
+  const [cars] = useTable(
+    tables.carState.where((r) => r.roomId.eq(roomIdForSub)),
+  );
   const [raceStarts] = useTable(tables.roomRaceStart);
-  const [laps] = useTable(tables.lapResult);
+  const [laps] = useTable(
+    tables.lapResult.where((r) => r.roomId.eq(roomIdForSub)),
+  );
   const [countdowns] = useTable(tables.roomCountdown);
 
   const availableTracks = useMemo(
@@ -264,6 +276,13 @@ function App() {
   };
 
   const onFinishLap = (elapsedMs: number, checkpointCount: number) => {
+    setLapState((prev) => ({
+      ...prev,
+      lap: prev.lap + 1,
+      bestLapMs: prev.bestLapMs
+        ? Math.min(prev.bestLapMs, elapsedMs)
+        : elapsedMs,
+    }));
     if (!activeRoom) return;
     finishLap({
       roomId: activeRoom.roomId,
@@ -273,6 +292,58 @@ function App() {
     }).catch((error) => {
       setLastError(error instanceof Error ? error.message : String(error));
     });
+  };
+
+  // Reset the lap counter from the room's configured lap count when entering a
+  // race. Solo sessions keep the default of 3.
+  useEffect(() => {
+    setLapState({
+      lap: 1,
+      totalLaps: activeRoom?.lapCount ?? 3,
+      bestLapMs: undefined,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeRoom?.roomId, raceStarted]);
+
+  // A player is finished once they complete the configured number of laps.
+  const finished = lapState.lap > lapState.totalLaps;
+
+  const resultRows = useMemo(() => {
+    if (!activeRoom) return [];
+    const byId = new Map<
+      string,
+      { name: string; lapsDone: number; totalMs: number; bestLapMs?: number }
+    >();
+    for (const lap of laps) {
+      if (lap.roomId !== activeRoom.roomId || lap.trackId !== sessionTrack.id)
+        continue;
+      const key = lap.identity.toHexString();
+      const player = players.find((p) => p.identity.isEqual(lap.identity));
+      const cur = byId.get(key) ?? {
+        name: player?.name || key.slice(0, 8),
+        lapsDone: 0,
+        totalMs: 0,
+        bestLapMs: undefined as number | undefined,
+      };
+      cur.lapsDone += 1;
+      cur.totalMs += Number(lap.elapsedMs);
+      cur.bestLapMs = cur.bestLapMs
+        ? Math.min(cur.bestLapMs, Number(lap.elapsedMs))
+        : Number(lap.elapsedMs);
+      byId.set(key, cur);
+    }
+    return orderResults([...byId.entries()].map(([id, v]) => ({ id, ...v })));
+  }, [activeRoom, laps, players, sessionTrack.id]);
+
+  const returnToLobby = async () => {
+    if (activeRoom && isRoomHost) {
+      try {
+        await resetRoomRace({ roomId: activeRoom.roomId });
+      } catch (error) {
+        setLastError(error instanceof Error ? error.message : String(error));
+      }
+    }
+    setRaceStarted(false);
   };
 
   const myName = me?.name || identity?.toHexString().slice(0, 8) || "driver";
@@ -684,7 +755,7 @@ function App() {
             onCheckpoint={onCheckpoint}
             onFinishLap={onFinishLap}
             onTelemetry={setTelemetry}
-            racing={racing}
+            racing={racing && !finished}
             onLoaded={() => {
               if (activeRoom) void markLoaded({ roomId: activeRoom.roomId });
             }}
@@ -706,6 +777,9 @@ function App() {
               ? countdownPhase(Date.now(), startMs, goMs)
               : undefined
           }
+          finished={finished}
+          results={resultRows}
+          onReturnToLobby={() => void returnToLobby()}
         />
         <p className="hint">
           Press R to Reset, C for Camera, Space for Handbrake

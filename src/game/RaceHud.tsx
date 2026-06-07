@@ -15,6 +15,15 @@ export type RaceHudProps = {
   standings: { id: string; name: string; gapLabel: string }[];
   onLeaveRoom: () => void;
   countdown?: import("./countdown").CountdownState;
+  finished?: boolean;
+  results?: {
+    id: string;
+    name: string;
+    lapsDone: number;
+    totalMs: number;
+    bestLapMs?: number;
+  }[];
+  onReturnToLobby?: () => void;
 };
 
 const VOLUME_KEY = "racer.volume";
@@ -70,6 +79,27 @@ export function RaceHud(props: RaceHudProps) {
             <div className="countdown-number">{props.countdown.count}</div>
           )}
           {props.countdown.phase === "go" && <div className="countdown-number">GO</div>}
+        </div>
+      )}
+      {props.finished && (
+        <div className="hud-modal-backdrop">
+          <div className="hud-modal results">
+            <header>
+              <h2>Results</h2>
+            </header>
+            <ol className="results-list">
+              {(props.results ?? []).map((r, i) => (
+                <li key={r.id}>
+                  <span>
+                    {i + 1}. {r.name}
+                  </span>
+                  <span>{r.lapsDone} laps</span>
+                  <strong>{formatMs(r.totalMs)}</strong>
+                </li>
+              ))}
+            </ol>
+            <button onClick={props.onReturnToLobby}>Return to lobby</button>
+          </div>
         </div>
       )}
       <div className="hud-corner hud-top-left">

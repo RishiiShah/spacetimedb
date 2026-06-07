@@ -628,3 +628,7 @@ h2 {
 }
 .countdown-number { font-size: 140px; font-weight: 900; }
 .countdown-controls { background: rgba(8,12,18,0.7); padding: 24px 32px; border-radius: 16px; text-align: center; }
+
+.results-list { list-style: none; padding: 0; margin: 12px 0; }
+.results-list li { display: flex; justify-content: space-between; gap: 16px; padding: 4px 0; }
+.hud-modal.results button { margin-top: 8px; width: 100%; padding: 10px; border: none; border-radius: 8px; background: #2563eb; color: #fff; cursor: pointer; }

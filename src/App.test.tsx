@@ -28,6 +28,7 @@ const reducerMocks = [
   reducerMock,
   reducerMock,
   reducerMock,
+  reducerMock,
 ];
 
 vi.mock("spacetimedb/react", () => ({
