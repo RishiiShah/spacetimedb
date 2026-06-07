@@ -151,12 +151,89 @@
   color: #e2e8f0;
 }
 
+.retro-tagline {
+  margin: 12px 0 0;
+  color: var(--retro-neon-pink);
+  font-family: var(--retro-font-display);
+  font-size: clamp(0.68rem, 1.1vw, 0.82rem);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 14px rgba(255, 0, 127, 0.45);
+}
+
 .retro-subtitle {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   color: #94a3b8;
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.retro-hook-panel {
+  max-width: min(520px, calc(100% - 48px));
+  margin: 24px 0 0 24px;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.06) 0%,
+    rgba(255, 0, 127, 0.05) 100%
+  );
+  box-shadow:
+    inset 0 0 32px rgba(0, 240, 255, 0.06),
+    0 0 20px rgba(0, 240, 255, 0.12);
+}
+
+.retro-hook-eyebrow {
+  margin: 0 0 10px;
+  color: var(--retro-neon-blue);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45);
+}
+
+.retro-hook-line {
+  margin: 0;
+  color: #f8fafc;
+  font-family: var(--retro-font-display);
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: 0.03em;
+  text-shadow:
+    2px 2px 0 #000,
+    0 0 18px rgba(255, 251, 0, 0.25);
+  animation: retro-hook-fade 0.55s ease-out;
+}
+
+.retro-hook-cta {
+  margin: 14px 0 0;
+  color: #94a3b8;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+}
+
+.retro-hook-cta strong {
+  color: var(--retro-neon-yellow);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+@keyframes retro-hook-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .retro-nav {
