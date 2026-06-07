@@ -573,3 +573,47 @@ h2 {
     font-size: 20px;
   }
 }
+
+.hud-corner {
+  position: absolute;
+  z-index: 5;
+  color: #f8fafc;
+  pointer-events: none;
+}
+.hud-top-left { top: 16px; left: 16px; }
+.hud-top-right { top: 16px; right: 16px; pointer-events: auto; }
+.hud-bottom-left { bottom: 16px; left: 16px; }
+.hud-bottom-right { bottom: 16px; right: 16px; text-align: right; }
+.hud-corner h3 { margin: 0 0 4px; font-size: 12px; letter-spacing: 0.08em; opacity: 0.7; }
+.hud-standings { list-style: none; margin: 0; padding: 0; font-size: 13px; min-width: 180px; }
+.hud-standings li { display: flex; justify-content: space-between; gap: 12px; padding: 2px 0; }
+.hud-speed { font-size: 44px; font-weight: 800; line-height: 1; display: block; }
+.hud-unit { font-size: 13px; opacity: 0.8; }
+.hud-gear { display: block; font-size: 13px; opacity: 0.85; margin-top: 4px; }
+.hud-bottom-left .hud-label { font-size: 13px; opacity: 0.8; display: block; }
+.hud-bottom-left .hud-time { font-size: 28px; font-weight: 700; display: block; }
+.hud-bottom-left .hud-sub { font-size: 12px; opacity: 0.7; }
+.minimap { background: rgba(8, 12, 18, 0.55); border-radius: 10px; }
+.minimap-track { stroke: rgba(248, 250, 252, 0.8); stroke-width: 2; }
+.hud-help-tab {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  z-index: 5; background: rgba(8, 12, 18, 0.6); color: #e2e8f0; border: none;
+  border-radius: 999px; padding: 6px 14px; font-size: 12px; cursor: pointer;
+}
+.hud-modal-backdrop {
+  position: absolute; inset: 0; z-index: 20; display: grid; place-items: center;
+  background: rgba(2, 6, 12, 0.55);
+}
+.hud-modal {
+  background: #0f1720; color: #f8fafc; border-radius: 14px; padding: 20px 24px;
+  min-width: 280px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.hud-modal header { display: flex; justify-content: space-between; align-items: center; }
+.hud-modal header button { background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer; }
+.pause-menu { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.pause-menu button { padding: 10px; border-radius: 8px; border: none; background: #1e293b; color: #f8fafc; cursor: pointer; }
+.pause-menu button.danger { background: #b91c1c; }
+.sound-options { border: 1px solid #1e293b; border-radius: 8px; }
+.sound-options label { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; margin: 6px 0; }
+.instructions-list { list-style: none; padding: 0; margin: 12px 0 0; line-height: 1.9; }
+.instructions-list kbd { background: #1e293b; border-radius: 4px; padding: 1px 6px; }
