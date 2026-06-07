@@ -168,9 +168,18 @@ function SceneContent({
   );
 
   useFrame(({ camera, clock }, delta) => {
+    const now = Date.now();
     const vehicle = resolveVehicleObstacleCollisions(
       stepVehicle(vehicleRef.current, inputRef.current, delta, currentTrack),
-      remoteCars.map((car) => ({ x: car.x, z: car.z })),
+      remoteCars.map((car) => ({
+        x: car.x,
+        z: car.z,
+        // A car that has not started its run (still at spawn) or whose snapshot
+        // is older than 2s is a phantom — do not collide with it.
+        active:
+          car.runStartedAtMs !== 0n &&
+          now - Number(car.updatedAt.toDate().getTime()) < 2000,
+      })),
     );
     vehicleRef.current = vehicle;
     localSteerRef.current = vehicle.steer;
