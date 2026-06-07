@@ -35,7 +35,7 @@ export function getMultiplayerGridSpawn(
 
 export function sortRoomMembersForGrid<
   T extends { memberId: bigint; identity: { toHexString(): string } },
->(members: T[]): T[] {
+>(members: readonly T[]): T[] {
   return [...members].sort(
     (a, b) =>
       Number(a.memberId - b.memberId) ||
