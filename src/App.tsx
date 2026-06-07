@@ -160,22 +160,6 @@ function App() {
     );
   }, [activeRoom, cars, identity, sessionTrack.id]);
 
-  const leaderboard = useMemo(() => {
-    const nameFor = (lap: (typeof laps)[number]) => {
-      const player = players.find((row) => row.identity.isEqual(lap.identity));
-      return player?.name || lap.identity.toHexString().slice(0, 8);
-    };
-    return [...laps]
-      .filter(
-        (lap) =>
-          !activeRoom ||
-          (lap.roomId === activeRoom.roomId && lap.trackId === sessionTrack.id),
-      )
-      .sort((a, b) => Number(a.elapsedMs - b.elapsedMs))
-      .slice(0, 8)
-      .map((lap) => ({ ...lap, name: nameFor(lap) }));
-  }, [activeRoom, laps, players, sessionTrack.id]);
-
   const setNameIfNeeded = async () => {
     if (displayName.trim()) await setPlayerName({ name: displayName.trim() });
   };
@@ -784,14 +768,6 @@ function App() {
         <p className="hint">
           Press R to Reset, C for Camera, Space for Handbrake
         </p>
-        <ol className="leaderboard sr-only" aria-label="Lap records">
-          {leaderboard.map((lap) => (
-            <li key={lap.lapId.toString()}>
-              <span>{lap.name}</span>
-              <strong>{formatMs(Number(lap.elapsedMs))}</strong>
-            </li>
-          ))}
-        </ol>
       </section>
     </main>
   );
@@ -920,15 +896,6 @@ function Metric({ label, value }: { label: string; value: string }) {
       <strong>{value}</strong>
     </div>
   );
-}
-
-function formatMs(ms: number) {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = Math.floor((ms % 60000) / 1000);
-  const millis = Math.floor((ms % 1000) / 10);
-  return `${minutes}:${seconds.toString().padStart(2, "0")}.${millis
-    .toString()
-    .padStart(2, "0")}`;
 }
 
 function standingsCheckpointGap(all: RacerProgress[], r: RacerProgress) {

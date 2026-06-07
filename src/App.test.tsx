@@ -237,54 +237,6 @@ describe("App start flow", () => {
     );
   });
 
-  it("shows leaderboard laps only for the active room track", async () => {
-    mockTables = [
-      [],
-      [
-        {
-          roomId: 7n,
-          slug: "demo",
-          trackId: 2n,
-          createdBy: localIdentity,
-          createdAt: {},
-        },
-      ],
-      [
-        {
-          memberId: 1n,
-          roomId: 7n,
-          identity: localIdentity,
-          joinedAt: {},
-          ready: true,
-        },
-      ],
-      [],
-      [{ roomId: 7n, startedBy: localIdentity, startedAtMs: 1n }],
-      [
-        {
-          lapId: 1n,
-          identity: localIdentity,
-          roomId: 7n,
-          trackId: 2n,
-          elapsedMs: 5000n,
-        },
-        {
-          lapId: 2n,
-          identity: localIdentity,
-          roomId: 99n,
-          trackId: 1n,
-          elapsedMs: 1000n,
-        },
-      ],
-    ];
-
-    render(<App />);
-
-    await screen.findByTestId("racing-scene");
-    expect(screen.getByText("0:05.00")).toBeInTheDocument();
-    expect(screen.queryByText("0:01.00")).not.toBeInTheDocument();
-  });
-
   it("shows the lobby after room membership exists", () => {
     mockTables = [
       [],
