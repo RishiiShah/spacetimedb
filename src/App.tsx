@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { reducers, tables } from "./module_bindings";
 import { useReducer, useSpacetimeDB, useTable } from "spacetimedb/react";
@@ -241,20 +241,11 @@ function App() {
 
   const myName = me?.name || identity?.toHexString().slice(0, 8) || "driver";
 
-  // On a fresh page load the persisted identity may still be a room member
-  // (membership survives a refresh server-side). Leave that room once and stay
-  // on the home screen rather than dropping back into a race we no longer have
-  // local state for.
-  const didHandleStaleMembershipRef = useRef(false);
   useEffect(() => {
-    if (didHandleStaleMembershipRef.current) return;
-    if (!connected || !identity) return;
-    if (activeMembership && activeRoom) {
-      didHandleStaleMembershipRef.current = true;
-      void leaveRoom({ roomId: activeRoom.roomId });
-      setRaceStarted(false);
+    if (activeRoom && activeRaceStart && !raceStarted) {
+      setRaceStarted(true);
     }
-  }, [activeMembership, activeRoom, connected, identity, leaveRoom]);
+  }, [activeRaceStart, activeRoom, raceStarted]);
 
   if (activeRoom && !raceStarted) {
     return (
