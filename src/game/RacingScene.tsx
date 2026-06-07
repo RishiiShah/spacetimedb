@@ -19,12 +19,14 @@ import {
   CAR_WHEEL_SPECS,
   LIVERY_ACCENT_MATERIAL,
   LIVERY_BODY_MATERIAL,
+  LOWPOLY_WHEEL_NODE_NAMES,
   type CarId,
   type CarSuspensionLink,
   type CarWheelSpec,
   drivingActionFromKeyboardEvent,
   getLiveryById,
   inputFromDrivingActions,
+  isLowPolyWheelNodeName,
   visualWheelSteerYaw,
 } from "./driving";
 import { createSnapshot, type CarSnapshot } from "./network";
@@ -196,7 +198,7 @@ function SceneContent({
       localCarRef.current.rotation.y = -vehicle.heading;
     }
 
-    updateCamera(camera, cameraTargetRef.current, vehicle, cameraMode);
+    updateCamera(camera, cameraTargetRef.current, vehicle, cameraMode, carId);
 
     const elapsedMs = Math.max(
       0,
@@ -311,7 +313,11 @@ function CarModel({
   speed?: number;
   view?: "chase" | "driver";
 }) {
-  if (carId === "lowpoly") return <LowPolyCar body={body} />;
+  if (carId === "lowpoly") {
+    return (
+      <LowPolyCar body={body} speedRef={speedRef} speed={speed} view={view} />
+    );
+  }
   return (
     <CircuitCar
       body={body}
@@ -355,9 +361,27 @@ const LOWPOLY_SCALE = 0.008;
 const LOWPOLY_Y = 0.04;
 const LOWPOLY_UPRIGHT_X = -Math.PI / 2;
 const WHEEL_VISUAL_RADIUS = 0.46;
+const LOWPOLY_WHEEL_VISUAL_RADIUS = 0.52;
+const LOWPOLY_DRIVER_VISIBLE_NODE_NAMES = new Set<string>([
+  "SteeringWheel_02",
+  "Halo",
+  ...LOWPOLY_WHEEL_NODE_NAMES,
+]);
 
-function LowPolyCar({ body }: { body: string }) {
+function LowPolyCar({
+  body,
+  speedRef,
+  speed = 0,
+  view = "chase",
+}: {
+  body: string;
+  speedRef?: MutableRefObject<number>;
+  speed?: number;
+  view?: "chase" | "driver";
+}) {
   const scene = usePreparedModel(assets.cars.lowPoly, true, true, true);
+  const wheelNodesRef = useRef<THREE.Object3D[]>([]);
+  const wheelSpinRef = useRef(0);
   // The LowPoly has a baked texture; tint its material so the livery color reads
   // through the stripes.
   const recolor = useMemo(
@@ -368,6 +392,29 @@ function LowPolyCar({ body }: { body: string }) {
     [body],
   );
   const tinted = useLiveriedScene(scene, recolor);
+
+  useMemo(() => {
+    const wheelNodes: THREE.Object3D[] = [];
+    tinted.traverse((object) => {
+      if (object instanceof THREE.Mesh) {
+        object.visible =
+          view === "chase" ||
+          LOWPOLY_DRIVER_VISIBLE_NODE_NAMES.has(object.name);
+      }
+      if (isLowPolyWheelNodeName(object.name)) wheelNodes.push(object);
+    });
+    wheelNodesRef.current = wheelNodes;
+  }, [tinted, view]);
+
+  useFrame((_, delta) => {
+    wheelSpinRef.current +=
+      ((speedRef?.current ?? speed) * delta) / LOWPOLY_WHEEL_VISUAL_RADIUS;
+
+    for (const wheel of wheelNodesRef.current) {
+      wheel.rotation.x = -wheelSpinRef.current;
+    }
+  });
+
   return (
     <group
       position={[0, LOWPOLY_Y, 0]}
@@ -746,7 +793,7 @@ function RouteContinuousWalls({
   points,
   railOffset,
   railHeight,
-  railColor,
+  railColor: _railColor,
 }: {
   points: Vec3[];
   railOffset: number;
@@ -754,35 +801,19 @@ function RouteContinuousWalls({
   railColor: string;
 }) {
   const innerOffset = railOffset - ROUTE_RAIL_WIDTH / 2;
-  const stripeHeight = Math.min(0.16, railHeight * 0.16);
-  const stripeBase = railHeight * 0.52;
   const leftWallGeometry = useMemo(
-    () => createRouteVerticalRibbonGeometry(points, railHeight, -innerOffset),
+    () =>
+      paintBarrierStripes(
+        createRouteVerticalRibbonGeometry(points, railHeight, -innerOffset),
+      ),
     [innerOffset, points, railHeight],
   );
   const rightWallGeometry = useMemo(
-    () => createRouteVerticalRibbonGeometry(points, railHeight, innerOffset),
+    () =>
+      paintBarrierStripes(
+        createRouteVerticalRibbonGeometry(points, railHeight, innerOffset),
+      ),
     [innerOffset, points, railHeight],
-  );
-  const leftStripeGeometry = useMemo(
-    () =>
-      createRouteVerticalRibbonGeometry(
-        points,
-        stripeHeight,
-        -innerOffset + 0.015,
-        stripeBase,
-      ),
-    [innerOffset, points, stripeBase, stripeHeight],
-  );
-  const rightStripeGeometry = useMemo(
-    () =>
-      createRouteVerticalRibbonGeometry(
-        points,
-        stripeHeight,
-        innerOffset - 0.015,
-        stripeBase,
-      ),
-    [innerOffset, points, stripeBase, stripeHeight],
   );
   const leftCapGeometry = useMemo(
     () =>
@@ -815,18 +846,9 @@ function RouteContinuousWalls({
           receiveShadow
         >
           <meshStandardMaterial
-            color={railColor}
-            roughness={0.38}
-            metalness={0.08}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
-      ))}
-      {[leftStripeGeometry, rightStripeGeometry].map((geometry, index) => (
-        <mesh key={`wall-stripe-${index}`} geometry={geometry}>
-          <meshStandardMaterial
-            color="#d43f32"
-            roughness={0.45}
+            vertexColors
+            roughness={0.5}
+            metalness={0.04}
             side={THREE.DoubleSide}
           />
         </mesh>
@@ -1120,6 +1142,39 @@ function createRouteVerticalRibbonGeometry(
   return geometry;
 }
 
+// Paints the vertical wall ribbon with alternating red/white panels by writing
+// per-vertex colors. `panelLength` is the approximate world length of one panel.
+function paintBarrierStripes(
+  geometry: THREE.BufferGeometry,
+  panelLength = 9,
+): THREE.BufferGeometry {
+  const position = geometry.getAttribute("position");
+  const colorArray = new Float32Array(position.count * 3);
+  const red = new THREE.Color("#d43f32");
+  const white = new THREE.Color("#f1f3f5");
+
+  // Vertices are emitted in column pairs (base, top) along the route, so each
+  // pair shares one panel; flip the color every panelLength of travel.
+  let distance = 0;
+  let lastX = position.getX(0);
+  let lastZ = position.getZ(0);
+  for (let i = 0; i < position.count; i += 2) {
+    const x = position.getX(i);
+    const z = position.getZ(i);
+    distance += Math.hypot(x - lastX, z - lastZ);
+    lastX = x;
+    lastZ = z;
+    const color = Math.floor(distance / panelLength) % 2 === 0 ? red : white;
+    for (const v of [i, i + 1]) {
+      colorArray[v * 3] = color.r;
+      colorArray[v * 3 + 1] = color.g;
+      colorArray[v * 3 + 2] = color.b;
+    }
+  }
+  geometry.setAttribute("color", new THREE.Float32BufferAttribute(colorArray, 3));
+  return geometry;
+}
+
 function createDirectionSignPlacements(
   points: Vec3[],
   width: number,
@@ -1233,20 +1288,39 @@ const DRIVER_HEIGHT = 1.22;
 const DRIVER_LOOK_AHEAD = 24;
 const DRIVER_LOOK_HEIGHT = 1.08;
 const DRIVER_FOV = 70;
+const LOWPOLY_DRIVER_BACK = 0.03;
+const LOWPOLY_DRIVER_HEIGHT = 0.68;
+const LOWPOLY_DRIVER_LOOK_HEIGHT = 0.66;
+const LOWPOLY_DRIVER_FOV = 78;
 
-function updateCamera(
+export function updateCamera(
   camera: THREE.Camera,
   target: THREE.Vector3,
   vehicle: VehicleState,
   mode: "chase" | "driver",
+  carId?: CarId,
 ) {
   // Unit forward vector matching the vehicle's travel direction.
   const forwardX = Math.sin(vehicle.heading);
   const forwardZ = -Math.cos(vehicle.heading);
+  const driverProfile =
+    carId === "lowpoly"
+      ? {
+          back: LOWPOLY_DRIVER_BACK,
+          height: LOWPOLY_DRIVER_HEIGHT,
+          lookHeight: LOWPOLY_DRIVER_LOOK_HEIGHT,
+          fov: LOWPOLY_DRIVER_FOV,
+        }
+      : {
+          back: DRIVER_BACK,
+          height: DRIVER_HEIGHT,
+          lookHeight: DRIVER_LOOK_HEIGHT,
+          fov: DRIVER_FOV,
+        };
 
   // Wider field of view in the cockpit for immersion and speed; normal behind.
   if (camera instanceof THREE.PerspectiveCamera) {
-    const desiredFov = mode === "driver" ? DRIVER_FOV : CHASE_FOV;
+    const desiredFov = mode === "driver" ? driverProfile.fov : CHASE_FOV;
     if (camera.fov !== desiredFov) {
       camera.fov = desiredFov;
       camera.updateProjectionMatrix();
@@ -1257,13 +1331,13 @@ function updateCamera(
     // Rigidly attached to the car so the cockpit view never lags or bobs while
     // accelerating, as if you were sitting in the seat.
     camera.position.set(
-      vehicle.position.x - forwardX * DRIVER_BACK,
-      vehicle.position.y + DRIVER_HEIGHT,
-      vehicle.position.z - forwardZ * DRIVER_BACK,
+      vehicle.position.x - forwardX * driverProfile.back,
+      vehicle.position.y + driverProfile.height,
+      vehicle.position.z - forwardZ * driverProfile.back,
     );
     target.set(
       vehicle.position.x + forwardX * DRIVER_LOOK_AHEAD,
-      vehicle.position.y + DRIVER_LOOK_HEIGHT,
+      vehicle.position.y + driverProfile.lookHeight,
       vehicle.position.z + forwardZ * DRIVER_LOOK_AHEAD,
     );
     camera.lookAt(target);
