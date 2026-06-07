@@ -551,6 +551,27 @@ function enterRoom(ctx: any, targetRoom: any) {
   }
 }
 
+// Clears race + countdown state so the room can return to the lobby and re-race.
+export const resetRoomRace = spacetimedb.reducer(
+  { roomId: t.u64() },
+  (ctx, { roomId }) => {
+    const targetRoom = ctx.db.room.roomId.find(roomId);
+    if (!targetRoom) throw new SenderError("Room does not exist");
+    if (!targetRoom.createdBy.equals(ctx.sender)) {
+      throw new SenderError("Only the host can reset the race");
+    }
+    if (ctx.db.roomRaceStart.roomId.find(roomId)) {
+      ctx.db.roomRaceStart.roomId.delete(roomId);
+    }
+    if (ctx.db.roomCountdown.roomId.find(roomId)) {
+      ctx.db.roomCountdown.roomId.delete(roomId);
+    }
+    for (const m of [...ctx.db.roomMember.roomId.filter(roomId)]) {
+      ctx.db.roomMember.memberId.update({ ...m, ready: false });
+    }
+  },
+);
+
 function normalizeSlug(slug: string) {
   const normalized = slug
     .trim()

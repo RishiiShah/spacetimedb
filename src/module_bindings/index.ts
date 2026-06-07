@@ -45,6 +45,7 @@ import MarkLoadedReducer from "./mark_loaded_reducer";
 import PublishCarStateReducer from "./publish_car_state_reducer";
 import RecordCheckpointReducer from "./record_checkpoint_reducer";
 import RecordGhostFrameReducer from "./record_ghost_frame_reducer";
+import ResetRoomRaceReducer from "./reset_room_race_reducer";
 import SetPlayerNameReducer from "./set_player_name_reducer";
 import StartRoomRaceReducer from "./start_room_race_reducer";
 
@@ -379,6 +380,7 @@ const reducersSchema = __reducers(
   __reducerSchema("publish_car_state", PublishCarStateReducer),
   __reducerSchema("record_checkpoint", RecordCheckpointReducer),
   __reducerSchema("record_ghost_frame", RecordGhostFrameReducer),
+  __reducerSchema("reset_room_race", ResetRoomRaceReducer),
   __reducerSchema("set_player_name", SetPlayerNameReducer),
   __reducerSchema("start_room_race", StartRoomRaceReducer),
 );

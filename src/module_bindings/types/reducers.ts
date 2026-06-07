@@ -17,6 +17,7 @@ import MarkLoadedReducer from "../mark_loaded_reducer";
 import PublishCarStateReducer from "../publish_car_state_reducer";
 import RecordCheckpointReducer from "../record_checkpoint_reducer";
 import RecordGhostFrameReducer from "../record_ghost_frame_reducer";
+import ResetRoomRaceReducer from "../reset_room_race_reducer";
 import SetPlayerNameReducer from "../set_player_name_reducer";
 import StartRoomRaceReducer from "../start_room_race_reducer";
 
@@ -31,5 +32,6 @@ export type MarkLoadedParams = __Infer<typeof MarkLoadedReducer>;
 export type PublishCarStateParams = __Infer<typeof PublishCarStateReducer>;
 export type RecordCheckpointParams = __Infer<typeof RecordCheckpointReducer>;
 export type RecordGhostFrameParams = __Infer<typeof RecordGhostFrameReducer>;
+export type ResetRoomRaceParams = __Infer<typeof ResetRoomRaceReducer>;
 export type SetPlayerNameParams = __Infer<typeof SetPlayerNameReducer>;
 export type StartRoomRaceParams = __Infer<typeof StartRoomRaceReducer>;
