@@ -5,7 +5,13 @@ import {
   CAR_SUSPENSION_LINKS,
   CAR_VISUAL_MAX_STEER_YAW,
   CAR_WHEEL_SPECS,
+  CARS,
+  DEFAULT_CAR_ID,
+  DEFAULT_LIVERY_ID,
+  LIVERIES,
   drivingActionFromKeyboardEvent,
+  getCarById,
+  getLiveryById,
   inputFromDrivingActions,
   visualWheelSteerYaw,
 } from "./driving";
@@ -81,5 +87,25 @@ describe("driving controls", () => {
     expect(visualWheelSteerYaw(1)).toBe(CAR_VISUAL_MAX_STEER_YAW);
     expect(visualWheelSteerYaw(-1)).toBe(-CAR_VISUAL_MAX_STEER_YAW);
     expect(visualWheelSteerYaw(2)).toBe(CAR_VISUAL_MAX_STEER_YAW);
+  });
+
+  it("offers the two selectable cars with a valid default", () => {
+    expect(CARS.map((car) => car.id)).toEqual(["open-wheel", "lowpoly"]);
+    expect(CARS.some((car) => car.id === DEFAULT_CAR_ID)).toBe(true);
+    expect(getCarById("lowpoly").id).toBe("lowpoly");
+    expect(getCarById(undefined).id).toBe(DEFAULT_CAR_ID);
+    expect(getCarById("nonexistent").id).toBe(DEFAULT_CAR_ID);
+  });
+
+  it("offers liveries with valid colors and a working default", () => {
+    expect(LIVERIES.length).toBeGreaterThanOrEqual(2);
+    expect(LIVERIES.some((livery) => livery.id === DEFAULT_LIVERY_ID)).toBe(true);
+    for (const livery of LIVERIES) {
+      expect(livery.body).toMatch(/^#[0-9a-f]{6}$/i);
+      expect(livery.accent).toMatch(/^#[0-9a-f]{6}$/i);
+    }
+    expect(getLiveryById("scuderia").id).toBe("scuderia");
+    expect(getLiveryById(undefined).id).toBe(DEFAULT_LIVERY_ID);
+    expect(getLiveryById("nope").id).toBe(DEFAULT_LIVERY_ID);
   });
 });

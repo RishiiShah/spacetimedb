@@ -521,8 +521,258 @@ export const flatRoadPracticeTrack: TrackDef = {
   placements: [],
 };
 
+export const cityMonacoTrack: TrackDef = {
+  id: 17n,
+  slug: "monaco",
+  name: "Circuit de Monaco",
+  mode: "circuit",
+  type: "circuit",
+  summary: "Tight, twisting street circuit winding through Casino Square, a narrow hairpin, and harbor sweepers.",
+  origin: "local",
+  environment: "city",
+  spawn: { position: { x: -80, y: 0, z: 160 }, heading: Math.PI / 2 },
+  roadWidth: 26,
+  railOffset: 34,
+  railHeight: 2.8,
+  railColor: "#d8dde4",
+  routePoints: [
+    // Main Straight (z = 160)
+    { x: -80, y: 0, z: 160 },
+    { x: 40, y: 0, z: 160 },
+    // Sainte Devote (Turn 1 - tight right)
+    { x: 100, y: 0, z: 135 },
+    // Beau Rivage (Uphill climb)
+    { x: 130, y: 0, z: 60 },
+    { x: 140, y: 0, z: -30 },
+    // Massenet (Left sweep)
+    { x: 110, y: 0, z: -100 },
+    // Casino Square (Right sweep)
+    { x: 50, y: 0, z: -130 },
+    // Mirabeau (Downhill right)
+    { x: -10, y: 0, z: -110 },
+    // Grand Hotel Hairpin (Tightest left hairpin)
+    { x: -50, y: 0, z: -70 },
+    { x: -80, y: 0, z: -100 },
+    // Portier (Right turn)
+    { x: -110, y: 0, z: -60 },
+    // Tunnel & Lower Promenade (Winding curve)
+    { x: -155, y: 0, z: 0 },
+    { x: -175, y: 0, z: 70 },
+    // Chicane & Tabac (Left-right chicanes near harbor)
+    { x: -135, y: 0, z: 95 },
+    { x: -100, y: 0, z: 115 },
+  ],
+  checkpoints: [
+    {
+      index: 0,
+      position: { x: -80, y: 4, z: 160 },
+      rotationY: Math.PI / 2,
+      width: 32,
+      height: 8,
+      depth: 2,
+    },
+    {
+      index: 1,
+      position: { x: 110, y: 4, z: -100 },
+      rotationY: Math.atan2(-30, -60),
+      width: 32,
+      height: 8,
+      depth: 2,
+    },
+    {
+      index: 2,
+      position: { x: -50, y: 4, z: -70 },
+      rotationY: Math.atan2(-30, -30),
+      width: 32,
+      height: 8,
+      depth: 2,
+    },
+    {
+      index: 3,
+      position: { x: -155, y: 4, z: 0 },
+      rotationY: Math.atan2(-20, 70),
+      width: 32,
+      height: 8,
+      depth: 2,
+    },
+  ],
+  placements: [
+    {
+      "assetId": "ecoGrid",
+      "position": {
+        "x": 74,
+        "y": 0,
+        "z": -176
+      },
+      "rotationY": 3.46,
+      "scale": 1.66
+    },
+    {
+      "assetId": "palm",
+      "position": {
+        "x": 83,
+        "y": 0,
+        "z": -180
+      },
+      "rotationY": 4.89,
+      "scale": 1
+    },
+    {
+      "assetId": "ecoTerrace",
+      "position": {
+        "x": 80,
+        "y": 0,
+        "z": -179
+      },
+      "rotationY": 2.94,
+      "scale": 1.69
+    },
+    {
+      "assetId": "twistedTower",
+      "position": {
+        "x": 74,
+        "y": 0,
+        "z": -173
+      },
+      "rotationY": 5.34,
+      "scale": 1.65
+    },
+    {
+      "assetId": "ecoGrid",
+      "position": {
+        "x": 203,
+        "y": 0,
+        "z": 1
+      },
+      "rotationY": 3.89,
+      "scale": 1.51
+    },
+    {
+      "assetId": "trafficLight",
+      "position": {
+        "x": 185,
+        "y": 0,
+        "z": 21
+      },
+      "rotationY": 2.21,
+      "scale": 1
+    },
+    {
+      "assetId": "ecoGrid",
+      "position": {
+        "x": 183,
+        "y": 0,
+        "z": 37
+      },
+      "rotationY": 1.81,
+      "scale": 1.29
+    },
+    {
+      "assetId": "ecoTerrace",
+      "position": {
+        "x": 196,
+        "y": 0,
+        "z": 27
+      },
+      "rotationY": 4.68,
+      "scale": 1.5
+    },
+    {
+      "assetId": "ecoGrid",
+      "position": {
+        "x": -224,
+        "y": 0,
+        "z": 19
+      },
+      "rotationY": 1.5,
+      "scale": 1.59
+    },
+    {
+      "assetId": "twistedTower",
+      "position": {
+        "x": -231,
+        "y": 0,
+        "z": 17
+      },
+      "rotationY": 4.19,
+      "scale": 1.42
+    },
+    {
+      "assetId": "trafficLight",
+      "position": {
+        "x": -233,
+        "y": 0,
+        "z": 23
+      },
+      "rotationY": 1.69,
+      "scale": 1
+    },
+    {
+      "assetId": "twistedTower",
+      "position": {
+        "x": -223,
+        "y": 0,
+        "z": 55
+      },
+      "rotationY": 5.47,
+      "scale": 1.69
+    },
+    {
+      "assetId": "twistedTower",
+      "position": {
+        "x": -227,
+        "y": 0,
+        "z": 32
+      },
+      "rotationY": 5.5,
+      "scale": 1.21
+    },
+    {
+      "assetId": "palm",
+      "position": {
+        "x": -60,
+        "y": 0,
+        "z": 215
+      },
+      "rotationY": 0,
+      "scale": 1.3
+    },
+    {
+      "assetId": "palm",
+      "position": {
+        "x": -10,
+        "y": 0,
+        "z": 215
+      },
+      "rotationY": 0,
+      "scale": 1.35
+    },
+    {
+      "assetId": "palm",
+      "position": {
+        "x": 30,
+        "y": 0,
+        "z": 215
+      },
+      "rotationY": 0,
+      "scale": 1.25
+    },
+    {
+      "assetId": "trafficLight",
+      "position": {
+        "x": -45,
+        "y": 0,
+        "z": 215
+      },
+      "rotationY": 0,
+      "scale": 1
+    }
+  ],
+};
+
 export const TRACK_REGISTRY: Record<string, TrackDef> = {
   [cityLoopV1Track.slug]: cityLoopV1Track,
+  [cityMonacoTrack.slug]: cityMonacoTrack,
   [circuitMonzaTrack.slug]: circuitMonzaTrack,
   [circuitAustriaTrack.slug]: circuitAustriaTrack,
   [circuitBrandsTrack.slug]: circuitBrandsTrack,
