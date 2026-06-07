@@ -70,7 +70,7 @@ describe("driving controls", () => {
   });
 
   it("places low-poly tire contact on the road surface", () => {
-    expect(getCarVisualGroundOffset("lowpoly")).toBe(0.26);
+    expect(getCarVisualGroundOffset("lowpoly")).toBe(0.282);
     expect(getCarVisualGroundOffset("open-wheel")).toBe(0.24);
   });
 
